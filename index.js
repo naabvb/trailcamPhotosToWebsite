@@ -2,8 +2,21 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
+const { getAlbum } = require('./google-photos')
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('/api/images', (req, res) => {
+  try {
+    const results = await getAlbum()
+    response.json(results);
+  }
+  catch (e) {
+    response.status(500);
+  }
+
+});
 
 
 // The "catchall" handler: for any request that doesn't

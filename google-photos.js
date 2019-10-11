@@ -12,6 +12,8 @@ function extractPhotos(content) {
 }
 
 async function getAlbum(id) {
+
+    // TODO: idt ylös
   try {
     const response = await axios.get(`https://photos.app.goo.gl/${id}`)
     return extractPhotos(response.data)
