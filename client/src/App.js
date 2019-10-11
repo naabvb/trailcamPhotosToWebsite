@@ -12,17 +12,17 @@ class ImagesGallery extends Component {
   async componentDidMount() {
     const response = await axios.get('/api/images')
     if (response && response.data && response.data.length > 0) {
-      this.setState({images: response.data})
+      this.setState({ images: response.data })
     }
   }
 
   render() {
     const { images } = this.state;
     return images ?
-    
-    <Gallery enableImageSelection={false} images={images} /> : null
 
-  
+      <Gallery backdropClosesModal={true} enableImageSelection={false} images={images} /> : null
+
+
   }
 }
 

@@ -36,8 +36,16 @@ async function getImages() {
     } catch (e) {
         console.log('Error: ', e);
     }
-    // TODO: Ordering!
-    return newList;
+    newList.sort(function (a, b) {
+        var keyA = new Date(parseInt(a.timestamp)),
+            keyB = new Date(parseInt(b.timestamp));
+        if (keyA < keyB) return -1;
+        if (keyA > keyB) return 1;
+        return 0;
+
+    })
+
+    return newList.reverse();
 }
 
 module.exports = {
