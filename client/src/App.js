@@ -7,27 +7,24 @@ class ImagesGallery extends Component {
   }
 
   async componentDidMount() {
-    const response = await axios.get(
-      'https://google-photos-album-demo.glitch.me/YOUR_ALBUM_ID'
+    this.getAlbums();
+  }
+
+  getAlbums = () => {
+    fetch('/api/images')
+      .then(results => results.json())
+      .then(images => this.setState({ images }));
+  }
+
+  render() {
+    const { images } = this.state;
+    return (
+
+      <div className="App">
+        <h1>WIP</h1>
+      </div>
     )
-    if (response && response.data && response.data.length > 0) {
-      this.setState({
-        images: response.data.map((url: string) => ({
-          original: `${url}=w1024`,
-          thumbnail: `${url}=w100`,
-        })),
-      })
-    }
-
-
-  } render() {
-    const { images } = this.state
-    return images ? <ImageGallery items={images} /> : null
   }
 }
-
-}
-
-
 
 export default ImagesGallery;
