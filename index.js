@@ -8,9 +8,20 @@ const { getImages } = require('./aws-photos')
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.get('/api/images', async function(request, response) {
+app.get('/api/images/1', async function(request, response) {
   try {
-    const results = await getImages()
+    const results = await getImages(1)
+    response.json(results);
+  }
+  catch (e) {
+    response.status(500);
+  }
+
+});
+
+app.get('/api/images/2', async function(request, response) {
+  try {
+    const results = await getImages(2)
     response.json(results);
   }
   catch (e) {

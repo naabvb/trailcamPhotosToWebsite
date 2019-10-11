@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import Gallery from 'react-grid-gallery';
 import './App.css';
 import axios from 'axios';
+import CenteredTabs from './centeredTabs';
 
 class ImagesGallery extends Component {
   state = {
     images: [],
   }
-
 
   async componentDidMount() {
     const response = await axios.get('/api/images')
@@ -17,11 +16,12 @@ class ImagesGallery extends Component {
   }
 
   render() {
-    const { images } = this.state;
-    return images ?
-
-      <Gallery backdropClosesModal={true} enableImageSelection={false} images={images} /> : null
-
+  
+    return(
+      <div> 
+    <CenteredTabs />
+    </div>
+    );
 
   }
 }

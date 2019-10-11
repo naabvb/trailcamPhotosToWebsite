@@ -24,3 +24,7 @@
 #root {
   padding: 1em;
 }
+
+.MuiTabs-root {
+  margin-bottom: 1em;
+}

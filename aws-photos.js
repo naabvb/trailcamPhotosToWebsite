@@ -1,9 +1,8 @@
 const aws = require('aws-sdk');
 const config = require('./config.json');
 
-async function getImages() {
+async function getImages(id) {
     const newList = [];
-
     try {
 
         aws.config.setPromisesDependency();
@@ -12,14 +11,30 @@ async function getImages() {
             secretAccessKey: config.secretAccessKey,
             region: 'eu-north-1'
         });
-
+        var response;
         const s3 = new aws.S3();
-        const response = await s3.listObjectsV2({
-            Bucket: 'jatkalanriistakamerat'
-        }).promise();
+        if (id == 1) {
+            response = await s3.listObjectsV2({
+                Bucket: 'jatkalanriistakamerat'
+            }).promise();
+        }
+
+        else {
+            response = await s3.listObjectsV2({
+                Bucket: 'jatkalanriistakamerat2'
+            }).promise();
+
+        }
 
         var contents = response.Contents;
-        var prefix = "https://jatkalanriistakamerat.s3.eu-north-1.amazonaws.com/";
+        var prefix;
+        if (id == 1) {
+            prefix = "https://jatkalanriistakamerat.s3.eu-north-1.amazonaws.com/";
+        }
+        if (id == 2) {
+            prefix = "https://jatkalanriistakamerat2.s3.eu-north-1.amazonaws.com/";
+
+        }
         var name = "";
         var splitString = "";
         var timestamp;
