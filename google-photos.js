@@ -14,16 +14,17 @@ function extractPhotos(content) {
 function extractExif(extracted, response) {
     var regexString = "";
     const newList = [];
-    for (i=0; i< extracted.length; i++) {
+    for (i = 0; i < extracted.length; i++) {
         var escapedString = extracted[i].replace(/\//g, '\\\/');
-        regexString = "\\"+escapedString+ "(.*\\s\\S\\s\\S[0-9]*,)";
+        regexString = "\\" + escapedString + "(.*\\s\\S\\s\\S[0-9]*,)";
         regexString = new RegExp(regexString, 'g');
         let match;
         while (match = regexString.exec(response)) {
             var res = match[1].split(",")
-            var location = res.length -2;
+            var location = res.length - 2;
             var timestamp = res[location];
-            var newObj = {'link': extracted[i], "timestamp": timestamp}
+            var date = new Date(parseInt(timestamp))
+            var newObj = { 'link': extracted[i] + "=w9000", "thumbnail": extracted[i] + "=w400", "tWidth": 400, "tHeight": 300, "date": date.toUTCString() }
             newList.push(newObj)
             break;
         }
@@ -32,6 +33,7 @@ function extractExif(extracted, response) {
 }
 
 async function getAlbum() {
+    album1_id = "ID_HERE"
     try {
         const response = await axios.get(`https://photos.app.goo.gl/${album1_id}`)
         const extracted = extractPhotos(response.data);
