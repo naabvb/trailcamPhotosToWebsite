@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/naabvb/googlePhotosToWebsite#readme",
   "dependencies": {
+    "aws-sdk": "^2.548.0",
     "axios": "^0.19.0",
     "express": "^4.17.1"
   }

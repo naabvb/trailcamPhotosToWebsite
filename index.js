@@ -3,13 +3,14 @@ const path = require('path');
 const app = express();
 
 const { getAlbum } = require('./google-photos')
+const { getImages } = require('./aws-photos')
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/api/images', async function(request, response) {
   try {
-    const results = await getAlbum()
+    const results = await getImages()
     response.json(results);
   }
   catch (e) {
