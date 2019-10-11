@@ -24,7 +24,7 @@ function extractExif(extracted, response) {
             var location = res.length - 2;
             var timestamp = res[location];
             var date = new Date(parseInt(timestamp))
-            var newObj = { 'link': extracted[i] + "=w9000", "thumbnail": extracted[i] + "=w400", "tWidth": 400, "tHeight": 300, "date": date.toUTCString() }
+            var newObj = { 'src': extracted[i] + "=w9000", "thumbnail": extracted[i] + "=w400", "thumbnailWidth": 400, "thumbnailHeight": 300, "date": date.toUTCString() }
             newList.push(newObj)
             break;
         }

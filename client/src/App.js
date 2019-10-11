@@ -1,29 +1,28 @@
 import React, { Component } from 'react';
+import Gallery from 'react-grid-gallery';
 import './App.css';
+import axios from 'axios';
 
 class ImagesGallery extends Component {
   state = {
-    images: null,
+    images: [],
   }
+
 
   async componentDidMount() {
-    this.getAlbums();
-  }
-
-  getAlbums = () => {
-    fetch('/api/images')
-      .then(results => results.json())
-      .then(images => this.setState({ images }));
+    const response = await axios.get('/api/images')
+    if (response && response.data && response.data.length > 0) {
+      this.setState({images: response.data})
+    }
   }
 
   render() {
     const { images } = this.state;
-    return (
+    return images ?
+    
+    <Gallery enableImageSelection={false} images={images} /> : null
 
-      <div className="App">
-        <h1>WIP</h1>
-      </div>
-    )
+  
   }
 }
 
