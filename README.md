@@ -1,4 +1,4 @@
-# trailcamPhotosToWebsite
+# TrailcamPhotosToWebsite
 
 Webapp with Node.js backend for fetching trailcam images ja react frontend.
 
@@ -28,7 +28,7 @@ Install required depencies (at /client/):
 npm install
 ```
 
-Run (at /client/) react-frontend at localhost:3000:
+Run (at /client/) to start react-frontend at localhost:3000:
 ```
 npm start 
 ```
