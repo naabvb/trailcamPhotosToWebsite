@@ -16,11 +16,11 @@ class ImagesGallery extends Component {
   }
 
   render() {
-  
-    return(
-      <div> 
-    <CenteredTabs />
-    </div>
+
+    return (
+      <div>
+        <CenteredTabs />
+      </div>
     );
 
   }

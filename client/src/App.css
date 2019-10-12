@@ -29,12 +29,18 @@
   margin-bottom: 1em;
 }
 
+.MuiTab-wrapper {
+  font-weight: 700;
+}
+
+
 h3 {
   width: 10em;
   color: #3c4043;
   /*padding-top: 0.5em;*/
   padding-left: 0.5em;
   font: 500 .875rem/1.25rem Roboto,Arial,sans-serif;
+  font-weight: 650;
 }
 
 section {

@@ -29,7 +29,7 @@ export default function CenteredTabs() {
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
+        variant="fullWidth"
       >
         <Tab label="Riistakamera 1" component={Link} to="/one" />
         <Tab label="Riistakamera 2" component={Link} to="/two" />
