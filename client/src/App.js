@@ -9,9 +9,8 @@ class ImagesGallery extends Component {
 
   render() {
     return (
-        <CenteredTabs />
+      <CenteredTabs />
     );
-
   }
 }
 

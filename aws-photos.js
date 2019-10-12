@@ -51,7 +51,6 @@ async function getImages(id) {
             splitString = name.split("_");
             timestamp = splitString[1];
             date = new Date(parseInt(timestamp));
-            // model = date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
             if (date.getFullYear != today.getFullYear) {
                 options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
             }

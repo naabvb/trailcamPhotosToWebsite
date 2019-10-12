@@ -38,9 +38,7 @@
 }
 
 h3 {
-  /*width: 10em;*/
   color: #3c4043;
-  /*padding-top: 0.5em;*/
   padding-left: 0.5em;
   font: 600 .975rem/1.55rem Roboto,Arial,sans-serif;
   font-weight: 650;
@@ -49,7 +47,6 @@ h3 {
 section {
   width: 100%;
 }
-
 
 footer {
   text-align: center;
@@ -63,6 +60,6 @@ footer {
 }
 
 .footer_link {
-    color: #000000;
-    text-decoration: none;
+  color: #000000;
+  text-decoration: none;
 }
