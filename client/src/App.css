@@ -22,27 +22,47 @@
 }
 
 #root {
-  padding: 1em;
+  position:relative;
 }
 
-.MuiTabs-root {
-  margin-bottom: 1em;
+.image_page {
+  padding: 0.8em;
 }
 
 .MuiTab-wrapper {
   font-weight: 700;
 }
 
+.clear {
+  clear:both;
+}
 
 h3 {
-  width: 10em;
+  /*width: 10em;*/
   color: #3c4043;
   /*padding-top: 0.5em;*/
   padding-left: 0.5em;
-  font: 500 .875rem/1.25rem Roboto,Arial,sans-serif;
+  font: 600 .975rem/1.55rem Roboto,Arial,sans-serif;
   font-weight: 650;
 }
 
 section {
   width: 100%;
+}
+
+
+footer {
+  text-align: center;
+}
+
+.footer_span {
+  color: #666;
+  font-size: 12px;
+  display:inline;
+  bottom:0;  
+}
+
+.footer_link {
+    color: #000000;
+    text-decoration: none;
 }

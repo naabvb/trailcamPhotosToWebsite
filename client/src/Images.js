@@ -20,9 +20,8 @@ class ImagesG extends Component {
         let items = [];
         if (images) {
             for (const [index, value] of images.entries()) {
-                items.push(<div>
-                    <section id={index}><h3>{value.key}</h3>
-                    </section>
+                items.push(<div id={index}>
+                    <div className="clear"></div><h3>{value.key}</h3>
                     <LazyLoadComponent>
                         <Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={value.values} />
                     </LazyLoadComponent>
@@ -32,7 +31,7 @@ class ImagesG extends Component {
             items = null;
         }
         return (
-            <div>
+            <div className="image_page">
                 {items}
             </div>
         );

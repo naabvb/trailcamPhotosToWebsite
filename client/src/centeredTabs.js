@@ -49,16 +49,12 @@ export default function CenteredTabs() {
 
 function Cam1() {
   return (
-    <div>
        <ImagesG></ImagesG>
-    </div>
   );
 }
 
 function Cam2() {
   return (
-    <div>
       <ImagesG2></ImagesG2>
-    </div>
   );
 }
