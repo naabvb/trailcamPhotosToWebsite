@@ -17,13 +17,15 @@ class ImagesG extends Component {
 
     render() {
         const { images } = this.state;
+        const isMobile = window.innerWidth < 1025;
+        const heights = isMobile ? 170 : 280;
         let items = [];
         if (images) {
             for (const [index, value] of images.entries()) {
                 items.push(<div id={index}>
                     <div className="clear"></div><h3>{value.key}</h3>
                     <LazyLoadComponent>
-                        <Gallery rowHeight={170} margin={3} enableImageSelection={false} images={value.values} />
+                        <Gallery rowHeight={heights} margin={3} enableImageSelection={false} images={value.values} />
                     </LazyLoadComponent>
                 </div>)
             }
