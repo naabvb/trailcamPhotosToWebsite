@@ -1,5 +1,5 @@
 {
-  "name": "googlePhotosToWebsite",
+  "name": "trailcamPhotosToWebsite",
   "version": "1.0.0",
   "description": "WIP",
   "main": "index.js",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/naabvb/googlePhotosToWebsite.git"
+    "url": "git+https://github.com/naabvb/trailcamPhotosToWebsite.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/naabvb/googlePhotosToWebsite/issues"
+    "url": "https://github.com/naabvb/trailcamPhotosToWebsite/issues"
   },
-  "homepage": "https://github.com/naabvb/googlePhotosToWebsite#readme",
+  "homepage": "https://github.com/naabvb/trailcamPhotosToWebsite#readme",
   "dependencies": {
     "aws-sdk": "^2.548.0",
     "axios": "^0.19.0",

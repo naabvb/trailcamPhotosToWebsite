@@ -1,3 +1,3 @@
-# googlePhotosToWebsite
+# trailcamPhotosToWebsite
 
 WIP
