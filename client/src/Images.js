@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Gallery from 'react-grid-gallery';
 import './App.css';
 import axios from 'axios';
+import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
 class ImagesG extends Component {
     state = {
@@ -19,7 +20,13 @@ class ImagesG extends Component {
         let items = [];
         if (images) {
             for (const [index, value] of images.entries()) {
-                items.push(<div><section id={index}><h3>{value.key}</h3></section><Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={value.values} /></div>)
+                items.push(<div>
+                    <section id={index}><h3>{value.key}</h3>
+                    </section>
+                    <LazyLoadComponent>
+                        <Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={value.values} />
+                    </LazyLoadComponent>
+                </div>)
             }
         } else {
             items = null;
