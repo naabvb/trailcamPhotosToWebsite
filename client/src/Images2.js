@@ -23,7 +23,7 @@ class ImagesG2 extends Component {
                 items.push(<div id={index}>
                     <div className="clear"></div><h3>{value.key}</h3>
                     <LazyLoadComponent>
-                        <Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={value.values} />
+                        <Gallery rowHeight={170} margin={3} enableImageSelection={false} images={value.values} />
                     </LazyLoadComponent>
                 </div>)
             }
