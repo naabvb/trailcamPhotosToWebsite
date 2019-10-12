@@ -1,5 +1,6 @@
 const aws = require('aws-sdk');
 const config = require('./config.json');
+const icu = require('full-icu');
 
 async function getImages(id) {
     const newList = [];
@@ -40,12 +41,29 @@ async function getImages(id) {
         var timestamp;
         var date;
         var model;
+        var today = new Date();
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        var options = { weekday: 'short', month: 'short', day: 'numeric' };
+
         for (let i = 0; i < contents.length; i++) {
             name = contents[i].Key;
             splitString = name.split("_");
             timestamp = splitString[1];
             date = new Date(parseInt(timestamp));
-            model = date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
+            // model = date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
+            if (date.getFullYear != today.getFullYear) {
+                options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
+            }
+            model = date.toLocaleDateString('fi-FI', options);
+
+            if (date.getDate() == today.getDate() && date.getMonth() == today.getMonth() && date.getFullYear() == today.getFullYear()) {
+                model = "Tänään"
+            }
+            if (date.getDate() == yesterday.getDate() && date.getMonth() == yesterday.getMonth() && date.getFullYear() == yesterday.getFullYear()) {
+                model = "Eilen"
+            }
+
             var newObj = { 'src': prefix + name, "thumbnail": prefix + name, "thumbnailWidth": 400, "thumbnailHeight": 300, "timestamp": timestamp, "date": date.toString(), "model": model };
             newList.push(newObj);
         }

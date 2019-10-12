@@ -16,15 +16,17 @@ class ImagesG extends Component {
 
     render() {
         const { images } = this.state;
-        let gallery;
+        let items = [];
         if (images) {
-            gallery = <Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={images} />;
+            for (const [index, value] of images.entries()) {
+                items.push(<div><section id={index}><h3>{value.key}</h3></section><Gallery rowHeight={300} margin={3} backdropClosesModal={true} enableImageSelection={false} images={value.values} /></div>)
+            }
         } else {
-            gallery = null;
+            items = null;
         }
         return (
             <div>
-                {gallery}
+                {items}
             </div>
         );
     }
