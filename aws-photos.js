@@ -39,12 +39,14 @@ async function getImages(id) {
         var splitString = "";
         var timestamp;
         var date;
+        var model;
         for (let i = 0; i < contents.length; i++) {
             name = contents[i].Key;
             splitString = name.split("_");
             timestamp = splitString[1];
-            date = new Date(parseInt(timestamp))
-            var newObj = { 'src': prefix + name, "thumbnail": prefix + name, "thumbnailWidth": 400, "thumbnailHeight": 300, "timestamp": timestamp, "date": date.toString() };
+            date = new Date(parseInt(timestamp));
+            model = date.getDate().toString() + (date.getMonth() + 1).toString() + date.getFullYear().toString();
+            var newObj = { 'src': prefix + name, "thumbnail": prefix + name, "thumbnailWidth": 400, "thumbnailHeight": 300, "timestamp": timestamp, "date": date.toString(), "model": model };
             newList.push(newObj);
         }
 
@@ -59,8 +61,28 @@ async function getImages(id) {
         return 0;
 
     })
+    return getByDay(newList.reverse());
+}
 
-    return newList.reverse();
+function getByDay(listOfObjects) {
+    var dates = [];
+    var obj;
+    var bool = false;
+    for (let i = 0; i < listOfObjects.length; i++) {
+        bool = false;
+        for (let y = 0; y < dates.length; y++) {
+            if (dates[y].key == listOfObjects[i].model) {
+                dates[y].values.push(listOfObjects[i])
+                bool = true
+                break;
+            }
+        }
+        if (bool == false) {
+            obj = { "key": listOfObjects[i].model, "values": [listOfObjects[i]] }
+            dates.push(obj);
+        }
+    }
+    return dates;
 }
 
 module.exports = {
