@@ -23,6 +23,7 @@
 
 #root {
   position:relative;
+  min-height:2000px;
 }
 
 .image_page {
