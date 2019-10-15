@@ -34,6 +34,15 @@ export default class CenteredTabs extends Component {
   }
 
   render() {
+    const tabValue = this.state.tabValue
+    let trueValue
+    if (tabValue === '/' || tabValue === null) {
+      trueValue = '/one'
+    }
+    else {
+      trueValue = tabValue
+    }
+
     const useStyles = makeStyles({
       root: {
         flexGrow: 1,
@@ -44,7 +53,7 @@ export default class CenteredTabs extends Component {
       <BrowserRouter>
         <Paper className={useStyles.root}>
           <Tabs
-            value={this.state.tabValue}
+            value={trueValue}
             indicatorColor="primary"
             textColor="primary"
             variant="fullWidth"
