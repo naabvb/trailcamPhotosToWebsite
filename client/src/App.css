@@ -24,19 +24,9 @@
 #root {
   position:relative;
   min-height:2000px;
+  background-color: rgb(250,250,250);
 }
 
-.image_page {
-  padding: 0.8em;
-}
-
-.MuiTab-wrapper {
-  font-weight: 700;
-}
-
-.clear {
-  clear:both;
-}
 
 h3 {
   color: #3c4043;
@@ -45,8 +35,12 @@ h3 {
   font-weight: 650;
 }
 
-section {
-  width: 100%;
+.MuiTab-wrapper {
+  font-weight: 700;
+}
+
+.MuiPaper-root {
+  background-color: rgb(250,250,250) !important;
 }
 
 footer {
@@ -63,4 +57,50 @@ footer {
 .footer_link {
   color: #000000;
   text-decoration: none;
+}
+
+.image_page {
+  padding: 0.8em;
+}
+
+.clear {
+  clear:both;
+}
+
+section {
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .footer_span {
+    color: #666;
+  }
+
+  .footer_link {
+    color: rgb(250,250,250);
+  }
+  
+  #root {
+    background-color: #212121;
+  }
+
+  body {
+    background-color: #212121;
+  }
+
+  .MuiPaper-root {
+    background-color: #333333 !important;
+  }
+
+  .MuiTab-wrapper {
+    color: rgb(250,250,250);
+  }
+
+  h3 {
+    color: rgb(250,250,250);
+  }
+
+  .MuiTabs-indicator {
+    background-color: rgb(250,250,250);
+  }
 }
