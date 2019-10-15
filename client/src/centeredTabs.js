@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
@@ -7,44 +7,63 @@ import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
 
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-  },
-});
 
-export default function CenteredTabs() {
-  const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+export default class CenteredTabs extends Component {
+  constructor() {
+    super()
+    this.state = { tabValue: "/one" }
+  }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  toggle(event) {
+    this.setState({ tabValue: event })
+  }
 
-  return (
-    <BrowserRouter>
-      <Paper className={classes.root}>
-        <Tabs
-          value={value}
-          onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
-          variant="fullWidth"
-        >
-          <Tab label="Riistakamera 1" component={Link} to="/one" />
-          <Tab label="Riistakamera 2" component={Link} to="/two" />
-        </Tabs>
-      </Paper>
+  componentDidMount() {
+    if (performance.navigation.type === 1) {
+      this.setState({ tabValue: window.location.pathname })
+    }
+    else {
+      this.setState({ tabValue: window.location.pathname })
+    }
+  }
 
-      <Switch>
-        <Route exact path="/">
-          <Redirect to="/one"></Redirect>
-        </Route>
-        <Route path="/one" children={<Cam1 />} />
-        <Route path="/two" children={<Cam2 />} />
-      </Switch>
-    </BrowserRouter>
-  );
+  componentDidUpdate() {
+    window.onpopstate = (e) => {
+      this.setState({ tabValue: window.location.pathname })
+    }
+  }
+
+  render() {
+    const useStyles = makeStyles({
+      root: {
+        flexGrow: 1,
+      },
+    });
+
+    return (
+      <BrowserRouter>
+        <Paper className={useStyles.root}>
+          <Tabs
+            value={this.state.tabValue}
+            indicatorColor="primary"
+            textColor="primary"
+            variant="fullWidth"
+          >
+            <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />
+            <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />
+          </Tabs>
+        </Paper>
+
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/one"></Redirect>
+          </Route>
+          <Route path="/one" children={<Cam1 />} />
+          <Route path="/two" children={<Cam2 />} />
+        </Switch>
+      </BrowserRouter>
+    );
+  }
 }
 
 function Cam1() {
