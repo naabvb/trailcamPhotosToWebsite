@@ -7,7 +7,6 @@ import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
 
-
 export default class CenteredTabs extends Component {
   constructor() {
     super()
