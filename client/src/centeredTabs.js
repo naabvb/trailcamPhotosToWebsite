@@ -3,12 +3,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Button from '@material-ui/core/Button';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
 import { PrivateRoute } from './_components/PrivateRoute';
 import { LoginPage } from './login';
 import { userService } from './_services/user.service'
+import AppBar from '@material-ui/core/AppBar';
 
 export default class CenteredTabs extends Component {
   constructor(props) {
@@ -42,6 +44,7 @@ export default class CenteredTabs extends Component {
     let user = JSON.parse(localStorage.getItem('user'));
     if (user) {
       items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
+      items.push(<Tab value={'/login'} onClick={(e) => this.toggle("/login")} label="Kirjaudu ulos" component={Link} to="/login" />);
       items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
     }
 
