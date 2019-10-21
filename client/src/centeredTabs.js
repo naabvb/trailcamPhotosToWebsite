@@ -6,11 +6,14 @@ import Tab from '@material-ui/core/Tab';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
+import { PrivateRoute } from './_components/PrivateRoute';
+import { LoginPage } from './login';
+import { userService } from './_services/user.service'
 
 export default class CenteredTabs extends Component {
-  constructor() {
-    super()
-    this.state = { tabValue: "/one" }
+  constructor(props) {
+    super(props)
+    this.state = { tabValue: "/one", user: {} }
   }
 
   toggle(event) {
@@ -19,10 +22,11 @@ export default class CenteredTabs extends Component {
 
   componentDidMount() {
     if (performance.navigation.type === 1) {
-      this.setState({ tabValue: window.location.pathname })
+      this.setState({ tabValue: window.location.pathname, user: JSON.parse(localStorage.getItem('user'))});
     }
+
     else {
-      this.setState({ tabValue: window.location.pathname })
+      this.setState({ tabValue: window.location.pathname, user: JSON.parse(localStorage.getItem('user'))});
     }
   }
 
@@ -34,6 +38,13 @@ export default class CenteredTabs extends Component {
 
   render() {
     const tabValue = this.state.tabValue
+    let items = [];
+    let user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
+      items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
+    }
+
     let trueValue
     if (tabValue === '/' || tabValue === null) {
       trueValue = '/one'
@@ -47,7 +58,7 @@ export default class CenteredTabs extends Component {
         flexGrow: 1,
       },
     });
-
+    console.log(user);
     return (
       <BrowserRouter>
         <Paper className={useStyles.root}>
@@ -57,17 +68,16 @@ export default class CenteredTabs extends Component {
             textColor="primary"
             variant="fullWidth"
           >
-            <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />
-            <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />
+            {items}
           </Tabs>
         </Paper>
 
         <Switch>
-          <Route exact path="/">
-            <Redirect to="/one"></Redirect>
-          </Route>
-          <Route path="/one" component={ImagesG} />
-          <Route path="/two" component={ImagesG2} />
+          <PrivateRoute exact path="/"><Redirect to="/one"></Redirect>
+          </PrivateRoute>
+          <PrivateRoute path="/one" component={ImagesG} />
+          <PrivateRoute path="/two" component={ImagesG2} />
+          <Route path="/login" component={LoginPage} />
         </Switch>
       </BrowserRouter>
     );
