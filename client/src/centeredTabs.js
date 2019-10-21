@@ -66,22 +66,10 @@ export default class CenteredTabs extends Component {
           <Route exact path="/">
             <Redirect to="/one"></Redirect>
           </Route>
-          <Route path="/one" children={<Cam1 />} />
-          <Route path="/two" children={<Cam2 />} />
+          <Route path="/one" component={ImagesG} />
+          <Route path="/two" component={ImagesG2} />
         </Switch>
       </BrowserRouter>
     );
   }
-}
-
-function Cam1() {
-  return (
-    <ImagesG></ImagesG>
-  );
-}
-
-function Cam2() {
-  return (
-    <ImagesG2></ImagesG2>
-  );
 }
