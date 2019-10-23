@@ -11,42 +11,61 @@ import PrivateRoute from './_components/PrivateRoute';
 import { LoginPage } from './login';
 import { userService } from './_services/user.service'
 import AppBar from '@material-ui/core/AppBar';
+import { getRole } from './_services/user.service';
 
 export default class CenteredTabs extends Component {
   constructor(props) {
     super(props)
-    this.state = { tabValue: "/one", user: {} }
+    this.state = { tabValue: "/one", role: {} }
   }
 
   toggle(event) {
     this.setState({ tabValue: event })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log("mount")
+    const response = await getRole();
+
     if (performance.navigation.type === 1) {
-      this.setState({ tabValue: window.location.pathname, user: JSON.parse(localStorage.getItem('user'))});
+      this.setState({ tabValue: window.location.pathname, role: response});
     }
 
     else {
-      this.setState({ tabValue: window.location.pathname, user: JSON.parse(localStorage.getItem('user'))});
+      this.setState({ tabValue: window.location.pathname, role: response});
     }
   }
 
-  componentDidUpdate() {
-    window.onpopstate = (e) => {
-      this.setState({ tabValue: window.location.pathname })
+  async componentDidUpdate() {
+    console.log("update")
+    console.log(window)
+    const response = await getRole();
+    if (response != this.state.role) {
+      this.setState({role:response})
     }
+    window.onpopstate = (e) => {
+      this.setState({ tabValue: window.location.pathname, role: response })
+    }
+  }
+
+  redirectToTarget = () => {
+    window.location.pathname = '/login';
   }
 
   render() {
     const tabValue = this.state.tabValue
     let items = [];
-   // let user = JSON.parse(localStorage.getItem('user'));
+   let role = this.state.role;
+   console.log(role)
    let user = true;
-    if (user) {
+  // console.log(user)
+    if (role) {
       items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
       items.push(<Tab value={'/login'} onClick={(e) => this.toggle("/login")} label="Kirjaudu ulos" component={Link} to="/login" />);
       items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
+    }
+    if (role === false) {
+      items.push(<Redirect to={{ pathname: '/login'}}></Redirect>)
     }
 
     let trueValue
