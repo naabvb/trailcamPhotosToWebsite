@@ -41,7 +41,8 @@ export default class CenteredTabs extends Component {
   render() {
     const tabValue = this.state.tabValue
     let items = [];
-    let user = JSON.parse(localStorage.getItem('user'));
+   // let user = JSON.parse(localStorage.getItem('user'));
+   let user = true;
     if (user) {
       items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
       items.push(<Tab value={'/login'} onClick={(e) => this.toggle("/login")} label="Kirjaudu ulos" component={Link} to="/login" />);

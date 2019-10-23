@@ -9,7 +9,24 @@ export const userService = {
     getRole
 };
 
-async function getRole() {
+//export function getRole() {
+//    axios.get('/api/get-role')
+//    .then(function(response) {
+//        if (response.data.role == 'jatkala') {
+//            console.log("truemini");
+//            return true
+//        }
+//        else {
+//            return false;
+//        }
+//    })
+//    .catch(function (error) {
+//        console.log(error);
+//        return false;
+//    })
+//}
+//
+export async function getRole() {
     try {
         console.log("called");
         const response = await axios.get('/api/get-role')

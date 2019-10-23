@@ -1,24 +1,49 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { userService } from '../_services/user.service';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import { getRole } from '../_services/user.service';
 
-async function PrivateRoute({ component: Component, ...rest }) {
-    const { authTokens } = await userService.getRole();
-    console.log(authTokens);
+
+class PrivateRoute extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: true,
+      isAuthenticated: false
+    }
+  }
+
+  componentDidMount() {
+    getRole().then((isAuthenticated) => {
+      this.setState({
+        loading: false,
+        isAuthenticated
+      })
+    })
+  }
+
+  render() {
+    const { component: Component, ...rest } = this.props
     return (
-        <Route
-            {...rest}
-            render={props =>
-                authTokens ? (
-                    <Component {...props} />
-                ) : (
-                        <Redirect
-                            to={{ pathname: "/login", state: { referer: props.location } }}
-                        />
-                    )
-            }
-        />
-    );
+      <Route
+        {...rest}
+        render={props =>
+          this.state.isAuthenticated ? (
+            <Component {...props} />
+          ) : (
+              this.state.loading ? (
+                <Paper>
+          <Tabs></Tabs>
+        </Paper>
+              ) : (
+                  <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />
+                )
+            )
+        }
+      />
+    )
+  }
 }
 
 export default PrivateRoute;

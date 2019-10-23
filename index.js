@@ -65,6 +65,11 @@ app.get('/api/get-role', async function (request, response) {
        if (result == true) response.send({role: 'jatkala'});
        response.send({});
     }
+    else {
+      response.send({role: 'no'});
+
+    }
+
   } catch(e) {
     response.status(500);
   }
