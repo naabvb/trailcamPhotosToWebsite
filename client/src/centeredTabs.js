@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
-import { PrivateRoute } from './_components/PrivateRoute';
+import PrivateRoute from './_components/PrivateRoute';
 import { LoginPage } from './login';
 import { userService } from './_services/user.service'
 import AppBar from '@material-ui/core/AppBar';
@@ -61,7 +61,6 @@ export default class CenteredTabs extends Component {
         flexGrow: 1,
       },
     });
-    console.log(user);
     return (
       <BrowserRouter>
         <Paper className={useStyles.root}>

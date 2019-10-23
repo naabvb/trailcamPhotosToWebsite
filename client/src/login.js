@@ -39,9 +39,8 @@ class LoginPage extends React.Component {
         this.setState({ loading: true });
         userService.login(username, password)
             .then(
-                user => {
+                role => {
                     const { from } = this.props.location.state || { from: { pathname: "/" } };
-                    console.log(from);
                     window.location.pathname = from.pathname;
                 },
                 error => this.setState({ error, loading: false })
@@ -50,6 +49,7 @@ class LoginPage extends React.Component {
 
     render() {
         const { username, password, submitted, loading, error } = this.state;
+        console.log(error);
         return (
             <div className="col-md-6 col-md-offset-3">
                 <div className="alert alert-info">
@@ -79,7 +79,7 @@ class LoginPage extends React.Component {
                         }
                     </div>
                     {error &&
-                        <div className={'alert alert-danger'}>{error}</div>
+                        <div className={'alert alert-danger'}>{error.toString()}</div>
                     }
                 </form>
             </div>

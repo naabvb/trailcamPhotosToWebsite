@@ -1,33 +1,59 @@
 
 import { authHeader } from '../_helpers/auth-header';
+import axios from 'axios';
 
 export const userService = {
     login,
     logout,
-    getAll
+    getAll,
+    getRole
 };
 
-function login(username, password) {
+async function getRole() {
+    try {
+        console.log("called");
+        const response = await axios.get('/api/get-role')
+        if (response.data.role == 'jatkala') {
+            console.log("true")
+            return true;
+        }
+        else {
+            return false;
+        }
+    } catch (e) {
+        console.log("getRole vir: " + e);
+        return false;
+    }
+}
+
+
+async function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
     };
-    console.log(username);
-    console.log(password);
-    return fetch(`http://localhost:5000/users/authenticate`, requestOptions)
-        .then(handleResponse)
-        .then(user => {
-            // login successful if there's a user in the response
-            if (user) {
-                // store user details and basic auth credentials in local storage 
-                // to keep user logged in between page refreshes
-                user.authdata = window.btoa(username + ':' + password);
-                localStorage.setItem('user', JSON.stringify(user));
-            }
+    try {
+        const response = await axios.get('/api/authenticate', {auth: {username, password}})
+        handleResponse(response);
+    } catch (e) {
+        console.log("Virhe: " +e);
+        return Promise.reject("Antamasi käyttäjätunnus tai salasana on väärin!")
+    }
 
-            return user;
-        });
+    //return fetch(`http://localhost:5000/users/authenticate`, requestOptions)
+    //    .then(handleResponse)
+    //    .then(user => {
+    //        // login successful if there's a user in the response
+    //        if (user) {
+    //            // store user details and basic auth credentials in local storage 
+    //            // to keep user logged in between page refreshes
+    //            user.authdata = window.btoa(username + ':' + password);
+    //            localStorage.setItem('user', JSON.stringify(user));
+    //        }
+//
+    //        return user;
+    //    });
 }
 
 function logout() {
@@ -45,19 +71,29 @@ function getAll() {
 }
 
 function handleResponse(response) {
-    return response.text().then(text => {
-        const data = text && JSON.parse(text);
-        if (!response.ok) {
-            if (response.status === 401) {
-                // auto logout if 401 response returned from api
-                logout();
-                window.location.reload(true);
-            }
+    console.log(response)
+    if (response.data.role) {
+        return response.data.role;
+    }
 
-            const error = (data && data.message) || response.statusText;
-            return Promise.reject(error);
-        }
+    else {
+        console.log("pieleen")
+        return Promise.reject("Antamasi käyttäjätunnus tai salasana on väärin!")
+    }
 
-        return data;
-    });
+  //  return response.data().then(text => {
+  //      const data = text && JSON.parse(text);
+  //      if (!response.ok) {
+  //          if (response.status === 401) {
+  //              // auto logout if 401 response returned from api
+  //              logout();
+  //              window.location.reload(true);
+  //          }
+//
+  //          const error = (data && data.message) || response.statusText;
+  //          return Promise.reject(error);
+  //      }
+//
+  //      return data;
+  //  });
 }

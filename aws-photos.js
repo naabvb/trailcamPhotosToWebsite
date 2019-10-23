@@ -30,10 +30,10 @@ async function getImages(id) {
         var contents = response.Contents;
         var prefix;
         if (id == 1) {
-            prefix = "https://jatkalanriistakamerat.s3.eu-north-1.amazonaws.com/";
+            prefix = config.bucket1;
         }
         if (id == 2) {
-            prefix = "https://jatkalanriistakamerat2.s3.eu-north-1.amazonaws.com/";
+            prefix = config.bucket2;
 
         }
         var name = "";

@@ -4,9 +4,6 @@ import HttpsRedirect from 'react-https-redirect';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { configureFakeBackend } from './_helpers/fake-backend'
-
-configureFakeBackend();
 
 ReactDOM.render(
 <HttpsRedirect><App /></HttpsRedirect>, document.getElementById('root'));
