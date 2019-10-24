@@ -14,7 +14,7 @@ class LogOut extends Component {
         const backdrop = isMobile ? false : true;
         return (
             <div>
-                <h2>Logged out</h2>
+                <h2 id="log_out">Logged out</h2>
             </div>
         );
     }
