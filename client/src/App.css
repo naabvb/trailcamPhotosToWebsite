@@ -27,8 +27,14 @@ body {
 
 #root {
     position: relative;
-    min-height: 2000px;
+   /* min-height: 2000px; */
     background-color: rgb(250, 250, 250);
+}
+
+#footer_block {
+    display:none;
+    width: 100%;
+    bottom: 0;
 }
 
 h3 {
@@ -93,13 +99,13 @@ section {
     .MuiTab-textColorPrimary {
         color: #787C83 !important;
     }
-    .jss53 {
+    .jss53, .jss40 {
         background-color: #8BA9F9 !important;
     }
     .Mui-selected span {
         color: #8BA9F9 !important;
     }
-    .PrivateTabIndicator-colorPrimary-53 {
+    .PrivateTabIndicator-colorPrimary-53, .PrivateTabIndicator-colorPrimary-40 {
         background-color: #8BA9F9 !important;
     }
     h3 {

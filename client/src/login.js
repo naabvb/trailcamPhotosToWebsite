@@ -20,6 +20,20 @@ class LoginPage extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
+    componentDidMount() {
+        document.getElementById("footer_block").style.display = "block";
+        document.getElementById("footer_block").style.position = "absolute"
+        document.getElementById("root").style.minHeight = 0;
+    }
+
+    componentDidUpdate() {
+        window.onpopstate = (e) => {
+            document.getElementById("footer_block").style.display = "block";
+            document.getElementById("footer_block").style.position = "absolute"
+            document.getElementById("root").style.minHeight = 0;
+        }
+    }
+
     handleChange(e) {
         const { name, value } = e.target;
         this.setState({ [name]: value });

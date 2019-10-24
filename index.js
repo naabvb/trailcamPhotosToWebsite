@@ -75,7 +75,7 @@ app.get('/api/get-role', async function (request, response) {
   }
 })
 
-app.get('/api/clear-role', async function (request, resposne) {
+app.get('/api/clear-role', async function (request, response) {
   response.clearCookie('rkey').end();
 });
 
