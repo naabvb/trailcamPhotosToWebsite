@@ -54,11 +54,12 @@ async function getImages(id) {
         var options = { weekday: 'short', month: 'short', day: 'numeric' };
 
         for (let i = 0; i < contents.length; i++) {
+            options = { weekday: 'short', month: 'short', day: 'numeric' };
             name = contents[i].Key;
             splitString = name.split("_");
             timestamp = splitString[1];
             date = new Date(parseInt(timestamp));
-            if (date.getFullYear != today.getFullYear) {
+            if (date.getFullYear() != today.getFullYear()) {
                 options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
             }
             model = date.toLocaleDateString('fi-FI', options);
