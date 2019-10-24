@@ -70,11 +70,13 @@ export default class CenteredTabs extends Component {
     console.log(role)
     let user = true;
     // console.log(user)
-    if (role === true) {
-      items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
-      items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
-      items.push(<Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />);
-    }
+    //if (role === true) {
+    //  items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
+    //  items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
+    //  items.push(<Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />);
+    //}
+    
+
     if (role === false) {
       items.push(<Redirect to={{ pathname: '/login' }}></Redirect>)
     }
@@ -87,6 +89,19 @@ export default class CenteredTabs extends Component {
       trueValue = tabValue
     }
 
+    if (role === true) {
+      items.push(<Tabs
+        value={trueValue}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="fullWidth"
+      >
+       <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
+      <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />
+      <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
+      </Tabs>)
+    }
+
     const useStyles = makeStyles({
       root: {
         flexGrow: 1,
@@ -95,14 +110,7 @@ export default class CenteredTabs extends Component {
     return (
       <BrowserRouter>
         <Paper className={useStyles.root}>
-          <Tabs
-            value={trueValue}
-            indicatorColor="primary"
-            textColor="primary"
-            variant="fullWidth"
-          >
-            {items}
-          </Tabs>
+          {items}
         </Paper>
 
         <Switch>
