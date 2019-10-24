@@ -3,7 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Button from '@material-ui/core/Button';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
@@ -14,8 +13,6 @@ import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import PrivateRoute from './_components/PrivateRoute';
 import { LoginPage } from './login';
 import LogOut from "./logout";
-import { userService } from './_services/user.service'
-import AppBar from '@material-ui/core/AppBar';
 import { getRole } from './_services/user.service';
 
 export default class CenteredTabs extends Component {
@@ -59,10 +56,6 @@ export default class CenteredTabs extends Component {
     //document.getElementById("root").style.minHeight = 0;
   }
 
-  redirectToTarget = () => {
-    window.location.pathname = '/login';
-  }
-
   render() {
     if (window.location.pathname !== "/login") {
       document.getElementById("footer_block").style.display = "block";
@@ -74,14 +67,6 @@ export default class CenteredTabs extends Component {
     let items = [];
     let role = this.state.role;
     console.log(role)
-    let user = true;
-    // console.log(user)
-    //if (role === true) {
-    //  items.push(<Tab value={'/one'} onClick={(e) => this.toggle("/one")} label="Riistakamera 1" component={Link} to="/one" />);
-    //  items.push(<Tab value={'/two'} onClick={(e) => this.toggle("/two")} label="Riistakamera 2" component={Link} to="/two" />);
-    //  items.push(<Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />);
-    //}
-
 
     if (role === false) {
       items.push(<Redirect to={{ pathname: '/login' }}></Redirect>)
@@ -95,7 +80,7 @@ export default class CenteredTabs extends Component {
       trueValue = tabValue
     }
 
-    if (role === true) {
+    if (role === 'jatkala') {
 
       if (isMobile === false) {
         items.push(<Tabs
@@ -114,6 +99,33 @@ export default class CenteredTabs extends Component {
         items.push(<BottomNavigation value={trueValue} indicatorColor="primary" textColor="primary" showLabels>
           <BottomNavigationAction label="Jätkälä 1" value={'/one'} onClick={(e) => this.toggle("/one")} component={Link} to="/one" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
+          <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
+        </BottomNavigation>);
+        document.getElementById('footer_block').style.marginBottom = "4em";
+      }
+    }
+
+    if (role === 'vastila') {
+
+      if (isMobile === false) {
+        items.push(<Tabs
+          value={trueValue}
+          indicatorColor="primary"
+          textColor="primary"
+          variant="fullWidth"
+        >
+          <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />);
+        <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
+        <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä</>} component={Link} to="/three" />
+          <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
+        </Tabs>)
+      }
+
+      if (isMobile === true) {
+        items.push(<BottomNavigation value={trueValue} indicatorColor="primary" textColor="primary" showLabels>
+          <BottomNavigationAction label="Jätkälä 1" value={'/one'} onClick={(e) => this.toggle("/one")} component={Link} to="/one" icon={<LinkedCamera />} />
+          <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
+          <BottomNavigationAction label="Västilä" value={'/three'} onClick={(e) => this.toggle("/three")} component={Link} to="/three" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
         </BottomNavigation>);
         document.getElementById('footer_block').style.marginBottom = "4em";

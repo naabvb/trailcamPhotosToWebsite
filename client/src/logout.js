@@ -9,9 +9,6 @@ class LogOut extends Component {
     }
 
     render() {
-        const isMobile = window.innerWidth < 1025;
-        const heights = isMobile ? 170 : 280;
-        const backdrop = isMobile ? false : true;
         return (
             <div>
                 <h2 id="log_out">Logged out</h2>

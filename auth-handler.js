@@ -18,10 +18,13 @@ async function getAuthenticate(request, response) {
 }
 
 async function getRole(rkey) {
-    if (rkey == crypto.createHash('sha256').update(config.jatkala).digest('hex') || rkey == crypto.createHash('sha256').update(config.vastila).digest('hex')) {
-        return true;
+    if (rkey == crypto.createHash('sha256').update(config.jatkala).digest('hex')) {
+        return 1;
     }
-    return false;
+    if (rkey == crypto.createHash('sha256').update(config.vastila).digest('hex')) {
+        return 2;
+    }
+    return 0;
 }
 
 

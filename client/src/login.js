@@ -1,42 +1,36 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { userService } from './_services/user.service';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-
+import { getRole } from './_services/user.service';
 
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
-
-        userService.logout();
 
         this.state = {
             username: '',
             password: '',
             submitted: false,
             loading: false,
-            error: ''
+            error: '',
+            role: {}
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         document.getElementById("footer_block").style.display = "block";
         document.getElementById("footer_block").style.position = "absolute"
         document.getElementById("root").style.minHeight = 0;
+        const response = await getRole(true);
+        this.setState({ role: response });
     }
 
     componentDidUpdate() {
@@ -53,12 +47,8 @@ class LoginPage extends React.Component {
     }
 
     handleSubmit(e) {
-        //e.preventDefault();
-        console.log(e);
         this.setState({ submitted: true });
-        const { username, password, returnUrl } = this.state;
-        console.log(username)
-        console.log(password)
+        const { username, password } = this.state;
         // stop here if form is invalid
         if (!(username && password)) {
             console.log("fail")
@@ -77,7 +67,12 @@ class LoginPage extends React.Component {
     }
 
     render() {
-        const { username, password, submitted, loading, error } = this.state;
+        const { username, password, loading, error } = this.state;
+        let role = this.state.role;
+        if (role === true) {
+            window.location.pathname = "/one"
+        }
+
         const useStyles = makeStyles({
             textField: {
                 '&::placeholder': {
@@ -94,7 +89,7 @@ class LoginPage extends React.Component {
                     <Typography component="h1" variant="h5">
                         Kirjaudu sisään
         </Typography>
-                    <form className={useStyles.form} onSubmit={(e) => {e.preventDefault(); this.handleSubmit();}}>
+                    <form className={useStyles.form} onSubmit={(e) => { e.preventDefault(); this.handleSubmit(); }}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -158,10 +153,10 @@ class LoginPage extends React.Component {
                     </form>
                 </div>
                 {error &&
-                        <div class="virhe_login">{error.toString()}</div>
-                    }
+                    <div class="virhe_login">{error.toString()}</div>
+                }
             </Container>
-            
+
         );
     }
 }

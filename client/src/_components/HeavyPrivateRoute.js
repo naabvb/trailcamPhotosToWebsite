@@ -3,7 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import { getRole } from '../_services/user.service';
 
-class PrivateRoute extends Component {
+class HeavyPrivateRoute extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,4 +43,4 @@ class PrivateRoute extends Component {
     }
 }
 
-export default PrivateRoute;
+export default HeavyPrivateRoute;

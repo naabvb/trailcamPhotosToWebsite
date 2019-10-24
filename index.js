@@ -62,8 +62,9 @@ app.get('/api/get-role', async function (request, response) {
   try {
     if (request.signedCookies.rkey) {
        const result = await getRole(request.signedCookies.rkey);
-       if (result == true) response.send({role: 'jatkala'});
-       response.send({});
+       if (result === 1) response.send({role: 'jatkala'});
+       if (result === 2) response.send({role: 'vastila'});
+       response.send({role: 'no'});
     }
     else {
       response.send({role: 'no'});
