@@ -20,21 +20,28 @@ async function getImages(id) {
             }).promise();
         }
 
-        else {
+        if (id == 2) {
             response = await s3.listObjectsV2({
                 Bucket: 'jatkalanriistakamerat2'
             }).promise();
+        }
 
+        if (id == 3) {
+            response = await s3.listObjectsV2({
+                Bucket: 'vastilanriistakamerat'
+            }).promise();
         }
 
         var contents = response.Contents;
         var prefix;
         if (id == 1) {
-            prefix = "https://jatkalanriistakamerat.s3.eu-north-1.amazonaws.com/";
+            prefix = config.bucket1;
         }
         if (id == 2) {
-            prefix = "https://jatkalanriistakamerat2.s3.eu-north-1.amazonaws.com/";
-
+            prefix = config.bucket2;
+        }
+        if (id == 3) {
+            prefix = config.bucket3;
         }
         var name = "";
         var splitString = "";
@@ -47,11 +54,12 @@ async function getImages(id) {
         var options = { weekday: 'short', month: 'short', day: 'numeric' };
 
         for (let i = 0; i < contents.length; i++) {
+            options = { weekday: 'short', month: 'short', day: 'numeric' };
             name = contents[i].Key;
             splitString = name.split("_");
             timestamp = splitString[1];
             date = new Date(parseInt(timestamp));
-            if (date.getFullYear != today.getFullYear) {
+            if (date.getFullYear() != today.getFullYear()) {
                 options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
             }
             model = date.toLocaleDateString('fi-FI', options);
