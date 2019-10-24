@@ -82,7 +82,6 @@ app.get('/api/authenticate', async function (request, response) {
       httpOnly: true,
       signed: true,
     };
-    console.log(result);
     if (result.role == 2) {
       response.cookie('rkey', result.key, options).send({ role: 'vastila' });
     }

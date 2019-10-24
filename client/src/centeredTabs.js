@@ -8,6 +8,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import ImagesG from "./Images";
 import ImagesG2 from "./Images2";
+import ImagesG3 from "./Images3";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import PrivateRoute from './_components/PrivateRoute';
@@ -27,7 +28,6 @@ export default class CenteredTabs extends Component {
 
 
   async componentDidMount() {
-    console.log("mount")
     const response = await getRole();
 
     if (performance.navigation.type === 1) {
@@ -42,8 +42,6 @@ export default class CenteredTabs extends Component {
   }
 
   async componentDidUpdate() {
-    console.log("update")
-    console.log(window)
     const response = await getRole();
     if (response !== this.state.role) {
       this.setState({ role: response })
@@ -52,8 +50,6 @@ export default class CenteredTabs extends Component {
       this.setState({ tabValue: window.location.pathname, role: response })
     }
     window.scrollTo(0, 0);
-    // document.getElementById("footer_block").style.display = "block";
-    //document.getElementById("root").style.minHeight = 0;
   }
 
   render() {
@@ -66,7 +62,6 @@ export default class CenteredTabs extends Component {
     const tabValue = this.state.tabValue
     let items = [];
     let role = this.state.role;
-    console.log(role)
 
     if (role === false) {
       items.push(<Redirect to={{ pathname: '/login' }}></Redirect>)
@@ -116,7 +111,7 @@ export default class CenteredTabs extends Component {
         >
           <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />);
         <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
-        <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä</>} component={Link} to="/three" />
+          <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä</>} component={Link} to="/three" />
           <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
         </Tabs>)
       }
@@ -148,6 +143,7 @@ export default class CenteredTabs extends Component {
           </PrivateRoute>
           <PrivateRoute path="/one" component={ImagesG} />
           <PrivateRoute path="/two" component={ImagesG2} />
+          <PrivateRoute path="/three" component={ImagesG3} />
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>

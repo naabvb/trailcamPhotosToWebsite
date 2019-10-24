@@ -14,7 +14,7 @@ async function getAuthenticate(request, response) {
     var role = 0;
     if (hash == config.jatkala) role = 1;
     if (hash == config.vastila) role = 2;
-    return {"role": role, "key": crypto.createHash('sha256').update(hash).digest('hex')};
+    return { "role": role, "key": crypto.createHash('sha256').update(hash).digest('hex') };
 }
 
 async function getRole(rkey) {

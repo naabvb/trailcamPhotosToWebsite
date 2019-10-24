@@ -51,7 +51,6 @@ class LoginPage extends React.Component {
         const { username, password } = this.state;
         // stop here if form is invalid
         if (!(username && password)) {
-            console.log("fail")
             return;
         }
 
@@ -80,7 +79,6 @@ class LoginPage extends React.Component {
                 }
             },
         });
-        console.log(error);
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline />

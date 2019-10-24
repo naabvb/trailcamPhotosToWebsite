@@ -26,7 +26,7 @@ async function getImages(id) {
             }).promise();
         }
 
-        else {
+        if (id == 3) {
             response = await s3.listObjectsV2({
                 Bucket: 'vastilanriistakamerat'
             }).promise();

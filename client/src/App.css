@@ -19,6 +19,14 @@
 }
 
 .MuiBottomNavigation-root {
+    background-color: #f5f5f5 !important;
+}
+
+.MuiBottomNavigationAction-root {
+    padding: 0 !important;
+}
+
+.MuiBottomNavigation-root {
     width: 100%;
     position: fixed;
     z-index: 300;
