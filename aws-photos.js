@@ -20,11 +20,16 @@ async function getImages(id) {
             }).promise();
         }
 
-        else {
+        if (id == 2) {
             response = await s3.listObjectsV2({
                 Bucket: 'jatkalanriistakamerat2'
             }).promise();
+        }
 
+        else {
+            response = await s3.listObjectsV2({
+                Bucket: 'vastilanriistakamerat'
+            }).promise();
         }
 
         var contents = response.Contents;
@@ -34,7 +39,9 @@ async function getImages(id) {
         }
         if (id == 2) {
             prefix = config.bucket2;
-
+        }
+        if (id == 3) {
+            prefix = config.bucket3;
         }
         var name = "";
         var splitString = "";

@@ -14,10 +14,20 @@ app.use(cookieParser(config.signedKey));
 
 app.get('/api/images/1', async function (request, response) {
   try {
-    const results = await getImages(1)
-    response.json(results);
-  }
-  catch (e) {
+    if (request.signedCookies.rkey) {
+      const result = await getRole(request.signedCookies.rkey);
+      if (result === 1 || result === 2) {
+        const results = await getImages(1)
+        response.json(results);
+      }
+      else {
+        response.status(401).send();
+      }
+    }
+    else {
+      response.status(401).send();
+    }
+  } catch (e) {
     response.status(500);
   }
 
@@ -25,10 +35,41 @@ app.get('/api/images/1', async function (request, response) {
 
 app.get('/api/images/2', async function (request, response) {
   try {
-    const results = await getImages(2)
-    response.json(results);
+    if (request.signedCookies.rkey) {
+      const result = await getRole(request.signedCookies.rkey);
+      if (result === 1 || result === 2) {
+        const results = await getImages(2)
+        response.json(results);
+      }
+      else {
+        response.status(401).send();
+      }
+    }
+    else {
+      response.status(401).send();
+    }
+  } catch (e) {
+    response.status(500);
   }
-  catch (e) {
+
+});
+
+app.get('/api/images/3', async function (request, response) {
+  try {
+    if (request.signedCookies.rkey) {
+      const result = await getRole(request.signedCookies.rkey);
+      if (result === 2) {
+        const results = await getImages(3)
+        response.json(results);
+      }
+      else {
+        response.status(401).send();
+      }
+    }
+    else {
+      response.status(401).send();
+    }
+  } catch (e) {
     response.status(500);
   }
 
@@ -61,17 +102,17 @@ app.get('/api/authenticate', async function (request, response) {
 app.get('/api/get-role', async function (request, response) {
   try {
     if (request.signedCookies.rkey) {
-       const result = await getRole(request.signedCookies.rkey);
-       if (result === 1) response.send({role: 'jatkala'});
-       if (result === 2) response.send({role: 'vastila'});
-       response.send({role: 'no'});
+      const result = await getRole(request.signedCookies.rkey);
+      if (result === 1) response.send({ role: 'jatkala' });
+      if (result === 2) response.send({ role: 'vastila' });
+      response.send({ role: 'no' });
     }
     else {
-      response.send({role: 'no'});
+      response.send({ role: 'no' });
 
     }
 
-  } catch(e) {
+  } catch (e) {
     response.status(500);
   }
 })
