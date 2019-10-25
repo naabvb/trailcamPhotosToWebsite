@@ -17,7 +17,6 @@ export async function getRole(param) {
             return false;
         }
     } catch (e) {
-        console.log("Role could not be retrieved: " + e);
         return false;
     }
 }
@@ -29,7 +28,6 @@ async function login(username, password) {
     } catch (e) {
         return Promise.reject("Antamasi käyttäjätunnus tai salasana on väärin!")
     }
-
 }
 
 function handleResponse(response) {
@@ -39,5 +37,4 @@ function handleResponse(response) {
     else {
         return Promise.reject("Antamasi käyttäjätunnus tai salasana on väärin!")
     }
-
 }
