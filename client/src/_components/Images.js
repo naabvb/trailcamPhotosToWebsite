@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
 import Gallery from 'react-grid-gallery';
-import './App.css';
+import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 
-class ImagesG3 extends Component {
+class Images extends Component {
     state = {
         images: [],
     }
     async componentDidMount() {
-        const response = await axios.get('/api/images/3')
+        const response = await axios.get('/api/images/' + this.props.stage)
         if (response && response.data && response.data.length > 0) {
             this.setState({ images: response.data })
+        }
+    }
+
+    async componentDidUpdate(prevProps) {
+        if (this.props.stage !== prevProps.stage) {
+            if (this.props.history.action === 'PUSH' || this.props.history.action === 'POP') {
+                const response = await axios.get('/api/images/' + this.props.stage)
+                if (response && response.data && response.data.length > 0) {
+                    this.setState({ images: response.data })
+                }
+            }
         }
     }
 
@@ -41,4 +52,4 @@ class ImagesG3 extends Component {
     }
 }
 
-export default ImagesG3;
+export default Images;

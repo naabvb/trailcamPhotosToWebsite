@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import CenteredTabs from './centeredTabs';
+import Main from './main';
 
 class ImagesGallery extends Component {
   state = {
@@ -9,7 +9,7 @@ class ImagesGallery extends Component {
 
   render() {
     return (
-      <CenteredTabs />
+      <Main />
     );
   }
 }

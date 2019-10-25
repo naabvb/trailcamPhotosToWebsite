@@ -4,9 +4,9 @@ const path = require('path');
 const config = require('./config.json');
 const app = express();
 
-const { getAlbum } = require('./google-photos');
-const { getImages } = require('./aws-photos');
-const { getAuthenticate, getRole } = require('./auth-handler');
+const { getAlbum } = require('./_services/google-photos');
+const { getImages } = require('./_services/aws-photos');
+const { getAuthenticate, getRole } = require('./_services/auth-handler');
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));

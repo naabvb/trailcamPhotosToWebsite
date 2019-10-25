@@ -6,17 +6,15 @@ import Tab from '@material-ui/core/Tab';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
-import ImagesG from "./Images";
-import ImagesG2 from "./Images2";
-import ImagesG3 from "./Images3";
+import Images from "./_components/Images";
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import PrivateRoute from './_components/PrivateRoute';
-import { LoginPage } from './login';
-import LogOut from "./logout";
+import { LoginPage } from './_components/login';
+import LogOut from "./_components/logout";
 import { getRole } from './_services/user.service';
 
-export default class CenteredTabs extends Component {
+export default class Main extends Component {
   constructor(props) {
     super(props)
     this.state = { tabValue: "/one", role: {} }
@@ -141,9 +139,9 @@ export default class CenteredTabs extends Component {
         <Switch>
           <PrivateRoute exact path="/"><Redirect to="/one"></Redirect>
           </PrivateRoute>
-          <PrivateRoute path="/one" component={ImagesG} />
-          <PrivateRoute path="/two" component={ImagesG2} />
-          <PrivateRoute path="/three" component={ImagesG3} />
+          <PrivateRoute path="/one" component={Images} stage={"1"} />
+          <PrivateRoute path="/two" component={Images} stage={"2"} />
+          <PrivateRoute path="/three" component={Images} stage={"3"} />
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>

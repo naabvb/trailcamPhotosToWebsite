@@ -1,4 +1,4 @@
-const config = require('./config.json');
+const config = require('../config.json');
 var crypto = require('crypto');
 
 async function getAuthenticate(request, response) {

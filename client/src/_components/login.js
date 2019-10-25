@@ -1,12 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { userService } from './_services/user.service';
+import { userService } from '../_services/user.service';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
-import { getRole } from './_services/user.service';
+import { getRole } from '../_services/user.service';
 
 class LoginPage extends React.Component {
     constructor(props) {
