@@ -24,7 +24,6 @@ export default class Main extends Component {
     this.setState({ tabValue: event })
   }
 
-
   async componentDidMount() {
     const response = await getRole();
 
@@ -36,7 +35,6 @@ export default class Main extends Component {
       this.setState({ tabValue: window.location.pathname, role: response });
     }
     window.scrollTo(0, 0);
-
   }
 
   async componentDidUpdate() {
@@ -47,7 +45,6 @@ export default class Main extends Component {
     window.onpopstate = (e) => {
       this.setState({ tabValue: window.location.pathname, role: response })
     }
-    window.scrollTo(0, 0);
   }
 
   render() {
@@ -82,14 +79,14 @@ export default class Main extends Component {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />);
-        <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
+          <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />
+          <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
           <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
         </Tabs>)
       }
 
       if (isMobile === true) {
-        items.push(<BottomNavigation value={trueValue} indicatorColor="primary" textColor="primary" showLabels>
+        items.push(<BottomNavigation value={trueValue} showLabels>
           <BottomNavigationAction label="Jätkälä 1" value={'/one'} onClick={(e) => this.toggle("/one")} component={Link} to="/one" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
@@ -107,15 +104,15 @@ export default class Main extends Component {
           textColor="primary"
           variant="fullWidth"
         >
-          <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />);
-        <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
+          <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />
+          <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
           <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä</>} component={Link} to="/three" />
           <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
         </Tabs>)
       }
 
       if (isMobile === true) {
-        items.push(<BottomNavigation value={trueValue} indicatorColor="primary" textColor="primary" showLabels>
+        items.push(<BottomNavigation value={trueValue} showLabels>
           <BottomNavigationAction label="Jätkälä 1" value={'/one'} onClick={(e) => this.toggle("/one")} component={Link} to="/one" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Västilä" value={'/three'} onClick={(e) => this.toggle("/three")} component={Link} to="/three" icon={<LinkedCamera />} />
@@ -139,9 +136,9 @@ export default class Main extends Component {
         <Switch>
           <PrivateRoute exact path="/"><Redirect to="/one"></Redirect>
           </PrivateRoute>
-          <PrivateRoute path="/one" component={Images} stage={"1"} />
-          <PrivateRoute path="/two" component={Images} stage={"2"} />
-          <PrivateRoute path="/three" component={Images} stage={"3"} />
+          <PrivateRoute path="/one" component={Images} stage={"1"} status={"loading"} />
+          <PrivateRoute path="/two" component={Images} stage={"2"} status={"loading"} />
+          <PrivateRoute path="/three" component={Images} stage={"3"} status={"loading"} />
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>

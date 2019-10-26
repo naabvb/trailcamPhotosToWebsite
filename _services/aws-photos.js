@@ -71,7 +71,7 @@ async function getImages(id) {
                 model = "Eilen"
             }
 
-            var newObj = { 'src': prefix + name, "thumbnail": prefix + name, "thumbnailWidth": 400, "thumbnailHeight": 300, "timestamp": timestamp, "date": date.toString(), "model": model };
+            var newObj = { 'src': prefix + name, "thumbnail": prefix + name, "thumbnailWidth": 400, "thumbnailHeight": 300, "timestamp": timestamp, "model": model };
             newList.push(newObj);
         }
 
