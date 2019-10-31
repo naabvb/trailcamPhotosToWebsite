@@ -1,6 +1,7 @@
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const path = require('path');
+const sslRedirect = require('heroku-ssl-redirect');
 const config = require('./config.json');
 const app = express();
 
@@ -10,7 +11,9 @@ const { getAuthenticate, getRole } = require('./_services/auth-handler');
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(sslRedirect());
 app.use(cookieParser(config.signedKey));
+app.disable('x-powered-by');  
 
 app.get('/api/images/1', async function (request, response) {
   try {
