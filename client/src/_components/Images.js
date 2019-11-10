@@ -68,7 +68,9 @@ class Images extends PureComponent {
                 items.push(<div id={index}>
                     <div className="clear"></div><h3>{value.key}</h3>
                     <LazyLoadComponent>
-                        <Gallery rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} />
+                        <Gallery lightBoxProps={{
+                            preventScroll: false
+                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} />
                     </LazyLoadComponent>
                 </div>)
             }
