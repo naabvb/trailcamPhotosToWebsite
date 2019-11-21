@@ -1,9 +1,11 @@
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
 const express = require('express');
 const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
 const config = require('./config.json');
 const app = express();
+app.use(compression());
 
 const { getAlbum } = require('./_services/google-photos');
 const { getImages } = require('./_services/aws-photos');
@@ -13,7 +15,7 @@ const { getAuthenticate, getRole } = require('./_services/auth-handler');
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(sslRedirect());
 app.use(cookieParser(config.signedKey));
-app.disable('x-powered-by');  
+app.disable('x-powered-by');
 
 app.get('/api/images/1', async function (request, response) {
   try {

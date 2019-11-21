@@ -39,6 +39,8 @@ class Images extends PureComponent {
         window.requestAnimationFrame(function () {
             if (document.getElementById('image_page_id')) {
                 document.getElementById("image_page_id").style.filter = "blur(0px)"
+                var body = document.getElementsByTagName("body")[0];
+                body.scrollTop = 0;
                 window.scrollTo(0, 0);
             }
         });

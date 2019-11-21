@@ -34,6 +34,8 @@ export default class Main extends Component {
     else {
       this.setState({ tabValue: window.location.pathname, role: response });
     }
+    var body = document.getElementsByTagName("body")[0];
+    body.scrollTop = 0;
     window.scrollTo(0, 0);
   }
 

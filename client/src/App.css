@@ -51,6 +51,20 @@
     color: red;
 }
 
+@supports (-webkit-overflow-scrolling: touch) {
+    html {
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+    body {
+        height: 100%;
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        background-color: rgb(250, 250, 250);
+    }
+}
+
 body {
     background-color: rgb(250, 250, 250);
 }
@@ -120,6 +134,19 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
 }
 
 @media (prefers-color-scheme: dark) {
+    @supports (-webkit-overflow-scrolling: touch) {
+        html {
+            height: 100%;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+        }
+        body {
+            height: 100%;
+            overflow-y: scroll;
+            -webkit-overflow-scrolling: touch;
+            background-color: #212121;
+        }
+    }
     .footer_span {
         color: #666;
     }

@@ -27,7 +27,10 @@ class LoginPage extends React.Component {
 
     async componentDidMount() {
         document.getElementById("footer_block").style.display = "block";
-        document.getElementById("footer_block").style.position = "absolute"
+        document.getElementById("footer_block").style.position = "absolute";
+        document.getElementsByTagName("html")[0].style.height = "auto";
+        document.getElementsByTagName("html")[0].style.overflowY = "visible";
+        document.getElementsByTagName("body")[0].style.overflowY = "visible";
         document.getElementById("root").style.minHeight = 0;
         const response = await getRole(true);
         this.setState({ role: response });
@@ -36,7 +39,10 @@ class LoginPage extends React.Component {
     componentDidUpdate() {
         window.onpopstate = (e) => {
             document.getElementById("footer_block").style.display = "block";
-            document.getElementById("footer_block").style.position = "absolute"
+            document.getElementById("footer_block").style.position = "absolute";
+            document.getElementsByTagName("html")[0].style.height = "auto";
+            document.getElementsByTagName("html")[0].style.overflowY = "visible";
+            document.getElementsByTagName("body")[0].style.overflowY = "visible";
             document.getElementById("root").style.minHeight = 0;
         }
     }
