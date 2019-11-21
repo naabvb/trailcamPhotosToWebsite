@@ -91,7 +91,7 @@ export default class Main extends Component {
           <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
         </BottomNavigation>);
-        document.getElementById('footer_block').style.marginBottom = "4em";
+        document.getElementById('footer_block').style.marginBottom = "4.1em";
       }
     }
 
@@ -118,7 +118,7 @@ export default class Main extends Component {
           <BottomNavigationAction label="Västilä" value={'/three'} onClick={(e) => this.toggle("/three")} component={Link} to="/three" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
         </BottomNavigation>);
-        document.getElementById('footer_block').style.marginBottom = "4em";
+        document.getElementById('footer_block').style.marginBottom = "4.1em";
       }
     }
 
