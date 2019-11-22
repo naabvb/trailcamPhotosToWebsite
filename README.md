@@ -1,6 +1,6 @@
 # TrailcamPhotosToWebsite
 
-Webapp with Node.js backend for fetching trailcam images and react frontend.
+Webapp for watching trailcam images with Node.js backend and react frontend.
 
 ## Prerequisites
 ```
