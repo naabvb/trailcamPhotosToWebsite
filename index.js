@@ -34,6 +34,9 @@ app.get('/api/images/:imagesId', async function (request, response) {
         response.status(401).send();
       }
     }
+    else {
+      response.status(401).send();
+    }
   } catch (e) {
     response.status(500);
   }
