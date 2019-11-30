@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import Gallery from 'react-grid-gallery';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
-import GetAppIcon from '@material-ui/icons/GetApp';
 import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
@@ -53,13 +52,17 @@ class Images extends PureComponent {
     async deleteImage() {
         try {
             // Really needs a better way to get image information
-            var url = document.getElementById('lightboxBackdrop').firstElementChild.firstElementChild.children[1].firstElementChild.src;
+            var lightbox = document.getElementById('lightboxBackdrop');
+            var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
             console.log(url);
-        } catch(e) {
+            window.location.reload();
+
+        } catch (e) {
             console.log("imagefaile");
         }
         console.log("done");
     }
+
 
     render() {
         if (this.state.status === "loading" && this.props.stage !== this.state.prev) {
@@ -79,20 +82,14 @@ class Images extends PureComponent {
         const isMobile = window.innerWidth < 1025;
         const heights = isMobile ? 170 : 280;
         const backdrop = isMobile ? false : true;
-        let controls = [];
+        let controls = null;
 
         if (this.props.role === "vastila") {
             controls = [
                 <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
                     .then(() => this.deleteImage())
                     .catch(() => console.log("noclick"))
-                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>,
-                <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
-            ];
-        }
-        else {
-            controls = [
-                <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
+                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>
             ];
         }
 
