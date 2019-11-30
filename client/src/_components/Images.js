@@ -55,6 +55,11 @@ class Images extends PureComponent {
             var lightbox = document.getElementById('lightboxBackdrop');
             var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
             console.log(url);
+            await axios.get('/api/delete-image', {
+                params: {
+                    img_url: url
+                }
+            })
             window.location.reload();
 
         } catch (e) {
