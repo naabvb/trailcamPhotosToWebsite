@@ -1,8 +1,12 @@
 import React, { PureComponent } from 'react';
 import Gallery from 'react-grid-gallery';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import { withDialog } from 'muibox';
 
 class Images extends PureComponent {
     constructor(props) {
@@ -46,6 +50,10 @@ class Images extends PureComponent {
         });
     }
 
+    deleteImage() {
+        console.log("asd");
+    }
+
     render() {
         if (this.state.status === "loading" && this.props.stage !== this.state.prev) {
             if (document.getElementById('image_page_id')) {
@@ -59,7 +67,7 @@ class Images extends PureComponent {
         if (this.state.status === "loaded") {
             this.doBlur()
         }
-
+        const { dialog } = this.props;
         const { images } = this.state;
         const isMobile = window.innerWidth < 1025;
         const heights = isMobile ? 170 : 280;
@@ -72,7 +80,13 @@ class Images extends PureComponent {
                     <LazyLoadComponent>
                         <Gallery lightBoxProps={{
                             preventScroll: false
-                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} />
+                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} customControls={[
+                            <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
+                                .then(() => this.deleteImage())
+                                .catch(() => console.log("noclick"))
+                            } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>,
+                            <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
+                        ]} />
                     </LazyLoadComponent>
                 </div>)
             }
@@ -87,4 +101,4 @@ class Images extends PureComponent {
     }
 }
 
-export default Images;
+export default withDialog()(Images);
