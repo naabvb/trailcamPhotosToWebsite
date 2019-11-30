@@ -28,7 +28,7 @@ class PrivateRoute extends Component {
                 {...rest}
                 render={props =>
                     this.state.isAuthenticated ? (
-                        <Component {...props} stage={this.props.stage} status={this.props.status}/>
+                        <Component {...props} stage={this.props.stage} status={this.props.status} role={this.props.role}/>
                     ) : (
                             this.state.loading ? (
                                 <Paper>

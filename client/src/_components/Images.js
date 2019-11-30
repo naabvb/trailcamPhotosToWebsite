@@ -50,8 +50,15 @@ class Images extends PureComponent {
         });
     }
 
-    deleteImage() {
-        console.log("asd");
+    async deleteImage() {
+        try {
+            // Really needs a better way to get image information
+            var url = document.getElementById('lightboxBackdrop').firstElementChild.firstElementChild.children[1].firstElementChild.src;
+            console.log(url);
+        } catch(e) {
+            console.log("imagefaile");
+        }
+        console.log("done");
     }
 
     render() {
@@ -72,6 +79,23 @@ class Images extends PureComponent {
         const isMobile = window.innerWidth < 1025;
         const heights = isMobile ? 170 : 280;
         const backdrop = isMobile ? false : true;
+        let controls = [];
+
+        if (this.props.role === "vastila") {
+            controls = [
+                <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
+                    .then(() => this.deleteImage())
+                    .catch(() => console.log("noclick"))
+                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>,
+                <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
+            ];
+        }
+        else {
+            controls = [
+                <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
+            ];
+        }
+
         let items = [];
         if (images) {
             for (const [index, value] of images.entries()) {
@@ -80,13 +104,7 @@ class Images extends PureComponent {
                     <LazyLoadComponent>
                         <Gallery lightBoxProps={{
                             preventScroll: false
-                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} customControls={[
-                            <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
-                                .then(() => this.deleteImage())
-                                .catch(() => console.log("noclick"))
-                            } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>,
-                            <Button id="downloadButton" color="primary" className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
-                        ]} />
+                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} customControls={controls} />
                     </LazyLoadComponent>
                 </div>)
             }

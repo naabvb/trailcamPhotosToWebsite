@@ -138,9 +138,9 @@ export default class Main extends Component {
         <Switch>
           <PrivateRoute exact path="/"><Redirect to="/one"></Redirect>
           </PrivateRoute>
-          <PrivateRoute path="/one" component={Images} stage={"1"} status={"loading"} />
-          <PrivateRoute path="/two" component={Images} stage={"2"} status={"loading"} />
-          <PrivateRoute path="/three" component={Images} stage={"3"} status={"loading"} />
+          <PrivateRoute path="/one" component={Images} stage={"1"} status={"loading"} role={this.state.role} />
+          <PrivateRoute path="/two" component={Images} stage={"2"} status={"loading"} role={this.state.role} />
+          <PrivateRoute path="/three" component={Images} stage={"3"} status={"loading"} role={this.state.role} />
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>
