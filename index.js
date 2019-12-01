@@ -8,7 +8,7 @@ const app = express();
 app.use(compression());
 
 const { getAlbum } = require('./_services/google-photos'); // Currently not in use
-const { getImages } = require('./_services/aws-photos');
+const { getImages, deleteImage } = require('./_services/aws-photos');
 const { getAuthenticate, getRole } = require('./_services/auth-handler');
 
 // Serve static files from the React app
@@ -84,6 +84,31 @@ app.get('/api/get-role', async function (request, response) {
 
 app.get('/api/clear-role', async function (request, response) {
   response.clearCookie('rkey').end();
+});
+
+app.get('/api/delete-image', async function (request, response) {
+  try {
+    if (request.signedCookies.rkey) {
+      const role = await getRole(request.signedCookies.rkey);
+      if (role === 2 && request.query.img_url && request.query.img_url.length > 0) {
+        const result = await deleteImage(request.query.img_url)
+        if (result === true) {
+          response.status(204).send();
+        }
+        else {
+          response.status(200).send();
+        }
+      }
+      else {
+        response.status(403).send();
+      }
+    }
+    else {
+      response.status(401).send();
+    }
+  } catch (e) {
+    response.status(500);
+  }
 });
 
 // The "catchall" handler: for any request that doesn't

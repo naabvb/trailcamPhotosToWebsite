@@ -2,6 +2,10 @@
     text-align: center;
 }
 
+.MuiDialog-root {
+    z-index: 2002 !important;
+}
+
 .App-logo {
     height: 40vmin;
 }
@@ -200,5 +204,11 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     }
     h3 {
         color: rgb(250, 250, 250);
+    }
+    #confirm-dialog-title {
+        color: rgb(250, 250, 250);
+    }
+    #confirm-dialog-message {
+        color: #c3c3b8;
     }
 }

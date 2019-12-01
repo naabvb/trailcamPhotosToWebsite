@@ -110,6 +110,72 @@ function getByDay(listOfObjects) {
     return dates;
 }
 
+async function deleteImage(url) {
+    try {
+        aws.config.setPromisesDependency();
+        aws.config.update({
+            accessKeyId: config.accessKeyId,
+            secretAccessKey: config.secretAccessKey,
+            region: 'eu-north-1'
+        });
+
+        const s3 = new aws.S3();
+        let name = url.split('/').reverse()[0];
+        let mode = 0;
+
+        if (url.startsWith("https://jatkalanriistakamerat2")) {
+            mode = 2
+            await s3.copyObject({
+                Bucket: 'trashjatkalanriistakamerat2',
+                CopySource: '/jatkalanriistakamerat2/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'jatkalanriistakamerat2',
+                Key: name
+            }).promise();
+            return true;
+        }
+
+        if (url.startsWith("https://jatkalanriistakamerat")) {
+            mode = 1
+            await s3.copyObject({
+                Bucket: 'trashjatkalanriistakamerat',
+                CopySource: '/jatkalanriistakamerat/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'jatkalanriistakamerat',
+                Key: name
+            }).promise();
+            return true;
+        }
+
+        if (url.startsWith("https://vastilanriistakamerat")) {
+            mode = 3
+            await s3.copyObject({
+                Bucket: 'trashvastilanriistakamerat',
+                CopySource: '/vastilanriistakamerat/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'vastilanriistakamerat',
+                Key: name
+            }).promise();
+            return true;
+        }
+
+        if (mode === 0) {
+            return false;
+        }
+
+    } catch (e) {
+        console.log('Error: ', e);
+    }
+    return false;
+}
+
 module.exports = {
-    getImages
+    getImages,
+    deleteImage
 }

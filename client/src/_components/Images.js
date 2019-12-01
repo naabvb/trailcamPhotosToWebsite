@@ -1,8 +1,11 @@
 import React, { PureComponent } from 'react';
 import Gallery from 'react-grid-gallery';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
+import { withDialog } from 'muibox';
 
 class Images extends PureComponent {
     constructor(props) {
@@ -46,6 +49,24 @@ class Images extends PureComponent {
         });
     }
 
+    async deleteImage() {
+        try {
+            // Really needs a better way to get image information
+            var lightbox = document.getElementById('lightboxBackdrop');
+            var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
+            await axios.get('/api/delete-image', {
+                params: {
+                    img_url: url
+                }
+            })
+            document.location.reload();
+
+        } catch (e) {
+            console.log("Delete fail");
+        }
+    }
+
+
     render() {
         if (this.state.status === "loading" && this.props.stage !== this.state.prev) {
             if (document.getElementById('image_page_id')) {
@@ -59,11 +80,22 @@ class Images extends PureComponent {
         if (this.state.status === "loaded") {
             this.doBlur()
         }
-
+        const { dialog } = this.props;
         const { images } = this.state;
         const isMobile = window.innerWidth < 1025;
         const heights = isMobile ? 170 : 280;
         const backdrop = isMobile ? false : true;
+        let controls = null;
+
+        if (this.props.role === "vastila") {
+            controls = [
+                <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
+                    .then(() => this.deleteImage())
+                    .catch(() => { })
+                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>
+            ];
+        }
+
         let items = [];
         if (images) {
             for (const [index, value] of images.entries()) {
@@ -72,7 +104,7 @@ class Images extends PureComponent {
                     <LazyLoadComponent>
                         <Gallery lightBoxProps={{
                             preventScroll: false
-                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} />
+                        }} rowHeight={heights} margin={3} backdropClosesModal={backdrop} enableImageSelection={false} images={value.values} customControls={controls} />
                     </LazyLoadComponent>
                 </div>)
             }
@@ -87,4 +119,4 @@ class Images extends PureComponent {
     }
 }
 
-export default Images;
+export default withDialog()(Images);
