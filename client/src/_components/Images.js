@@ -54,18 +54,16 @@ class Images extends PureComponent {
             // Really needs a better way to get image information
             var lightbox = document.getElementById('lightboxBackdrop');
             var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
-            console.log(url);
             await axios.get('/api/delete-image', {
                 params: {
                     img_url: url
                 }
             })
-            window.location.reload();
+            document.location.reload();
 
         } catch (e) {
-            console.log("imagefaile");
+            console.log("Delete fail");
         }
-        console.log("done");
     }
 
 
@@ -93,7 +91,7 @@ class Images extends PureComponent {
             controls = [
                 <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
                     .then(() => this.deleteImage())
-                    .catch(() => console.log("noclick"))
+                    .catch(() => { })
                 } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>
             ];
         }

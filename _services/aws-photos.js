@@ -121,33 +121,47 @@ async function deleteImage(url) {
 
         const s3 = new aws.S3();
         let name = url.split('/').reverse()[0];
-        console.log(name);
         let mode = 0;
-        if (url.startsWith("https://jatkalanriistakamerat")) {
-            mode = 1
-          //  await s3.copyObject({
-          //      Bucket: 'trashjatkalanriistakamerat',
-          //      CopySource: 'jatkalanriistakamerat',
-          //      Key: name
-          //  }).promise();
-            return true;
-        }
+
         if (url.startsWith("https://jatkalanriistakamerat2")) {
             mode = 2
+            await s3.copyObject({
+                Bucket: 'trashjatkalanriistakamerat2',
+                CopySource: '/jatkalanriistakamerat2/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'jatkalanriistakamerat2',
+                Key: name
+            }).promise();
             return true;
         }
-        if (url.startsWith("https://vastilanriistakamerat")) { 
+
+        if (url.startsWith("https://jatkalanriistakamerat")) {
+            mode = 1
+            await s3.copyObject({
+                Bucket: 'trashjatkalanriistakamerat',
+                CopySource: '/jatkalanriistakamerat/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'jatkalanriistakamerat',
+                Key: name
+            }).promise();
+            return true;
+        }
+
+        if (url.startsWith("https://vastilanriistakamerat")) {
             mode = 3
             await s3.copyObject({
                 Bucket: 'trashvastilanriistakamerat',
                 CopySource: '/vastilanriistakamerat/' + name,
                 Key: name
             }).promise();
-
-          //  await s3.deleteObject({
-          //      Bucket: 'vastilanriistakamerat',
-          //      Key: name
-          //  }).promise();
+            await s3.deleteObject({
+                Bucket: 'vastilanriistakamerat',
+                Key: name
+            }).promise();
             return true;
         }
 

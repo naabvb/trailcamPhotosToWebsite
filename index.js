@@ -92,7 +92,6 @@ app.get('/api/delete-image', async function (request, response) {
       const role = await getRole(request.signedCookies.rkey);
       if (role === 2 && request.query.img_url && request.query.img_url.length > 0) {
         const result = await deleteImage(request.query.img_url)
-        console.log(result);
         if (result === true) {
           response.status(204).send();
         }
