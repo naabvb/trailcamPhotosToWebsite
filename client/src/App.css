@@ -33,6 +33,7 @@
 .MuiBottomNavigation-root {
     width: 100%;
     height: 67px !important;
+    padding-bottom: env(safe-area-inset-bottom);
     position: fixed;
     z-index: 300;
     bottom: 0;
@@ -122,6 +123,15 @@ footer {
 
 .image_page {
     padding: 0.8em;
+}
+
+@supports(padding: max(0px)) {
+    .image_page {
+        padding-top: max(0.8em, env(safe-area-inset-top));
+        padding-right: max(0.8em, env(safe-area-inset-right));
+        padding-left: max(0.8em, env(safe-area-inset-left));
+        padding-bottom: max(0.8em, env(safe-area-inset-bottom));
+    }
 }
 
 .clear {
