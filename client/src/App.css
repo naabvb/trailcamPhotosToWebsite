@@ -121,6 +121,11 @@ footer {
     text-decoration: none;
 }
 
+.footer_link2 {
+    color: #666;
+    text-decoration: none;
+}
+
 .image_page {
     padding: 0.8em;
 }
@@ -166,6 +171,9 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
     }
     .footer_link {
         color: rgb(250, 250, 250);
+    }
+    .footer_link2 {
+        color: #666;
     }
     #root {
         background-color: #212121;
