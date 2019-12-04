@@ -31,11 +31,11 @@ app.get('/api/images/:imagesId', async function (request, response) {
         response.json(images)
       }
       else {
-        response.status(401).send();
+        response.sendStatus(401);
       }
     }
     else {
-      response.status(401).send();
+      response.sendStatus(401);
     }
   } catch (e) {
     response.status(500);
@@ -45,9 +45,14 @@ app.get('/api/images/:imagesId', async function (request, response) {
 app.get('/api/authenticate', async function (request, response) {
   try {
     const result = await getAuthenticate(request);
+    let inProd = false;
+    if (process.env.NODE_ENV === 'production') {
+      inProd = true;
+    }
     const options = {
       httpOnly: true,
       signed: true,
+      secure: inProd,
     };
     if (result.role == 2) {
       response.cookie('rkey', result.key, options).send({ role: 'vastila' });
@@ -56,7 +61,7 @@ app.get('/api/authenticate', async function (request, response) {
       response.cookie('rkey', result.key, options).send({ role: 'jatkala' });
     }
     else {
-      response.status(401).send();
+      response.sendStatus(401);
     }
 
   } catch (e) {
@@ -74,7 +79,6 @@ app.get('/api/get-role', async function (request, response) {
     }
     else {
       response.send({ role: 'no' });
-
     }
 
   } catch (e) {
@@ -83,7 +87,7 @@ app.get('/api/get-role', async function (request, response) {
 });
 
 app.get('/api/clear-role', async function (request, response) {
-  response.clearCookie('rkey').end();
+  response.clearCookie('rkey').sendStatus(200);
 });
 
 app.get('/api/delete-image', async function (request, response) {
@@ -93,18 +97,18 @@ app.get('/api/delete-image', async function (request, response) {
       if (role === 2 && request.query.img_url && request.query.img_url.length > 0) {
         const result = await deleteImage(request.query.img_url)
         if (result === true) {
-          response.status(204).send();
+          response.sendStatus(204);
         }
         else {
-          response.status(200).send();
+          response.sendStatus(200);
         }
       }
       else {
-        response.status(403).send();
+        response.sendStatus(403);
       }
     }
     else {
-      response.status(401).send();
+      response.sendStatus(401);
     }
   } catch (e) {
     response.status(500);

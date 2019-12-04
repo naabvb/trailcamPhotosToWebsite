@@ -88,6 +88,7 @@ body {
     display: none;
     width: 100%;
     bottom: 0;
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 h3 {
@@ -95,6 +96,10 @@ h3 {
     padding-left: 0.5em;
     font: 600 .975rem/1.55rem Roboto, Arial, sans-serif;
     font-weight: 650;
+}
+
+h1 {
+    padding-top: env(safe-area-inset-top);
 }
 
 .MuiTab-wrapper {

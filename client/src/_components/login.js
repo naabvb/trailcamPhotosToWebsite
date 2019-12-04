@@ -157,7 +157,7 @@ class LoginPage extends React.Component {
                     </form>
                 </div>
                 {error &&
-                    <div class="virhe_login">{error.toString()}</div>
+                    <div className="virhe_login">{error.toString()}</div>
                 }
             </Container>
 
