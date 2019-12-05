@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import Gallery from 'react-grid-gallery';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
+import GetAppIcon from '@material-ui/icons/GetApp';
 import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
@@ -50,22 +51,59 @@ class Images extends PureComponent {
     }
 
     async deleteImage() {
-        try {
-            // Really needs a better way to get image information
-            var lightbox = document.getElementById('lightboxBackdrop');
-            var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
-            await axios.get('/api/delete-image', {
-                params: {
-                    img_url: url
-                }
-            })
-            document.location.reload();
-
-        } catch (e) {
-            console.log("Delete fail");
+        var url = this.getImageUrl();
+        if (url) {
+            try {
+                await axios.get('/api/delete-image', {
+                    params: {
+                        img_url: url
+                    }
+                })
+                document.location.reload();
+            } catch (e) {
+                console.log("Delete fail");
+            }
         }
     }
 
+    getImageUrl() {
+        try {
+            var lightbox = document.getElementById('lightboxBackdrop');
+            var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
+            return url;
+        } catch (e) {
+            console.log("Couldn't locate lightbox");
+        }
+    }
+
+    forceDownload(blob, filename) {
+        var a = document.createElement('a');
+        a.download = filename;
+        a.href = blob;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+    }
+
+    downloadResource() {
+        var url = this.getImageUrl();
+        if (url) {
+            let filename = url.split('\\').pop().split('/').pop();
+            url = url + "?dl";
+            fetch(url, {
+                headers: new Headers({
+                    'Origin': window.location.origin
+                }),
+                mode: 'cors'
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    let blobUrl = window.URL.createObjectURL(blob);
+                    this.forceDownload(blobUrl, filename);
+                })
+                .catch(e => console.log(e));
+        }
+    }
 
     render() {
         if (this.state.status === "loading" && this.props.stage !== this.state.prev) {
@@ -92,7 +130,14 @@ class Images extends PureComponent {
                 <Button id="deleteButton" color="secondary" onClick={() => dialog.confirm({ title: "Poista kuva", message: "Haluatko poistaa kuvan?", ok: { text: "Ok", color: "primary" }, cancel: { text: "Peruuta", color: "secondary" } })
                     .then(() => this.deleteImage())
                     .catch(() => { })
-                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>
+                } className={"deletebutton"} startIcon={<DeleteIcon />}>Poista kuva</Button>,
+                <Button id="downloadButton" color="primary" onClick={() => this.downloadResource()} className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
+            ];
+        }
+
+        if (this.props.role === "jatkala") {
+            controls = [
+                <Button id="downloadButton" color="primary" onClick={() => this.downloadResource()} className={"downloadbutton"} startIcon={<GetAppIcon />}>Lataa kuva</Button>
             ];
         }
 
