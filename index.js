@@ -1,11 +1,11 @@
 const cookieParser = require('cookie-parser');
-const compression = require('compression');
+const shrinkRay = require('shrink-ray-current');
 const express = require('express');
 const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
 const config = require('./config.json');
 const app = express();
-app.use(compression());
+app.use(shrinkRay());
 
 const { getAlbum } = require('./_services/google-photos'); // Currently not in use
 const { getImages, deleteImage } = require('./_services/aws-photos');
