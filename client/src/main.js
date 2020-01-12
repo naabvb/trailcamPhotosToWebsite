@@ -108,7 +108,8 @@ export default class Main extends Component {
         >
           <Tab value={'/one'} onClick={(e) => this.toggle("/one")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 1</>} component={Link} to="/one" />
           <Tab value={'/two'} onClick={(e) => this.toggle("/two")} label={<><LinkedCamera fontSize="inherit" /> Jätkälä 2</>} component={Link} to="/two" />
-          <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä</>} component={Link} to="/three" />
+          <Tab value={'/three'} onClick={(e) => this.toggle("/three")} label={<><LinkedCamera fontSize="inherit" /> Västilä 1</>} component={Link} to="/three" />
+          <Tab value={'/four'} onClick={(e) => this.toggle("/four")} label={<><LinkedCamera fontSize="inherit" /> Västilä 2</>} component={Link} to="/four" />
           <Tab value={'/logout'} onClick={(e) => this.toggle("/logout")} label={<><AccountCircle fontSize="inherit" /> Kirjaudu ulos</>} component={Link} to="/logout" />
         </Tabs>)
       }
@@ -117,7 +118,8 @@ export default class Main extends Component {
         items.push(<BottomNavigation value={trueValue} showLabels>
           <BottomNavigationAction label="Jätkälä 1" value={'/one'} onClick={(e) => this.toggle("/one")} component={Link} to="/one" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Jätkälä 2" value={'/two'} onClick={(e) => this.toggle("/two")} component={Link} to="/two" icon={<LinkedCamera />} />
-          <BottomNavigationAction label="Västilä" value={'/three'} onClick={(e) => this.toggle("/three")} component={Link} to="/three" icon={<LinkedCamera />} />
+          <BottomNavigationAction label="Västilä 1" value={'/three'} onClick={(e) => this.toggle("/three")} component={Link} to="/three" icon={<LinkedCamera />} />
+          <BottomNavigationAction label="Västilä 2" value={'/four'} onClick={(e) => this.toggle("/four")} component={Link} to="/four" icon={<LinkedCamera />} />
           <BottomNavigationAction label="Kirjaudu ulos" value={'/logout'} onClick={(e) => this.toggle("/logout")} component={Link} to="/logout" icon={<AccountCircle />} />
         </BottomNavigation>);
         document.getElementById('footer_block').style.marginBottom = "4.1em";
@@ -141,6 +143,7 @@ export default class Main extends Component {
           <PrivateRoute path="/one" component={Images} stage={"1"} status={"loading"} role={this.state.role} />
           <PrivateRoute path="/two" component={Images} stage={"2"} status={"loading"} role={this.state.role} />
           <PrivateRoute path="/three" component={Images} stage={"3"} status={"loading"} role={this.state.role} />
+          <PrivateRoute path="/four" component={Images} stage={"4"} status={"loading"} role={this.state.role} />
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>

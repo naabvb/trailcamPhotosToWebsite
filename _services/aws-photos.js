@@ -32,6 +32,12 @@ async function getImages(id) {
             }).promise();
         }
 
+        if (id == 4) {
+            response = await s3.listObjectsV2({
+                Bucket: 'vastilanriistakamerat2'
+            }).promise();
+        }
+
         var contents = response.Contents;
         var prefix;
         if (id == 1) {
@@ -43,6 +49,11 @@ async function getImages(id) {
         if (id == 3) {
             prefix = config.bucket3;
         }
+
+        if (id == 4) {
+            prefix = config.bucket4;
+        }
+
         var name = "";
         var splitString = "";
         var timestamp;
@@ -146,6 +157,20 @@ async function deleteImage(url) {
             }).promise();
             await s3.deleteObject({
                 Bucket: 'jatkalanriistakamerat',
+                Key: name
+            }).promise();
+            return true;
+        }
+
+        if (url.startsWith("https://vastilanriistakamerat2")) {
+            mode = 4
+            await s3.copyObject({
+                Bucket: 'trashvastilanriistakamerat2',
+                CopySource: '/vastilanriistakamerat2/' + name,
+                Key: name
+            }).promise();
+            await s3.deleteObject({
+                Bucket: 'vastilanriistakamerat2',
                 Key: name
             }).promise();
             return true;

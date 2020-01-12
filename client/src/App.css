@@ -32,6 +32,11 @@
 
 .MuiBottomNavigationAction-root {
     padding: 0 !important;
+    min-width: 0 !important;
+}
+
+.MuiBottomNavigationAction-label {
+    text-align: center;
 }
 
 .MuiBottomNavigation-root {

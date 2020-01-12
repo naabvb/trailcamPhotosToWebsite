@@ -26,7 +26,7 @@ app.get('/api/images/:imagesId', async function (request, response) {
         const images = await getImages(parameter);
         response.json(images);
       }
-      if (role === 2 && parameter === 3) {
+      if (role === 2 && (parameter === 3 || parameter === 4)) {
         const images = await getImages(parameter);
         response.json(images)
       }
