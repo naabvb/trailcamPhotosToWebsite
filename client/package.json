@@ -4,18 +4,18 @@
   "private": true,
   "proxy": "http://localhost:5000",
   "dependencies": {
-    "@material-ui/core": "^4.9.7",
+    "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/styles": "^4.9.6",
+    "@material-ui/styles": "^4.10.0",
     "add": "^2.0.6",
     "material-ui": "^1.0.0-beta.47",
-    "muibox": "^1.2.0",
+    "muibox": "^1.4.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-grid-gallery": "^0.5.5",
     "react-https-redirect": "^1.1.0",
-    "react-lazy-load-image-component": "^1.4.1",
-    "react-router-dom": "^5.1.2",
+    "react-lazy-load-image-component": "^1.5.0",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.1"
   },
   "scripts": {
