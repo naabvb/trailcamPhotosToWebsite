@@ -190,10 +190,10 @@ input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:foc
         color: #666;
     }
     #root {
-        background-color: #212121;
+        background-color: #212121 !important;
     }
     body {
-        background-color: #212121;
+        background-color: #212121 !important;
     }
     .MuiOutlinedInput-root.Mui-focused, .MuiOutlinedInput-notchedOutline {
         border-color: #3f51b5 !important;
