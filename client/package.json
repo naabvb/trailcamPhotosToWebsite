@@ -10,13 +10,13 @@
     "add": "^2.0.6",
     "material-ui": "^1.0.0-beta.47",
     "muibox": "^1.4.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
     "react-grid-gallery": "^0.5.5",
     "react-https-redirect": "^1.1.0",
     "react-lazy-load-image-component": "^1.5.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.4.3"
+    "react-scripts": "^3.4.4"
   },
   "scripts": {
     "start": "react-scripts start",
