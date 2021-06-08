@@ -1,5 +1,4 @@
 const aws = require('aws-sdk');
-const config = require('../config.json');
 const icu = require('full-icu');
 
 async function getImages(id) {
@@ -8,8 +7,8 @@ async function getImages(id) {
 
         aws.config.setPromisesDependency();
         aws.config.update({
-            accessKeyId: config.accessKeyId,
-            secretAccessKey: config.secretAccessKey,
+            accessKeyId: process.env.accessKeyId,
+            secretAccessKey: process.env.secretAccessKey,
             region: 'eu-north-1'
         });
         var response;
@@ -41,17 +40,17 @@ async function getImages(id) {
         var contents = response.Contents;
         var prefix;
         if (id == 1) {
-            prefix = config.bucket1;
+            prefix = process.env.bucket1;
         }
         if (id == 2) {
-            prefix = config.bucket2;
+            prefix = process.env.bucket2;
         }
         if (id == 3) {
-            prefix = config.bucket3;
+            prefix = process.env.bucket3;
         }
 
         if (id == 4) {
-            prefix = config.bucket4;
+            prefix = process.env.bucket4;
         }
 
         var name = "";
@@ -125,8 +124,8 @@ async function deleteImage(url) {
     try {
         aws.config.setPromisesDependency();
         aws.config.update({
-            accessKeyId: config.accessKeyId,
-            secretAccessKey: config.secretAccessKey,
+            accessKeyId: process.env.accessKeyId,
+            secretAccessKey: process.env.secretAccessKey,
             region: 'eu-north-1'
         });
 

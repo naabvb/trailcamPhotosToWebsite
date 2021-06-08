@@ -3,7 +3,6 @@ const shrinkRay = require('shrink-ray-current');
 const express = require('express');
 const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
-const config = require('./config.json');
 const app = express();
 app.use(shrinkRay());
 
@@ -14,7 +13,7 @@ const { getAuthenticate, getRole } = require('./_services/auth-handler');
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(sslRedirect());
-app.use(cookieParser(config.signedKey));
+app.use(cookieParser(process.env.signedKey));
 app.disable('x-powered-by');
 
 app.get('/api/images/:imagesId', async function (request, response) {
