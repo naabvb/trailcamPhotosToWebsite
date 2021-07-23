@@ -13,31 +13,32 @@ async function getImages(id) {
         });
         var response;
         const s3 = new aws.S3();
+        const listAllKeys = (params, out = []) => new Promise((resolve, reject) => {
+            s3.listObjectsV2(params).promise()
+              .then(({Contents, IsTruncated, NextContinuationToken}) => {
+                out.push(...Contents);
+                !IsTruncated ? resolve(out) : resolve(listAllKeys(Object.assign(params, {ContinuationToken: NextContinuationToken}), out));
+              })
+              .catch(reject);
+          });
+
         if (id == 1) {
-            response = await s3.listObjectsV2({
-                Bucket: 'jatkalanriistakamerat'
-            }).promise();
+            response = await listAllKeys({Bucket: 'jatkalanriistakamerat'})
         }
 
         if (id == 2) {
-            response = await s3.listObjectsV2({
-                Bucket: 'jatkalanriistakamerat2'
-            }).promise();
+            response = await listAllKeys({Bucket: 'jatkalanriistakamerat2'})
         }
 
         if (id == 3) {
-            response = await s3.listObjectsV2({
-                Bucket: 'vastilanriistakamerat'
-            }).promise();
+            response = await listAllKeys({Bucket: 'vastilanriistakamerat'})
         }
 
         if (id == 4) {
-            response = await s3.listObjectsV2({
-                Bucket: 'vastilanriistakamerat2'
-            }).promise();
+            response = await listAllKeys({Bucket: 'vastilanriistakamerat2'})
         }
 
-        var contents = response.Contents;
+        var contents = response;
         var prefix;
         if (id == 1) {
             prefix = process.env.bucket1;
