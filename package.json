@@ -5,7 +5,15 @@
   "main": "index.js",
   "scripts": {
     "start": "node --icu-data-dir=node_modules/full-icu index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "docker:build:backend": "docker build . -f dockerfile.backend -t trailcam_backend",
+    "docker:build:frontend": "docker build . -f dockerfile.frontend -t trailcam_frontend",
+    "docker:build": "npm run docker:build:backend && npm run docker:build:frontend",
+    "docker:run:backend": "docker run --rm -d --env-file .env --name trailcam_backend --net=trailnet -p 5000:5000/tcp trailcam_backend:latest",
+    "docker:run:frontend": "docker run --rm -d --net=trailnet --name trailcam_frontend -p 3000:80/tcp trailcam_frontend:latest",
+    "docker:run": "npm run docker:network:create; npm run docker:run:backend && npm run docker:run:frontend",
+    "docker:network:create": "docker network create trailnet",
+    "docker:network:remove": "docker network rm trailnet"
   },
   "repository": {
     "type": "git",
