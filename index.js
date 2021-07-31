@@ -1,5 +1,7 @@
 const cookieParser = require("cookie-parser");
-require("dotenv").config({ path: process.env.ENV_FILE_PATH });
+if (process.env.NODE_ENV != 'production') {
+  require("dotenv").config({ path: process.env.ENV_FILE_PATH });
+}
 const shrinkRay = require("shrink-ray-current");
 const express = require("express");
 const path = require("path");
