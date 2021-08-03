@@ -5,12 +5,10 @@ import Main from './main';
 class ImagesGallery extends Component {
   state = {
     images: [],
-  }
+  };
 
   render() {
-    return (
-      <Main />
-    );
+    return <Main />;
   }
 }
 

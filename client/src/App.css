@@ -1,249 +1,263 @@
 .App {
-    text-align: center;
+  text-align: center;
 }
 
 .MuiDialog-root {
-    z-index: 2002 !important;
+  z-index: 2002 !important;
 }
 
 .App-logo {
-    height: 40vmin;
+  height: 40vmin;
 }
 
 .MuiTypography-h5 {
-    margin-top: 1.5em !important;
+  margin-top: 1.5em !important;
 }
 
 .MuiFormLabel-root.Mui-focused {
-    color: #8BA9F9 !important;
+  color: #8ba9f9 !important;
 }
 
 #log_out {
-    color: #8BA9F9;
+  color: #8ba9f9;
 }
 
 #downloadButton {
-    color: rgb(250, 250, 250);
+  color: rgb(250, 250, 250);
 }
 
 .MuiBottomNavigation-root {
-    background-color: #f2f2f2 !important;
+  background-color: #f2f2f2 !important;
 }
 
 .MuiBottomNavigationAction-root {
-    padding: 0 !important;
-    min-width: 0 !important;
+  padding: 0 !important;
+  min-width: 0 !important;
 }
 
 .MuiBottomNavigationAction-label {
-    text-align: center;
+  text-align: center;
 }
 
 .MuiBottomNavigation-root {
-    width: 100%;
-    height: 67px !important;
-    padding-bottom: env(safe-area-inset-bottom);
-    position: fixed;
-    z-index: 300;
-    bottom: 0;
-    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  width: 100%;
+  height: 67px !important;
+  padding-bottom: env(safe-area-inset-bottom);
+  position: fixed;
+  z-index: 300;
+  bottom: 0;
+  box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+    0px 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
 .App-header {
-    background-color: #282c34;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .virhe_login {
-    margin: 1em;
-    color: red;
+  margin: 1em;
+  color: red;
 }
 
 @supports (-webkit-overflow-scrolling: touch) {
-    html {
-        height: 100%;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-    }
-    body {
-        height: 100%;
-        overflow-y: scroll;
-        -webkit-overflow-scrolling: touch;
-        background-color: rgb(250, 250, 250);
-    }
+  html {
+    height: 100%;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  body {
+    height: 100%;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    background-color: rgb(250, 250, 250);
+  }
 }
 
 body {
-    background-color: rgb(250, 250, 250);
+  background-color: rgb(250, 250, 250);
 }
 
 .App-link {
-    color: #09d3ac;
+  color: #09d3ac;
 }
 
 #root {
-    position: relative;
-    /* min-height: 2000px; */
-    background-color: rgb(250, 250, 250);
+  position: relative;
+  /* min-height: 2000px; */
+  background-color: rgb(250, 250, 250);
 }
 
 #footer_block {
-    display: none;
-    width: 100%;
-    bottom: 0;
-    padding-bottom: env(safe-area-inset-bottom);
+  display: none;
+  width: 100%;
+  bottom: 0;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 h3 {
-    color: #3c4043;
-    padding-left: 0.5em;
-    font: 600 .975rem/1.55rem Roboto, Arial, sans-serif;
-    font-weight: 650;
+  color: #3c4043;
+  padding-left: 0.5em;
+  font: 600 0.975rem/1.55rem Roboto, Arial, sans-serif;
+  font-weight: 650;
 }
 
 h1 {
-    padding-top: env(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
 }
 
 .MuiTab-wrapper {
-    font-weight: 700;
+  font-weight: 700;
 }
 
 .MuiPaper-root {
-    background-color: #f5f5f5 !important;
+  background-color: #f5f5f5 !important;
 }
 
 footer {
-    text-align: center;
+  text-align: center;
 }
 
 .footer_span {
-    color: #666;
-    font-size: 12px;
-    display: inline;
-    bottom: 0;
+  color: #666;
+  font-size: 12px;
+  display: inline;
+  bottom: 0;
 }
 
 .footer_link {
-    color: #000000;
-    text-decoration: none;
+  color: #000000;
+  text-decoration: none;
 }
 
 .footer_link2 {
-    color: #666;
-    text-decoration: none;
+  color: #666;
+  text-decoration: none;
 }
 
 .image_page {
-    padding: 0.8em;
+  padding: 0.8em;
 }
 
-@supports(padding: max(0px)) {
-    .image_page {
-        padding-top: max(0.8em, env(safe-area-inset-top));
-        padding-right: max(0.8em, env(safe-area-inset-right));
-        padding-left: max(0.8em, env(safe-area-inset-left));
-        padding-bottom: max(0.8em, env(safe-area-inset-bottom));
-    }
+@supports (padding: max(0px)) {
+  .image_page {
+    padding-top: max(0.8em, env(safe-area-inset-top));
+    padding-right: max(0.8em, env(safe-area-inset-right));
+    padding-left: max(0.8em, env(safe-area-inset-left));
+    padding-bottom: max(0.8em, env(safe-area-inset-bottom));
+  }
 }
 
 .clear {
-    clear: both;
+  clear: both;
 }
 
 section {
-    width: 100%;
+  width: 100%;
 }
 
-input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
-    transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
-    transition-delay: background-color 5000s, color 5000s;
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s, color 5000s ease-in-out 0s;
+  transition-delay: background-color 5000s, color 5000s;
 }
 
 @media (prefers-color-scheme: dark) {
-    @supports (-webkit-overflow-scrolling: touch) {
-        html {
-            height: 100%;
-            overflow-y: scroll;
-            -webkit-overflow-scrolling: touch;
-        }
-        body {
-            height: 100%;
-            overflow-y: scroll;
-            -webkit-overflow-scrolling: touch;
-            background-color: #212121;
-        }
-    }
-    .footer_span {
-        color: #666;
-    }
-    .footer_link {
-        color: rgb(250, 250, 250);
-    }
-    .footer_link2 {
-        color: #666;
-    }
-    #root {
-        background-color: #212121 !important;
+  @supports (-webkit-overflow-scrolling: touch) {
+    html {
+      height: 100%;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
     }
     body {
-        background-color: #212121 !important;
+      height: 100%;
+      overflow-y: scroll;
+      -webkit-overflow-scrolling: touch;
+      background-color: #212121;
     }
-    .MuiOutlinedInput-root.Mui-focused, .MuiOutlinedInput-notchedOutline {
-        border-color: #3f51b5 !important;
-    }
-    html {
-        background-color: #212121;
-    }
-    .MuiTypography-h5 {
-        color: #8BA9F9;
-    }
-    .MuiFormLabel-root.Mui-focused {
-        color: #8BA9F9 !important;
-    }
-    .MuiInputBase-root, .MuiOutlinedInput-root, .MuiInputBase-fullWidth, .MuiInputBase-formControl {
-        color: darkgray !important;
-    }
-    .MuiPaper-root {
-        background-color: #333333 !important;
-    }
-    .MuiTab-textColorPrimary {
-        color: #787C83 !important;
-    }
-    .MuiTabs-indicator {
-        background-color: #8BA9F9 !important;
-    }
-    .jss53, .jss40, .jss62, .jss4 {
-        background-color: #8BA9F9 !important;
-    }
-    .Mui-selected span {
-        color: #8BA9F9 !important;
-    }
-    .PrivateTabIndicator-colorPrimary-53, .PrivateTabIndicator-colorPrimary-40, .PrivateTabIndicator-colorPrimary- {
-        background-color: #8BA9F9 !important;
-    }
-    span[class^='PrivateTabIndicator-colorPrimary'], span[class*=' PrivateTabIndicator-colorPrimary'] {
-        background-color: #8BA9F9 !important;
-    }
-    .MuiBottomNavigation-root {
-        background-color: #333333 !important;
-    }
-    .MuiBottomNavigationAction-root {
-        color: #787C83 !important;
-    }
-    h3 {
-        color: rgb(250, 250, 250);
-    }
-    #confirm-dialog-title {
-        color: rgb(250, 250, 250);
-    }
-    #confirm-dialog-message {
-        color: #c3c3b8;
-    }
+  }
+  .footer_span {
+    color: #666;
+  }
+  .footer_link {
+    color: rgb(250, 250, 250);
+  }
+  .footer_link2 {
+    color: #666;
+  }
+  #root {
+    background-color: #212121 !important;
+  }
+  body {
+    background-color: #212121 !important;
+  }
+  .MuiOutlinedInput-root.Mui-focused,
+  .MuiOutlinedInput-notchedOutline {
+    border-color: #3f51b5 !important;
+  }
+  html {
+    background-color: #212121;
+  }
+  .MuiTypography-h5 {
+    color: #8ba9f9;
+  }
+  .MuiFormLabel-root.Mui-focused {
+    color: #8ba9f9 !important;
+  }
+  .MuiInputBase-root,
+  .MuiOutlinedInput-root,
+  .MuiInputBase-fullWidth,
+  .MuiInputBase-formControl {
+    color: darkgray !important;
+  }
+  .MuiPaper-root {
+    background-color: #333333 !important;
+  }
+  .MuiTab-textColorPrimary {
+    color: #787c83 !important;
+  }
+  .MuiTabs-indicator {
+    background-color: #8ba9f9 !important;
+  }
+  .jss53,
+  .jss40,
+  .jss62,
+  .jss4 {
+    background-color: #8ba9f9 !important;
+  }
+  .Mui-selected span {
+    color: #8ba9f9 !important;
+  }
+  .PrivateTabIndicator-colorPrimary-53,
+  .PrivateTabIndicator-colorPrimary-40,
+  .PrivateTabIndicator-colorPrimary- {
+    background-color: #8ba9f9 !important;
+  }
+  span[class^='PrivateTabIndicator-colorPrimary'],
+  span[class*=' PrivateTabIndicator-colorPrimary'] {
+    background-color: #8ba9f9 !important;
+  }
+  .MuiBottomNavigation-root {
+    background-color: #333333 !important;
+  }
+  .MuiBottomNavigationAction-root {
+    color: #787c83 !important;
+  }
+  h3 {
+    color: rgb(250, 250, 250);
+  }
+  #confirm-dialog-title {
+    color: rgb(250, 250, 250);
+  }
+  #confirm-dialog-message {
+    color: #c3c3b8;
+  }
 }
