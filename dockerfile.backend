@@ -7,6 +7,6 @@ COPY package*.json ./
 RUN apk add --no-cache --virtual .gyp python make g++ \
     && npm install --only=production && apk del .gyp
 
-COPY _services _services
+COPY services services
 COPY index.js ./
 CMD ["node", "--icu-data-dir=node_modules/full-icu", "index.js"]
