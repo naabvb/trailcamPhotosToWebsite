@@ -6,7 +6,7 @@ import * as serviceWorker from '../serviceWorker';
 class LogOut extends Component {
   async componentDidMount() {
     await axios.get('/api/clear-role');
-    var useragent = window.navigator.userAgent;
+    const useragent = window.navigator.userAgent;
     if (useragent.indexOf('Edge') === -1) {
       // If not MS Edge
       window.location.reload(true);

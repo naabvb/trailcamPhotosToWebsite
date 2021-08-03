@@ -43,7 +43,7 @@ class Images extends PureComponent {
     window.requestAnimationFrame(function () {
       if (document.getElementById('image_page_id')) {
         document.getElementById('image_page_id').style.filter = 'blur(0px)';
-        var body = document.getElementsByTagName('body')[0];
+        let body = document.getElementsByTagName('body')[0];
         body.scrollTop = 0;
         window.scrollTo(0, 0);
       }
@@ -51,7 +51,7 @@ class Images extends PureComponent {
   }
 
   async deleteImage() {
-    var url = this.getImageUrl();
+    const url = this.getImageUrl();
     if (url) {
       try {
         await axios.get('/api/delete-image', {
@@ -68,8 +68,8 @@ class Images extends PureComponent {
 
   getImageUrl() {
     try {
-      var lightbox = document.getElementById('lightboxBackdrop');
-      var url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
+      const lightbox = document.getElementById('lightboxBackdrop');
+      const url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
       return url;
     } catch (e) {
       console.log("Couldn't locate lightbox");
@@ -77,7 +77,7 @@ class Images extends PureComponent {
   }
 
   forceDownload(blob, filename) {
-    var a = document.createElement('a');
+    let a = document.createElement('a');
     a.download = filename;
     a.href = blob;
     document.body.appendChild(a);
@@ -86,7 +86,7 @@ class Images extends PureComponent {
   }
 
   downloadResource() {
-    var url = this.getImageUrl();
+    let url = this.getImageUrl();
     if (url) {
       let filename = url.split('\\').pop().split('/').pop();
       url = url + '?dl';
@@ -108,8 +108,8 @@ class Images extends PureComponent {
   render() {
     if (this.state.status === 'loading' && this.props.stage !== this.state.prev) {
       if (document.getElementById('image_page_id')) {
-        var useragent = window.navigator.userAgent;
-        if (useragent.indexOf('Edge') === -1) {
+        const userAgent = window.navigator.userAgent;
+        if (userAgent.indexOf('Edge') === -1) {
           // If not MS Edge
           document.getElementById('image_page_id').style.transition = 'filter .5s ease';
         }

@@ -32,7 +32,7 @@ export default class Main extends Component {
     } else {
       this.setState({ tabValue: window.location.pathname, role: response });
     }
-    var body = document.getElementsByTagName('body')[0];
+    let body = document.getElementsByTagName('body')[0];
     body.scrollTop = 0;
     window.scrollTo(0, 0);
   }
@@ -56,9 +56,9 @@ export default class Main extends Component {
     const isMobile = window.innerWidth < 1025;
     const tabValue = this.state.tabValue;
     let items = [];
-    let role = this.state.role;
+    const role = this.state.role;
 
-    if (role === false) {
+    if (!role) {
       items.push(<Redirect to={{ pathname: '/login' }}></Redirect>);
     }
 
@@ -70,7 +70,7 @@ export default class Main extends Component {
     }
 
     if (role === 'jatkala') {
-      if (isMobile === false) {
+      if (!isMobile) {
         items.push(
           <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
             <Tab
@@ -110,7 +110,7 @@ export default class Main extends Component {
         );
       }
 
-      if (isMobile === true) {
+      if (isMobile) {
         items.push(
           <BottomNavigation value={trueValue} showLabels>
             <BottomNavigationAction
@@ -144,7 +144,7 @@ export default class Main extends Component {
     }
 
     if (role === 'vastila') {
-      if (isMobile === false) {
+      if (!isMobile) {
         items.push(
           <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
             <Tab
@@ -206,7 +206,7 @@ export default class Main extends Component {
         );
       }
 
-      if (isMobile === true) {
+      if (isMobile) {
         items.push(
           <BottomNavigation value={trueValue} showLabels>
             <BottomNavigationAction

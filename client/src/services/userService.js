@@ -9,10 +9,9 @@ export async function getRole(param) {
   try {
     const response = await axios.get('/api/get-role');
     if (response.data.role === 'jatkala' || response.data.role === 'vastila') {
-      if (param === true) return true;
+      if (param) return true;
       return response.data.role;
     } else {
-      if (param === true) return false;
       return false;
     }
   } catch (e) {

@@ -1,7 +1,7 @@
 const crypto = require('crypto');
 
 async function getAuthentication(request, response) {
-  var authHeader = request.headers.authorization;
+  const authHeader = request.headers.authorization;
   if (!authHeader) return response.status(401);
 
   const encodedCreds = authHeader.split(' ')[1];
