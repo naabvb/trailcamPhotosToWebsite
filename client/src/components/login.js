@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { getRole } from '../services/userService';
+import { routeService } from '../services/routeService';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -74,7 +75,7 @@ class LoginPage extends React.Component {
     const { username, password, loading, error } = this.state;
     let role = this.state.role;
     if (role === true) {
-      window.location.pathname = '/one';
+      window.location.pathname = routeService.getJatkalaRoutes()[0].route;
     }
 
     const useStyles = makeStyles({

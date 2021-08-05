@@ -22,6 +22,14 @@
   color: #8ba9f9;
 }
 
+.selectedIcon {
+  color: #3f51b5;
+}
+
+.selectedDrawerText {
+  color: #3f51b5;
+}
+
 #downloadButton {
   color: rgb(250, 250, 250);
 }
@@ -236,6 +244,19 @@ input:-webkit-autofill:active {
   .Mui-selected span {
     color: #8ba9f9 !important;
   }
+
+  .selectedIcon {
+    color: #8ba9f9;
+  }
+
+  .drawerIcon {
+    color: #787c83;
+  }
+
+  .drawerText {
+    color: #787c83;
+  }
+
   .PrivateTabIndicator-colorPrimary-53,
   .PrivateTabIndicator-colorPrimary-40,
   .PrivateTabIndicator-colorPrimary- {

@@ -9,19 +9,27 @@ import { Link, Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
 import Images from './components/images';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
+import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import PrivateRoute from './components/privateRoute';
 import { LoginPage } from './components/login';
 import LogOut from './components/logout';
 import { getRole } from './services/userService';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import { routeService } from './services/routeService';
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { tabValue: '/one', role: {} };
+    this.state = { tabValue: routeService.getJatkalaRoutes()[0].route, role: {}, drawerOpen: false };
   }
 
   toggle(event) {
-    this.setState({ tabValue: event });
+    this.setState({ tabValue: event, drawerOpen: false });
   }
 
   async componentDidMount() {
@@ -47,6 +55,14 @@ export default class Main extends Component {
     };
   }
 
+  openDrawer() {
+    this.setState({ drawerOpen: true });
+  }
+
+  closeDrawer() {
+    this.setState({ drawerOpen: false });
+  }
+
   render() {
     if (window.location.pathname !== '/login') {
       document.getElementById('footer_block').style.display = 'block';
@@ -59,12 +75,12 @@ export default class Main extends Component {
     const role = this.state.role;
 
     if (!role) {
-      items.push(<Redirect to={{ pathname: '/login' }}></Redirect>);
+      items.push(<Redirect to={{ pathname: '/login' }} key="redirect"></Redirect>);
     }
 
     let trueValue;
     if (tabValue === '/' || tabValue === null) {
-      trueValue = '/one';
+      trueValue = routeService.getJatkalaRoutes()[0].route;
     } else {
       trueValue = tabValue;
     }
@@ -73,28 +89,21 @@ export default class Main extends Component {
       if (!isMobile) {
         items.push(
           <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
-            <Tab
-              value={'/one'}
-              onClick={(e) => this.toggle('/one')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Jätkälä 1
-                </>
-              }
-              component={Link}
-              to="/one"
-            />
-            <Tab
-              value={'/two'}
-              onClick={(e) => this.toggle('/two')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Jätkälä 2
-                </>
-              }
-              component={Link}
-              to="/two"
-            />
+            {routeService.getJatkalaRoutes().map((item, index) => (
+              <Tab
+                value={item.route}
+                onClick={() => this.toggle(item.route)}
+                label={
+                  <>
+                    <LinkedCamera fontSize="inherit" />
+                    {item.name}
+                  </>
+                }
+                component={Link}
+                to={item.route}
+                key={index}
+              />
+            ))}
             <Tab
               value={'/logout'}
               onClick={(e) => this.toggle('/logout')}
@@ -113,22 +122,17 @@ export default class Main extends Component {
       if (isMobile) {
         items.push(
           <BottomNavigation value={trueValue} showLabels>
-            <BottomNavigationAction
-              label="Jätkälä 1"
-              value={'/one'}
-              onClick={(e) => this.toggle('/one')}
-              component={Link}
-              to="/one"
-              icon={<LinkedCamera />}
-            />
-            <BottomNavigationAction
-              label="Jätkälä 2"
-              value={'/two'}
-              onClick={(e) => this.toggle('/two')}
-              component={Link}
-              to="/two"
-              icon={<LinkedCamera />}
-            />
+            {routeService.getJatkalaRoutes().map((item, index) => (
+              <BottomNavigationAction
+                label={item.name}
+                value={item.route}
+                onClick={() => this.toggle(item.route)}
+                component={Link}
+                to={item.route}
+                icon={<LinkedCamera />}
+                key={index}
+              />
+            ))}
             <BottomNavigationAction
               label="Kirjaudu ulos"
               value={'/logout'}
@@ -147,50 +151,21 @@ export default class Main extends Component {
       if (!isMobile) {
         items.push(
           <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
-            <Tab
-              value={'/one'}
-              onClick={(e) => this.toggle('/one')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Jätkälä 1
-                </>
-              }
-              component={Link}
-              to="/one"
-            />
-            <Tab
-              value={'/two'}
-              onClick={(e) => this.toggle('/two')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Jätkälä 2
-                </>
-              }
-              component={Link}
-              to="/two"
-            />
-            <Tab
-              value={'/three'}
-              onClick={(e) => this.toggle('/three')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Västilä 1
-                </>
-              }
-              component={Link}
-              to="/three"
-            />
-            <Tab
-              value={'/four'}
-              onClick={(e) => this.toggle('/four')}
-              label={
-                <>
-                  <LinkedCamera fontSize="inherit" /> Västilä 2
-                </>
-              }
-              component={Link}
-              to="/four"
-            />
+            {[...routeService.getJatkalaRoutes(), ...routeService.getVastilaRoutes()].map((item, index) => (
+              <Tab
+                value={item.route}
+                onClick={() => this.toggle(item.route)}
+                label={
+                  <>
+                    <LinkedCamera fontSize="inherit" />
+                    {item.name}
+                  </>
+                }
+                component={Link}
+                to={item.route}
+                key={index}
+              />
+            ))}
             <Tab
               value={'/logout'}
               onClick={(e) => this.toggle('/logout')}
@@ -210,36 +185,10 @@ export default class Main extends Component {
         items.push(
           <BottomNavigation value={trueValue} showLabels>
             <BottomNavigationAction
-              label="Jätkälä 1"
-              value={'/one'}
-              onClick={(e) => this.toggle('/one')}
-              component={Link}
-              to="/one"
-              icon={<LinkedCamera />}
-            />
-            <BottomNavigationAction
-              label="Jätkälä 2"
-              value={'/two'}
-              onClick={(e) => this.toggle('/two')}
-              component={Link}
-              to="/two"
-              icon={<LinkedCamera />}
-            />
-            <BottomNavigationAction
-              label="Västilä 1"
-              value={'/three'}
-              onClick={(e) => this.toggle('/three')}
-              component={Link}
-              to="/three"
-              icon={<LinkedCamera />}
-            />
-            <BottomNavigationAction
-              label="Västilä 2"
-              value={'/four'}
-              onClick={(e) => this.toggle('/four')}
-              component={Link}
-              to="/four"
-              icon={<LinkedCamera />}
+              className="Mui-selected"
+              label={routeService.getSelectedRoute()}
+              onClick={() => this.openDrawer()}
+              icon={<FlipCameraIosIcon />}
             />
             <BottomNavigationAction
               label="Kirjaudu ulos"
@@ -262,11 +211,55 @@ export default class Main extends Component {
     });
     return (
       <BrowserRouter>
-        <Paper className={useStyles.root}>{items}</Paper>
+        <Paper className={useStyles.root}>
+          {items}
+          <SwipeableDrawer
+            anchor="bottom"
+            open={this.state.drawerOpen}
+            onClose={() => this.closeDrawer()}
+            onOpen={() => this.openDrawer()}
+          >
+            <List>
+              {routeService.getJatkalaRoutes().map((item, index) => (
+                <ListItem
+                  selected={item.selected}
+                  button
+                  component={Link}
+                  to={item.route}
+                  onClick={() => this.toggle(item.route)}
+                  key={index}
+                >
+                  <ListItemIcon>
+                    <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
+                  </ListItemIcon>
+                  <ListItemText className={item.selected ? 'selectedDrawerText' : 'drawerText'} primary={item.name} />
+                </ListItem>
+              ))}
+            </List>
+            <Divider />
+            <List>
+              {routeService.getVastilaRoutes().map((item, index) => (
+                <ListItem
+                  selected={item.selected}
+                  button
+                  component={Link}
+                  to={item.route}
+                  onClick={() => this.toggle(item.route)}
+                  key={index}
+                >
+                  <ListItemIcon>
+                    <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
+                  </ListItemIcon>
+                  <ListItemText className={item.selected ? 'selectedDrawerText' : 'drawerText'} primary={item.name} />
+                </ListItem>
+              ))}
+            </List>
+          </SwipeableDrawer>
+        </Paper>
 
         <Switch>
           <PrivateRoute exact path="/">
-            <Redirect to="/one"></Redirect>
+            <Redirect to={routeService.getJatkalaRoutes()[0].route}></Redirect>
           </PrivateRoute>
           <PrivateRoute path="/one" component={Images} stage={'1'} status={'loading'} role={this.state.role} />
           <PrivateRoute path="/two" component={Images} stage={'2'} status={'loading'} role={this.state.role} />
