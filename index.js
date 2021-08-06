@@ -9,7 +9,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 const app = express();
 app.use(shrinkRay());
 
-const { getImages, deleteImage } = require('./services/aws-photos');
+const { getImages, deleteImage, jatkalaRoutes, vastilaRoutes } = require('./services/aws-photos');
 const { getAuthentication, getRole } = require('./services/auth-handler');
 
 // Serve static files from the React app
@@ -22,12 +22,12 @@ app.get('/api/images/:imagesId', async function (request, response) {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
-      const parameter = parseInt(request.params.imagesId);
-      if ((role === 'jatkala' || role === 'vastila') && (parameter === 1 || parameter === 2)) {
+      const parameter = request.params.imagesId;
+      if ((role === 'jatkala' || role === 'vastila') && jatkalaRoutes.includes(parameter)) {
         const images = await getImages(parameter);
         response.json(images);
       }
-      if (role === 'vastila' && (parameter === 3 || parameter === 4)) {
+      if (role === 'vastila' && vastilaRoutes.includes(parameter)) {
         const images = await getImages(parameter);
         response.json(images);
       } else {

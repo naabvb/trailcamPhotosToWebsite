@@ -6,7 +6,6 @@ import Tab from '@material-ui/core/Tab';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import { Link, Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
-import Images from './components/images';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
@@ -263,10 +262,7 @@ export default class Main extends Component {
           <PrivateRoute exact path="/">
             <Redirect to={routeService.getJatkalaRoutes()[0].route}></Redirect>
           </PrivateRoute>
-          <PrivateRoute path="/one" component={Images} stage={'1'} status={'loading'} role={this.state.role} />
-          <PrivateRoute path="/two" component={Images} stage={'2'} status={'loading'} role={this.state.role} />
-          <PrivateRoute path="/three" component={Images} stage={'3'} status={'loading'} role={this.state.role} />
-          <PrivateRoute path="/four" component={Images} stage={'4'} status={'loading'} role={this.state.role} />
+          {routeService.getPrivateRoutes(role)}
           <Route path="/login" component={LoginPage} />
           <Route path="/logout" component={LogOut} />
         </Switch>

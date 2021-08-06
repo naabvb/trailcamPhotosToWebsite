@@ -1,11 +1,14 @@
 const aws = require('aws-sdk');
 const icu = require('full-icu');
 
+const jatkalaRoutes = ['j1', 'j2'];
+const vastilaRoutes = ['v1', 'v2'];
+
 const buckets = {
-  1: { name: 'jatkalanriistakamerat', trashBucket: 'trashjatkalanriistakamerat', url: process.env.bucket1 },
-  2: { name: 'jatkalanriistakamerat2', trashBucket: 'trashjatkalanriistakamerat2', url: process.env.bucket2 },
-  3: { name: 'vastilanriistakamerat', trashBucket: 'trashvastilanriistakamerat', url: process.env.bucket3 },
-  4: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.bucket4 },
+  j1: { name: 'jatkalanriistakamerat', trashBucket: 'trashjatkalanriistakamerat', url: process.env.bucket1 },
+  j2: { name: 'jatkalanriistakamerat2', trashBucket: 'trashjatkalanriistakamerat2', url: process.env.bucket2 },
+  v1: { name: 'vastilanriistakamerat', trashBucket: 'trashvastilanriistakamerat', url: process.env.bucket3 },
+  v2: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.bucket4 },
 };
 
 async function getImages(id) {
@@ -132,6 +135,8 @@ async function deleteImage(url) {
 }
 
 module.exports = {
+  vastilaRoutes,
+  jatkalaRoutes,
   getImages,
   deleteImage,
 };
