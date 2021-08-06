@@ -14,6 +14,8 @@ function getJatkalaRoutes() {
   return [
     { name: 'Jätkälä 1', route: '/j1', selected: isSelectedRoute('/j1') },
     { name: 'Jätkälä 2', route: '/j2', selected: isSelectedRoute('/j2') },
+    { name: 'Jätkälä 3', route: '/j3', selected: isSelectedRoute('/j3') },
+    { name: 'Jätkälä 4', route: '/j4', selected: isSelectedRoute('/j4') },
   ];
 }
 

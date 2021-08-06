@@ -31,7 +31,7 @@ app.get('/api/images/:imagesId', async function (request, response) {
         const images = await getImages(parameter);
         response.json(images);
       } else {
-        response.sendStatus(401);
+        response.json([]);
       }
     } else {
       response.sendStatus(401);

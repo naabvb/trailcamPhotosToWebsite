@@ -18,6 +18,10 @@
   color: #8ba9f9 !important;
 }
 
+.nothingHere {
+  margin-top: 5em !important;
+}
+
 .logOutText {
   color: #3f51b5;
 }
@@ -195,7 +199,8 @@ input:-webkit-autofill:active {
   .footer_span {
     color: #666;
   }
-  .footer_link {
+  .footer_link,
+  .nothingHere {
     color: rgb(250, 250, 250);
   }
   .footer_link2 {

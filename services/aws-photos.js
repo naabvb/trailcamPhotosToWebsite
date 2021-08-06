@@ -1,14 +1,16 @@
 const aws = require('aws-sdk');
 const icu = require('full-icu');
 
-const jatkalaRoutes = ['j1', 'j2'];
+const jatkalaRoutes = ['j1', 'j2', 'j3', 'j4'];
 const vastilaRoutes = ['v1', 'v2'];
 
 const buckets = {
-  j1: { name: 'jatkalanriistakamerat', trashBucket: 'trashjatkalanriistakamerat', url: process.env.bucket1 },
-  j2: { name: 'jatkalanriistakamerat2', trashBucket: 'trashjatkalanriistakamerat2', url: process.env.bucket2 },
-  v1: { name: 'vastilanriistakamerat', trashBucket: 'trashvastilanriistakamerat', url: process.env.bucket3 },
-  v2: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.bucket4 },
+  j1: { name: 'jatkalanriistakamerat', trashBucket: 'trashjatkalanriistakamerat', url: process.env.j1 },
+  j2: { name: 'jatkalanriistakamerat2', trashBucket: 'trashjatkalanriistakamerat2', url: process.env.j2 },
+  j3: { name: 'jatkalanriistakamerat3', trashBucket: 'trashjatkalanriistakamerat3', url: process.env.j3 },
+  j4: { name: 'jatkalanriistakamerat4', trashBucket: 'trashjatkalanriistakamerat4', url: process.env.j4 },
+  v1: { name: 'vastilanriistakamerat', trashBucket: 'trashvastilanriistakamerat', url: process.env.v1 },
+  v2: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.v2 },
 };
 
 async function getImages(id) {

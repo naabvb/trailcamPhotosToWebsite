@@ -7,6 +7,7 @@ import '../App.css';
 import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 import { withDialog } from 'muibox';
+import { Typography } from '@material-ui/core';
 
 class Images extends PureComponent {
   constructor(props) {
@@ -15,13 +16,14 @@ class Images extends PureComponent {
       images: [],
       status: this.props.status,
       prev: '',
+      showEmpty: false,
     };
   }
 
   async componentDidMount() {
     const response = await axios.get('/api/images/' + this.props.stage);
-    if (response && response.data && response.data.length > 0) {
-      this.setState({ images: response.data, status: 'loaded' });
+    if (response && response.data) {
+      this.setState({ images: response.data, status: 'loaded', showEmpty: true });
     }
   }
 
@@ -32,8 +34,8 @@ class Images extends PureComponent {
     if (this.props.stage !== prevProps.stage) {
       if (this.props.history.action === 'PUSH' || this.props.history.action === 'POP') {
         const response = await axios.get('/api/images/' + this.props.stage);
-        if (response && response.data && response.data.length > 0) {
-          this.setState({ images: response.data, status: 'loaded', prev: '' });
+        if (response && response.data) {
+          this.setState({ images: response.data, status: 'loaded', prev: '', showEmpty: true });
         }
       }
     }
@@ -174,7 +176,7 @@ class Images extends PureComponent {
     }
 
     let items = [];
-    if (images) {
+    if (images && images.length > 0) {
       for (const [index, value] of images.entries()) {
         items.push(
           <div id={index}>
@@ -197,7 +199,11 @@ class Images extends PureComponent {
         );
       }
     } else {
-      items = null;
+      items = this.state.showEmpty ? (
+        <Typography className="text-center nothingHere" align="center" variant="h6">
+          Täällä ei ole mitään. Vielä 🦌
+        </Typography>
+      ) : null;
     }
     return (
       <div className="image_page" id="image_page_id">
