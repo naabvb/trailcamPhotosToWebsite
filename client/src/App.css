@@ -18,8 +18,8 @@
   color: #8ba9f9 !important;
 }
 
-#log_out {
-  color: #8ba9f9;
+.logOutText {
+  color: #3f51b5;
 }
 
 .selectedIcon {
@@ -246,6 +246,10 @@ input:-webkit-autofill:active {
   }
 
   .selectedIcon {
+    color: #8ba9f9;
+  }
+
+  .logOutText {
     color: #8ba9f9;
   }
 

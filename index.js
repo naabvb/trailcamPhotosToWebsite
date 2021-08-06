@@ -23,11 +23,11 @@ app.get('/api/images/:imagesId', async function (request, response) {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
       const parameter = parseInt(request.params.imagesId);
-      if ((role === 1 || role === 2) && (parameter === 1 || parameter === 2)) {
+      if ((role === 'jatkala' || role === 'vastila') && (parameter === 1 || parameter === 2)) {
         const images = await getImages(parameter);
         response.json(images);
       }
-      if (role === 2 && (parameter === 3 || parameter === 4)) {
+      if (role === 'vastila' && (parameter === 3 || parameter === 4)) {
         const images = await getImages(parameter);
         response.json(images);
       } else {
@@ -51,11 +51,11 @@ app.get('/api/authenticate', async function (request, response) {
       secure: inProd,
       sameSite: 'lax',
     };
-    if (result.role == 2) {
-      response.cookie('rkey', result.key, options).send({ role: 'vastila' });
+    if (result.role === 'vastila') {
+      response.cookie('rkey', result.key, options).send({ role: result.role });
     }
-    if (result.role == 1) {
-      response.cookie('rkey', result.key, options).send({ role: 'jatkala' });
+    if (result.role === 'jatkala') {
+      response.cookie('rkey', result.key, options).send({ role: result.role });
     } else {
       response.sendStatus(401);
     }
@@ -68,11 +68,10 @@ app.get('/api/get-role', async function (request, response) {
   try {
     if (request.signedCookies.rkey) {
       const result = await getRole(request.signedCookies.rkey);
-      if (result === 1) response.send({ role: 'jatkala' });
-      if (result === 2) response.send({ role: 'vastila' });
-      response.send({ role: 'no' });
+      if (result === 'vastila' || result === 'jatkala') response.send({ role: result });
+      response.send({ role: 'none' });
     } else {
-      response.send({ role: 'no' });
+      response.send({ role: 'none' });
     }
   } catch (e) {
     response.status(500);
@@ -87,7 +86,7 @@ app.get('/api/delete-image', async function (request, response) {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
-      if (role === 2 && request.query.img_url && request.query.img_url.length > 0) {
+      if (role === 'vastila' && request.query.img_url && request.query.img_url.length > 0) {
         const result = await deleteImage(request.query.img_url);
         if (result) {
           response.sendStatus(204);

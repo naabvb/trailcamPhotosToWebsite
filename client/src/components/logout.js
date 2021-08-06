@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import axios from 'axios';
 import * as serviceWorker from '../serviceWorker';
+import { Typography } from '@material-ui/core';
 
 class LogOut extends Component {
   async componentDidMount() {
@@ -17,9 +18,9 @@ class LogOut extends Component {
 
   render() {
     return (
-      <div>
-        <h2 id="log_out">Logged out</h2>
-      </div>
+      <Typography className="text-center logOutText" align="center" variant="h5">
+        Kirjaudutaan ulos
+      </Typography>
     );
   }
 }

@@ -122,21 +122,16 @@ export default class Main extends Component {
       if (isMobile) {
         items.push(
           <BottomNavigation value={trueValue} showLabels>
-            {routeService.getJatkalaRoutes().map((item, index) => (
-              <BottomNavigationAction
-                label={item.name}
-                value={item.route}
-                onClick={() => this.toggle(item.route)}
-                component={Link}
-                to={item.route}
-                icon={<LinkedCamera />}
-                key={index}
-              />
-            ))}
+            <BottomNavigationAction
+              className="Mui-selected"
+              label={routeService.getSelectedRoute()}
+              onClick={() => this.openDrawer()}
+              icon={<FlipCameraIosIcon />}
+            />
             <BottomNavigationAction
               label="Kirjaudu ulos"
               value={'/logout'}
-              onClick={(e) => this.toggle('/logout')}
+              onClick={() => this.toggle('/logout')}
               component={Link}
               to="/logout"
               icon={<AccountCircle />}
@@ -236,24 +231,31 @@ export default class Main extends Component {
                 </ListItem>
               ))}
             </List>
-            <Divider />
-            <List>
-              {routeService.getVastilaRoutes().map((item, index) => (
-                <ListItem
-                  selected={item.selected}
-                  button
-                  component={Link}
-                  to={item.route}
-                  onClick={() => this.toggle(item.route)}
-                  key={index}
-                >
-                  <ListItemIcon>
-                    <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
-                  </ListItemIcon>
-                  <ListItemText className={item.selected ? 'selectedDrawerText' : 'drawerText'} primary={item.name} />
-                </ListItem>
-              ))}
-            </List>
+            {this.state.role === 'vastila' ? (
+              <React.Fragment>
+                <Divider />
+                <List>
+                  {routeService.getVastilaRoutes().map((item, index) => (
+                    <ListItem
+                      selected={item.selected}
+                      button
+                      component={Link}
+                      to={item.route}
+                      onClick={() => this.toggle(item.route)}
+                      key={index}
+                    >
+                      <ListItemIcon>
+                        <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
+                      </ListItemIcon>
+                      <ListItemText
+                        className={item.selected ? 'selectedDrawerText' : 'drawerText'}
+                        primary={item.name}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </React.Fragment>
+            ) : null}
           </SwipeableDrawer>
         </Paper>
 
