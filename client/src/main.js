@@ -208,6 +208,8 @@ export default class Main extends Component {
         <Paper className={useStyles.root}>
           {items}
           <SwipeableDrawer
+            disableDiscovery={true}
+            disableSwipeToOpen={true}
             anchor="bottom"
             open={this.state.drawerOpen}
             onClose={() => this.closeDrawer()}

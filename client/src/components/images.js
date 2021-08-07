@@ -21,7 +21,7 @@ class Images extends PureComponent {
   }
 
   async componentDidMount() {
-    const response = await axios.get('/api/images/' + this.props.stage);
+    const response = await axios.get('/api/images' + this.props.stage);
     if (response && response.data) {
       this.setState({ images: response.data, status: 'loaded', showEmpty: true });
     }
@@ -33,7 +33,7 @@ class Images extends PureComponent {
     }
     if (this.props.stage !== prevProps.stage) {
       if (this.props.history.action === 'PUSH' || this.props.history.action === 'POP') {
-        const response = await axios.get('/api/images/' + this.props.stage);
+        const response = await axios.get('/api/images' + this.props.stage);
         if (response && response.data) {
           this.setState({ images: response.data, status: 'loaded', prev: '', showEmpty: true });
         }

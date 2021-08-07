@@ -1,6 +1,6 @@
 {
   "name": "trailcamphotostowebsite",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Webapp for viewing trailcam photos",
   "main": "index.js",
   "scripts": {
