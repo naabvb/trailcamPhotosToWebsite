@@ -33,23 +33,15 @@ export default class Main extends Component {
 
   async componentDidMount() {
     const response = await getRole();
-
-    if (performance.navigation.type === 1) {
-      this.setState({ tabValue: window.location.pathname, role: response });
-    } else {
-      this.setState({ tabValue: window.location.pathname, role: response });
-    }
+    this.setState({ tabValue: window.location.pathname, role: response });
     let body = document.getElementsByTagName('body')[0];
     body.scrollTop = 0;
     window.scrollTo(0, 0);
   }
 
   async componentDidUpdate() {
-    const response = await getRole();
-    if (response !== this.state.role) {
-      this.setState({ role: response });
-    }
-    window.onpopstate = (e) => {
+    window.onpopstate = async () => {
+      const response = await getRole();
       this.setState({ tabValue: window.location.pathname, role: response });
     };
   }

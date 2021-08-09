@@ -3,13 +3,14 @@ import ReactDOM from 'react-dom';
 import HttpsRedirect from 'react-https-redirect';
 import { DialogProvider } from 'muibox';
 import './index.css';
-import App from './App';
+import './App.css';
+import Main from './main';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <HttpsRedirect>
     <DialogProvider>
-      <App />
+      <Main />
     </DialogProvider>
   </HttpsRedirect>,
   document.getElementById('root')
