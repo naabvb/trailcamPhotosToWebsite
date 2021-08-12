@@ -8,6 +8,8 @@ export const routeService = {
   isSelectedRoute,
   getSelectedRoute,
   getPrivateRoutes,
+  getAllRoutes,
+  getDefaultRoute,
 };
 
 function getJatkalaRoutes() {
@@ -26,19 +28,24 @@ function getVastilaRoutes() {
   ];
 }
 
+function getAllRoutes() {
+  return [...getJatkalaRoutes(), ...getVastilaRoutes()];
+}
+
+function getDefaultRoute() {
+  return getJatkalaRoutes()[0].route;
+}
+
 function isSelectedRoute(route) {
-  if (window.location.pathname === route) return true;
-  return false;
+  return window.location.pathname === route;
 }
 
 function getSelectedRoute() {
-  const items = [...getVastilaRoutes(), ...getJatkalaRoutes()];
-  return items.find((item) => isSelectedRoute(item.route))?.name;
+  return getAllRoutes().find((item) => isSelectedRoute(item.route))?.name;
 }
 
 function getPrivateRoutes(role) {
-  const allRoutes = [...getVastilaRoutes(), ...getJatkalaRoutes()];
-  return allRoutes.map((routeObj) => {
+  return getAllRoutes().map((routeObj) => {
     return (
       <PrivateRoute path={routeObj.route} component={Images} stage={routeObj.route} role={role} status={'loading'} />
     );

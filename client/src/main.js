@@ -24,7 +24,7 @@ import { routeService } from './services/routeService';
 export default class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { tabValue: routeService.getJatkalaRoutes()[0].route, role: {}, drawerOpen: false };
+    this.state = { tabValue: routeService.getDefaultRoute(), role: {}, drawerOpen: false };
   }
 
   toggle(event) {
@@ -71,7 +71,7 @@ export default class Main extends Component {
 
     let trueValue;
     if (tabValue === '/' || tabValue === null) {
-      trueValue = routeService.getJatkalaRoutes()[0].route;
+      trueValue = routeService.getDefaultRoute();
     } else {
       trueValue = tabValue;
     }
@@ -79,7 +79,7 @@ export default class Main extends Component {
     if (role === 'jatkala') {
       if (!isMobile) {
         items.push(
-          <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
+          <Tabs key="jdm" value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
             {routeService.getJatkalaRoutes().map((item, index) => (
               <Tab
                 value={item.route}
@@ -112,7 +112,7 @@ export default class Main extends Component {
 
       if (isMobile) {
         items.push(
-          <BottomNavigation value={trueValue} showLabels>
+          <BottomNavigation key="jvm" value={trueValue} showLabels>
             <BottomNavigationAction
               className="Mui-selected"
               label={routeService.getSelectedRoute()}
@@ -136,8 +136,8 @@ export default class Main extends Component {
     if (role === 'vastila') {
       if (!isMobile) {
         items.push(
-          <Tabs value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
-            {[...routeService.getJatkalaRoutes(), ...routeService.getVastilaRoutes()].map((item, index) => (
+          <Tabs key="vdm" value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
+            {routeService.getAllRoutes().map((item, index) => (
               <Tab
                 value={item.route}
                 onClick={() => this.toggle(item.route)}
@@ -169,7 +169,7 @@ export default class Main extends Component {
 
       if (isMobile) {
         items.push(
-          <BottomNavigation value={trueValue} showLabels>
+          <BottomNavigation key="vvm" value={trueValue} showLabels>
             <BottomNavigationAction
               className="Mui-selected"
               label={routeService.getSelectedRoute()}
@@ -254,7 +254,7 @@ export default class Main extends Component {
 
         <Switch>
           <PrivateRoute exact path="/">
-            <Redirect to={routeService.getJatkalaRoutes()[0].route}></Redirect>
+            <Redirect to={routeService.getDefaultRoute()}></Redirect>
           </PrivateRoute>
           {routeService.getPrivateRoutes(role)}
           <Route path="/login" component={LoginPage} />

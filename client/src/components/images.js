@@ -179,7 +179,7 @@ class Images extends PureComponent {
     if (images && images.length > 0) {
       for (const [index, value] of images.entries()) {
         items.push(
-          <div id={index}>
+          <div key={value.key} id={index}>
             <div className="clear"></div>
             <h3>{value.key}</h3>
             <LazyLoadComponent>

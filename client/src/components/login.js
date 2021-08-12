@@ -75,7 +75,7 @@ class LoginPage extends React.Component {
     const { username, password, loading, error } = this.state;
     let role = this.state.role;
     if (role === true) {
-      window.location.pathname = routeService.getJatkalaRoutes()[0].route;
+      window.location.pathname = routeService.getDefaultRoute();
     }
 
     const useStyles = makeStyles({
