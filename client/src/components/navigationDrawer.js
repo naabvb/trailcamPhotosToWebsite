@@ -15,11 +15,19 @@ class NavigationDrawer extends Component {
         onClose={() => this.props.onClose()}
         onOpen={() => this.props.onOpen()}
       >
-        <DrawerItem routeObjects={routeService.getJatkalaRoutes()} onClick={() => this.props.onClick()} />
+        <DrawerItem
+          timestamps={this.props.timestamps}
+          routeObjects={routeService.getJatkalaRoutes()}
+          onClick={() => this.props.onClick()}
+        />
         {this.props.role === 'vastila' ? (
           <React.Fragment>
             <Divider />
-            <DrawerItem routeObjects={routeService.getVastilaRoutes()} onClick={() => this.props.onClick()} />
+            <DrawerItem
+              timestamps={this.props.timestamps}
+              routeObjects={routeService.getVastilaRoutes()}
+              onClick={() => this.props.onClick()}
+            />
           </React.Fragment>
         ) : null}
       </SwipeableDrawer>

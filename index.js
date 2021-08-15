@@ -84,7 +84,7 @@ app.get('/api/timestamps', async (request, response) => {
       const role = await getRole(request.signedCookies.rkey);
       if (role === 'vastila' || role === 'jatkala') {
         const data = await getTimestamps(role);
-        response.send({ data: data });
+        response.send({ timestamps: data });
       }
       response.sendStatus(401);
     } else {

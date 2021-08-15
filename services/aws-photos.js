@@ -28,7 +28,7 @@ async function getTimestamps(role) {
       results = results.filter((result) => jatkalaRoutes.includes(result.Key));
     }
     return results.map((result) => {
-      return { key: result.Key, timestamp: result.LastModified };
+      return { key: `/${result.Key}`, timestamp: result.LastModified };
     });
   } catch (e) {
     console.log('Error: ', e);

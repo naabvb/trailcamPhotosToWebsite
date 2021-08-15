@@ -8,32 +8,46 @@ import { routeService } from './services/routeService';
 import { stylesService } from './services/stylesService';
 import DesktopNavigation from './components/desktopNavigation';
 import MobileNavigation from './components/mobileNavigation';
+import { localStorageService } from './services/localStorageService';
 
 export default class Main extends Component {
   constructor(props) {
     super(props);
-    this.state = { tabValue: routeService.getDefaultRoute(), role: {}, drawerOpen: false };
+    this.state = { tabValue: routeService.getDefaultRoute(), role: {}, drawerOpen: false, timestamps: [] };
   }
 
-  toggle(newValue) {
+  async toggle(newValue) {
     this.setState({ tabValue: newValue, drawerOpen: false });
+    if (!stylesService.isMobile() && newValue !== '/logout') {
+      await this.updateTimestamps();
+    }
   }
 
   async componentDidMount() {
     const response = await getRole();
     this.setState({ tabValue: window.location.pathname, role: response });
     stylesService.scrollTop();
+    if (!stylesService.isMobile()) {
+      await this.updateTimestamps();
+    }
   }
 
   async componentDidUpdate() {
+    localStorageService.updatelocalStorage();
     window.onpopstate = async () => {
       const response = await getRole();
       this.setState({ tabValue: window.location.pathname, role: response });
     };
   }
 
-  openDrawer() {
+  async updateTimestamps() {
+    const timestamps = await localStorageService.getTimestamps();
+    this.setState({ timestamps: timestamps });
+  }
+
+  async openDrawer() {
     this.setState({ drawerOpen: true });
+    await this.updateTimestamps();
   }
 
   closeDrawer() {
@@ -65,6 +79,7 @@ export default class Main extends Component {
                 onToggle={(newValue) => this.toggle(newValue)}
               />
               <NavigationDrawer
+                timestamps={this.state.timestamps}
                 drawerOpen={this.state.drawerOpen}
                 onClose={() => this.closeDrawer()}
                 onOpen={() => this.openDrawer()}
@@ -75,6 +90,7 @@ export default class Main extends Component {
           ) : null}
           {!stylesService.isMobile() && userService.hasRole(role) ? (
             <DesktopNavigation
+              timestamps={this.state.timestamps}
               role={role}
               selectedValue={selectedValue}
               onClick={(newValue) => this.toggle(newValue)}

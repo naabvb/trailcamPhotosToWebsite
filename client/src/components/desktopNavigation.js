@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import { Link } from 'react-router-dom';
 import { routeService } from '../services/routeService';
+import { localStorageService } from '../services/localStorageService';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import Badge from '@material-ui/core/Badge';
 
 class DesktopNavigation extends Component {
   render() {
@@ -17,7 +19,13 @@ class DesktopNavigation extends Component {
             onClick={() => this.props.onClick(item.route)}
             label={
               <>
-                <LinkedCamera fontSize="inherit" />
+                <Badge
+                  color="secondary"
+                  variant="dot"
+                  invisible={!localStorageService.hasNewImages(item.route, this.props.timestamps)}
+                >
+                  <LinkedCamera fontSize="inherit" />
+                </Badge>
                 {item.name}
               </>
             }
