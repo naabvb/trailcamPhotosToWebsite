@@ -13,6 +13,28 @@ const buckets = {
   v2: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.v2 },
 };
 
+async function getTimestamps(role) {
+  try {
+    aws.config.setPromisesDependency();
+    aws.config.update({
+      accessKeyId: process.env.accessKeyId,
+      secretAccessKey: process.env.secretAccessKey,
+      region: 'eu-north-1',
+    });
+    const s3 = new aws.S3();
+    let results = await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise();
+    results = results.Contents;
+    if (role === 'jatkala') {
+      results = results.filter((result) => jatkalaRoutes.includes(result.Key));
+    }
+    return results.map((result) => {
+      return { key: result.Key, timestamp: result.LastModified };
+    });
+  } catch (e) {
+    console.log('Error: ', e);
+  }
+}
+
 async function getImages(id) {
   const imgList = [];
   try {
@@ -141,4 +163,5 @@ module.exports = {
   jatkalaRoutes,
   getImages,
   deleteImage,
+  getTimestamps,
 };

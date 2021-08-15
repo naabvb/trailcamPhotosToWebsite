@@ -9,7 +9,7 @@ const sslRedirect = require('heroku-ssl-redirect');
 const app = express();
 app.use(shrinkRay());
 
-const { getImages, deleteImage, jatkalaRoutes, vastilaRoutes } = require('./services/aws-photos');
+const { getImages, deleteImage, jatkalaRoutes, vastilaRoutes, getTimestamps } = require('./services/aws-photos');
 const { getAuthentication, getRole } = require('./services/auth-handler');
 
 // Serve static files from the React app
@@ -18,7 +18,7 @@ app.use(sslRedirect());
 app.use(cookieParser(process.env.signedKey));
 app.disable('x-powered-by');
 
-app.get('/api/images/:imagesId', async function (request, response) {
+app.get('/api/images/:imagesId', async (request, response) => {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
@@ -41,7 +41,7 @@ app.get('/api/images/:imagesId', async function (request, response) {
   }
 });
 
-app.get('/api/authenticate', async function (request, response) {
+app.get('/api/authenticate', async (request, response) => {
   try {
     const result = await getAuthentication(request);
     let inProd = process.env.NODE_ENV === 'production';
@@ -64,7 +64,7 @@ app.get('/api/authenticate', async function (request, response) {
   }
 });
 
-app.get('/api/get-role', async function (request, response) {
+app.get('/api/get-role', async (request, response) => {
   try {
     if (request.signedCookies.rkey) {
       const result = await getRole(request.signedCookies.rkey);
@@ -78,11 +78,28 @@ app.get('/api/get-role', async function (request, response) {
   }
 });
 
-app.get('/api/clear-role', async function (request, response) {
+app.get('/api/timestamps', async (request, response) => {
+  try {
+    if (request.signedCookies.rkey) {
+      const role = await getRole(request.signedCookies.rkey);
+      if (role === 'vastila' || role === 'jatkala') {
+        const data = await getTimestamps(role);
+        response.send({ data: data });
+      }
+      response.sendStatus(401);
+    } else {
+      response.sendStatus(401);
+    }
+  } catch (e) {
+    response.status(500);
+  }
+});
+
+app.get('/api/clear-role', async (request, response) => {
   response.clearCookie('rkey').sendStatus(200);
 });
 
-app.get('/api/delete-image', async function (request, response) {
+app.get('/api/delete-image', async (request, response) => {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
