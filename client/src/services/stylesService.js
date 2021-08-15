@@ -1,3 +1,5 @@
+import { routeService } from './routeService';
+
 export const stylesService = {
   setFooter,
   doBlur,
@@ -5,6 +7,7 @@ export const stylesService = {
   isMobile,
   scrollTop,
   setGalleryHeight,
+  setMobileFooter,
 };
 
 function setFooter() {
@@ -44,10 +47,17 @@ function scrollTop() {
   let body = document.getElementsByTagName('body')[0];
   body.scrollTop = 0;
   window.scrollTo(0, 0);
+  if (isMobile() && !routeService.isLoginPage()) {
+    setMobileFooter();
+  }
 }
 
 function setGalleryHeight() {
   document.getElementById('footer_block').style.display = 'block';
   document.getElementById('footer_block').style.position = 'static';
   document.getElementById('root').style.minHeight = '2000px';
+}
+
+function setMobileFooter() {
+  document.getElementById('footer_block').style.marginBottom = '4.1em';
 }

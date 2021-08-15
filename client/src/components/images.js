@@ -105,12 +105,23 @@ class Images extends PureComponent {
     const { dialog } = this.props;
     const { images } = this.state;
     const heights = stylesService.isMobile() ? 170 : 280;
-    const backdrop = !stylesService.isMobile();
-    let controls = null;
+    let controls = [
+      <Button
+        key="downloadButton"
+        id="downloadButton"
+        color="primary"
+        onClick={() => this.downloadResource()}
+        className={'downloadbutton'}
+        startIcon={<GetAppIcon />}
+      >
+        Lataa kuva
+      </Button>,
+    ];
 
     if (this.props.role === 'vastila') {
-      controls = [
+      controls.unshift(
         <Button
+          key="deleteButton"
           id="deleteButton"
           color="secondary"
           onClick={() =>
@@ -128,31 +139,8 @@ class Images extends PureComponent {
           startIcon={<DeleteIcon />}
         >
           Poista kuva
-        </Button>,
-        <Button
-          id="downloadButton"
-          color="primary"
-          onClick={() => this.downloadResource()}
-          className={'downloadbutton'}
-          startIcon={<GetAppIcon />}
-        >
-          Lataa kuva
-        </Button>,
-      ];
-    }
-
-    if (this.props.role === 'jatkala') {
-      controls = [
-        <Button
-          id="downloadButton"
-          color="primary"
-          onClick={() => this.downloadResource()}
-          className={'downloadbutton'}
-          startIcon={<GetAppIcon />}
-        >
-          Lataa kuva
-        </Button>,
-      ];
+        </Button>
+      );
     }
 
     let items = [];
@@ -169,7 +157,7 @@ class Images extends PureComponent {
                 }}
                 rowHeight={heights}
                 margin={3}
-                backdropClosesModal={backdrop}
+                backdropClosesModal={!stylesService.isMobile()}
                 enableImageSelection={false}
                 images={value.values}
                 customControls={controls}

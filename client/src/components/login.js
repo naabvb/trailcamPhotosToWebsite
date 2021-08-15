@@ -44,7 +44,7 @@ class LoginPage extends React.Component {
     this.setState({ [name]: value });
   }
 
-  handleSubmit(e) {
+  handleSubmit() {
     this.setState({ submitted: true });
     const { username, password } = this.state;
     // stop here if form is invalid

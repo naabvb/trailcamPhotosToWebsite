@@ -3,6 +3,7 @@ import axios from 'axios';
 export const userService = {
   login,
   getRole,
+  hasRole,
 };
 
 export async function getRole(param) {
@@ -26,6 +27,10 @@ async function login(username, password) {
   } catch (e) {
     return Promise.reject('Antamasi käyttäjätunnus tai salasana on väärin!');
   }
+}
+
+function hasRole(role) {
+  return role === 'vastila' || role === 'jatkala';
 }
 
 function handleResponse(response) {

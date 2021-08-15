@@ -14,6 +14,7 @@ export const routeService = {
   getAllRoutes,
   getDefaultRoute,
   getSwitch,
+  isLoginPage,
 };
 
 function getJatkalaRoutes() {
@@ -67,4 +68,8 @@ function getSwitch(role) {
       <Route path="/logout" component={LogOut} />
     </Switch>
   );
+}
+
+function isLoginPage() {
+  return window.location.pathname === '/login';
 }
