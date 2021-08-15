@@ -1,6 +1,9 @@
 import PrivateRoute from '../components/privateRoute';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Images from '../components/images';
 import React from 'react';
+import { LoginPage } from '../components/login';
+import LogOut from '../components/logout';
 
 export const routeService = {
   getJatkalaRoutes,
@@ -10,6 +13,7 @@ export const routeService = {
   getPrivateRoutes,
   getAllRoutes,
   getDefaultRoute,
+  getSwitch,
 };
 
 function getJatkalaRoutes() {
@@ -50,4 +54,17 @@ function getPrivateRoutes(role) {
       <PrivateRoute path={routeObj.route} component={Images} stage={routeObj.route} role={role} status={'loading'} />
     );
   });
+}
+
+function getSwitch(role) {
+  return (
+    <Switch>
+      <PrivateRoute exact path="/">
+        <Redirect to={getDefaultRoute()}></Redirect>
+      </PrivateRoute>
+      {getPrivateRoutes(role)}
+      <Route path="/login" component={LoginPage} />
+      <Route path="/logout" component={LogOut} />
+    </Switch>
+  );
 }

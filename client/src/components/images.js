@@ -8,6 +8,7 @@ import axios from 'axios';
 import { LazyLoadComponent } from 'react-lazy-load-image-component';
 import { withDialog } from 'muibox';
 import { Typography } from '@material-ui/core';
+import { stylesService } from '../services/stylesService';
 
 class Images extends PureComponent {
   constructor(props) {
@@ -41,17 +42,6 @@ class Images extends PureComponent {
     }
   }
 
-  doBlur() {
-    window.requestAnimationFrame(function () {
-      if (document.getElementById('image_page_id')) {
-        document.getElementById('image_page_id').style.filter = 'blur(0px)';
-        let body = document.getElementsByTagName('body')[0];
-        body.scrollTop = 0;
-        window.scrollTo(0, 0);
-      }
-    });
-  }
-
   async deleteImage() {
     const url = this.getImageUrl();
     if (url) {
@@ -71,8 +61,7 @@ class Images extends PureComponent {
   getImageUrl() {
     try {
       const lightbox = document.getElementById('lightboxBackdrop');
-      const url = lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
-      return url;
+      return lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
     } catch (e) {
       console.log("Couldn't locate lightbox");
     }
@@ -88,11 +77,10 @@ class Images extends PureComponent {
   }
 
   downloadResource() {
-    let url = this.getImageUrl();
+    const url = this.getImageUrl();
     if (url) {
-      let filename = url.split('\\').pop().split('/').pop();
-      url = url + '?dl';
-      fetch(url, {
+      const filename = url.split('\\').pop().split('/').pop();
+      fetch(`${url}?dl`, {
         headers: new Headers({
           Origin: window.location.origin,
         }),
@@ -100,7 +88,7 @@ class Images extends PureComponent {
       })
         .then((response) => response.blob())
         .then((blob) => {
-          let blobUrl = window.URL.createObjectURL(blob);
+          const blobUrl = window.URL.createObjectURL(blob);
           this.forceDownload(blobUrl, filename);
         })
         .catch((e) => console.log(e));
@@ -109,23 +97,15 @@ class Images extends PureComponent {
 
   render() {
     if (this.state.status === 'loading' && this.props.stage !== this.state.prev) {
-      if (document.getElementById('image_page_id')) {
-        const userAgent = window.navigator.userAgent;
-        if (userAgent.indexOf('Edge') === -1) {
-          // If not MS Edge
-          document.getElementById('image_page_id').style.transition = 'filter .5s ease';
-        }
-        document.getElementById('image_page_id').style.webkitFilter = 'blur(0.15em)';
-      }
+      stylesService.doBlur();
     }
     if (this.state.status === 'loaded') {
-      this.doBlur();
+      stylesService.unBlur();
     }
     const { dialog } = this.props;
     const { images } = this.state;
-    const isMobile = window.innerWidth < 1025;
-    const heights = isMobile ? 170 : 280;
-    const backdrop = isMobile ? false : true;
+    const heights = stylesService.isMobile() ? 170 : 280;
+    const backdrop = !stylesService.isMobile();
     let controls = null;
 
     if (this.props.role === 'vastila') {
@@ -201,7 +181,10 @@ class Images extends PureComponent {
     } else {
       items = this.state.showEmpty ? (
         <Typography className="text-center nothingHere" align="center" variant="h6">
-          Täällä ei ole mitään. Vielä 🦌
+          Täällä ei ole mitään. Vielä{' '}
+          <span role="img" aria-label="Emoji of deer">
+            🦌
+          </span>
         </Typography>
       ) : null;
     }

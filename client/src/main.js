@@ -5,21 +5,14 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import { Link, Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
+import { Link, BrowserRouter, Redirect } from 'react-router-dom';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
-import PrivateRoute from './components/privateRoute';
-import { LoginPage } from './components/login';
-import LogOut from './components/logout';
 import { getRole } from './services/userService';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import NavigationDrawer from './components/navigationDrawer';
 import { routeService } from './services/routeService';
+import { stylesService } from './services/stylesService';
 
 export default class Main extends Component {
   constructor(props) {
@@ -34,9 +27,7 @@ export default class Main extends Component {
   async componentDidMount() {
     const response = await getRole();
     this.setState({ tabValue: window.location.pathname, role: response });
-    let body = document.getElementsByTagName('body')[0];
-    body.scrollTop = 0;
-    window.scrollTo(0, 0);
+    stylesService.scrollTop();
   }
 
   async componentDidUpdate() {
@@ -56,12 +47,8 @@ export default class Main extends Component {
 
   render() {
     if (window.location.pathname !== '/login') {
-      document.getElementById('footer_block').style.display = 'block';
-      document.getElementById('footer_block').style.position = 'static';
-      document.getElementById('root').style.minHeight = '2000px';
+      stylesService.setGalleryHeight();
     }
-    const isMobile = window.innerWidth < 1025;
-    const tabValue = this.state.tabValue;
     let items = [];
     const role = this.state.role;
 
@@ -69,17 +56,13 @@ export default class Main extends Component {
       items.push(<Redirect to={{ pathname: '/login' }} key="redirect"></Redirect>);
     }
 
-    let trueValue;
-    if (tabValue === '/' || tabValue === null) {
-      trueValue = routeService.getDefaultRoute();
-    } else {
-      trueValue = tabValue;
-    }
+    const selectedValue =
+      this.state.tabValue && this.state.tabValue !== '/' ? this.state.tabValue : routeService.getDefaultRoute();
 
     if (role === 'jatkala') {
-      if (!isMobile) {
+      if (!stylesService.isMobile()) {
         items.push(
-          <Tabs key="jdm" value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
+          <Tabs key="jdm" value={selectedValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
             {routeService.getJatkalaRoutes().map((item, index) => (
               <Tab
                 value={item.route}
@@ -97,7 +80,7 @@ export default class Main extends Component {
             ))}
             <Tab
               value={'/logout'}
-              onClick={(e) => this.toggle('/logout')}
+              onClick={() => this.toggle('/logout')}
               label={
                 <>
                   <AccountCircle fontSize="inherit" /> Kirjaudu ulos
@@ -110,9 +93,9 @@ export default class Main extends Component {
         );
       }
 
-      if (isMobile) {
+      if (stylesService.isMobile()) {
         items.push(
-          <BottomNavigation key="jvm" value={trueValue} showLabels>
+          <BottomNavigation key="jvm" value={selectedValue} showLabels>
             <BottomNavigationAction
               className="Mui-selected"
               label={routeService.getSelectedRoute()}
@@ -134,9 +117,9 @@ export default class Main extends Component {
     }
 
     if (role === 'vastila') {
-      if (!isMobile) {
+      if (!stylesService.isMobile()) {
         items.push(
-          <Tabs key="vdm" value={trueValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
+          <Tabs key="vdm" value={selectedValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
             {routeService.getAllRoutes().map((item, index) => (
               <Tab
                 value={item.route}
@@ -154,7 +137,7 @@ export default class Main extends Component {
             ))}
             <Tab
               value={'/logout'}
-              onClick={(e) => this.toggle('/logout')}
+              onClick={() => this.toggle('/logout')}
               label={
                 <>
                   <AccountCircle fontSize="inherit" /> Kirjaudu ulos
@@ -167,9 +150,9 @@ export default class Main extends Component {
         );
       }
 
-      if (isMobile) {
+      if (stylesService.isMobile()) {
         items.push(
-          <BottomNavigation key="vvm" value={trueValue} showLabels>
+          <BottomNavigation key="vvm" value={selectedValue} showLabels>
             <BottomNavigationAction
               className="Mui-selected"
               label={routeService.getSelectedRoute()}
@@ -179,7 +162,7 @@ export default class Main extends Component {
             <BottomNavigationAction
               label="Kirjaudu ulos"
               value={'/logout'}
-              onClick={(e) => this.toggle('/logout')}
+              onClick={() => this.toggle('/logout')}
               component={Link}
               to="/logout"
               icon={<AccountCircle />}
@@ -199,67 +182,15 @@ export default class Main extends Component {
       <BrowserRouter>
         <Paper className={useStyles.root}>
           {items}
-          <SwipeableDrawer
-            disableDiscovery={true}
-            disableSwipeToOpen={true}
-            anchor="bottom"
-            open={this.state.drawerOpen}
+          <NavigationDrawer
+            drawerOpen={this.state.drawerOpen}
             onClose={() => this.closeDrawer()}
             onOpen={() => this.openDrawer()}
-          >
-            <List>
-              {routeService.getJatkalaRoutes().map((item, index) => (
-                <ListItem
-                  selected={item.selected}
-                  button
-                  component={Link}
-                  to={item.route}
-                  onClick={() => this.toggle(item.route)}
-                  key={index}
-                >
-                  <ListItemIcon>
-                    <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
-                  </ListItemIcon>
-                  <ListItemText className={item.selected ? 'selectedDrawerText' : 'drawerText'} primary={item.name} />
-                </ListItem>
-              ))}
-            </List>
-            {this.state.role === 'vastila' ? (
-              <React.Fragment>
-                <Divider />
-                <List>
-                  {routeService.getVastilaRoutes().map((item, index) => (
-                    <ListItem
-                      selected={item.selected}
-                      button
-                      component={Link}
-                      to={item.route}
-                      onClick={() => this.toggle(item.route)}
-                      key={index}
-                    >
-                      <ListItemIcon>
-                        <LinkedCamera className={item.selected ? 'selectedIcon' : 'drawerIcon'} />
-                      </ListItemIcon>
-                      <ListItemText
-                        className={item.selected ? 'selectedDrawerText' : 'drawerText'}
-                        primary={item.name}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-              </React.Fragment>
-            ) : null}
-          </SwipeableDrawer>
+            onClick={() => this.toggle()}
+            role={role}
+          />
         </Paper>
-
-        <Switch>
-          <PrivateRoute exact path="/">
-            <Redirect to={routeService.getDefaultRoute()}></Redirect>
-          </PrivateRoute>
-          {routeService.getPrivateRoutes(role)}
-          <Route path="/login" component={LoginPage} />
-          <Route path="/logout" component={LogOut} />
-        </Switch>
+        {routeService.getSwitch(role)}
       </BrowserRouter>
     );
   }

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { getRole } from '../services/userService';
 import { routeService } from '../services/routeService';
+import { stylesService } from '../services/stylesService';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -27,24 +28,14 @@ class LoginPage extends React.Component {
   }
 
   async componentDidMount() {
-    document.getElementById('footer_block').style.display = 'block';
-    document.getElementById('footer_block').style.position = 'absolute';
-    document.getElementsByTagName('html')[0].style.height = 'auto';
-    document.getElementsByTagName('html')[0].style.overflowY = 'visible';
-    document.getElementsByTagName('body')[0].style.overflowY = 'visible';
-    document.getElementById('root').style.minHeight = 0;
+    stylesService.setFooter();
     const response = await getRole(true);
     this.setState({ role: response });
   }
 
   componentDidUpdate() {
-    window.onpopstate = (e) => {
-      document.getElementById('footer_block').style.display = 'block';
-      document.getElementById('footer_block').style.position = 'absolute';
-      document.getElementsByTagName('html')[0].style.height = 'auto';
-      document.getElementsByTagName('html')[0].style.overflowY = 'visible';
-      document.getElementsByTagName('body')[0].style.overflowY = 'visible';
-      document.getElementById('root').style.minHeight = 0;
+    window.onpopstate = () => {
+      stylesService.setFooter();
     };
   }
 
@@ -63,7 +54,7 @@ class LoginPage extends React.Component {
 
     this.setState({ loading: true });
     userService.login(username, password).then(
-      (role) => {
+      () => {
         const { from } = this.props.location.state || { from: { pathname: '/' } };
         window.location.pathname = from.pathname;
       },
