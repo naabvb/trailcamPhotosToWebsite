@@ -4,7 +4,7 @@ WORKDIR /usr/app
 
 COPY package*.json ./
 
-RUN apk add --no-cache --virtual .gyp python make g++ \
+RUN apk add --no-cache --virtual .gyp python3 make g++ \
     && npm install --only=production && apk del .gyp
 
 COPY services services
