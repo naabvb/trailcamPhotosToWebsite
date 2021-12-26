@@ -4,7 +4,6 @@ if (process.env.NODE_ENV != 'production') {
 }
 const shrinkRay = require('shrink-ray-current');
 const express = require('express');
-const path = require('path');
 const sslRedirect = require('heroku-ssl-redirect');
 const app = express();
 app.use(shrinkRay());
@@ -12,8 +11,6 @@ app.use(shrinkRay());
 const { getImages, deleteImage, jatkalaRoutes, vastilaRoutes, getTimestamps } = require('./services/aws-photos');
 const { getAuthentication, getRole } = require('./services/auth-handler');
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(sslRedirect());
 app.use(cookieParser(process.env.signedKey));
 app.disable('x-powered-by');
@@ -121,8 +118,6 @@ app.get('/api/delete-image', async (request, response) => {
   }
 });
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
 app.get('*', (_request, response) => {
   response.sendStatus(404);
 });

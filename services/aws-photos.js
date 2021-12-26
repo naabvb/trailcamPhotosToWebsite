@@ -19,7 +19,7 @@ async function getTimestamps(role) {
     aws.config.update({
       accessKeyId: process.env.accessKeyId,
       secretAccessKey: process.env.secretAccessKey,
-      region: 'eu-north-1',
+      region: process.env.awsRegion,
     });
     const s3 = new aws.S3();
     let results = await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise();
@@ -42,7 +42,7 @@ async function getImages(id) {
     aws.config.update({
       accessKeyId: process.env.accessKeyId,
       secretAccessKey: process.env.secretAccessKey,
-      region: 'eu-north-1',
+      region: process.env.awsRegion,
     });
     const s3 = new aws.S3();
     const listAllKeys = (params, out = []) =>
@@ -80,16 +80,16 @@ async function getImages(id) {
       dateType = date.toLocaleDateString('fi-FI', options);
 
       if (
-        date.getDate() == today.getDate() &&
-        date.getMonth() == today.getMonth() &&
-        date.getFullYear() == today.getFullYear()
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
       ) {
         dateType = 'Tänään';
       }
       if (
-        date.getDate() == yesterday.getDate() &&
-        date.getMonth() == yesterday.getMonth() &&
-        date.getFullYear() == yesterday.getFullYear()
+        date.getDate() === yesterday.getDate() &&
+        date.getMonth() === yesterday.getMonth() &&
+        date.getFullYear() === yesterday.getFullYear()
       ) {
         dateType = 'Eilen';
       }
@@ -129,7 +129,7 @@ async function deleteImage(url) {
     aws.config.update({
       accessKeyId: process.env.accessKeyId,
       secretAccessKey: process.env.secretAccessKey,
-      region: 'eu-north-1',
+      region: process.env.awsRegion,
     });
 
     const s3 = new aws.S3();
