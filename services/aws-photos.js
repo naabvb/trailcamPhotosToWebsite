@@ -133,8 +133,9 @@ async function deleteImage(url) {
     });
 
     const s3 = new aws.S3();
+    const dynamoDb = new aws.DynamoDB();
     const fileName = url.split('/').reverse()[0];
-    for (let value of Object.values(buckets)) {
+    for (let [key, value] of Object.entries(buckets)) {
       if (url.startsWith(value.url)) {
         await s3
           .copyObject({
@@ -147,6 +148,18 @@ async function deleteImage(url) {
           .deleteObject({
             Bucket: value.name,
             Key: fileName,
+          })
+          .promise();
+        await dynamoDb
+          .updateItem({
+            TableName: process.env.awsTableName,
+            Key: {
+              cam: { S: key },
+            },
+            UpdateExpression: 'set deleteRequired = :deleteRequired',
+            ExpressionAttributeValues: {
+              ':deleteRequired': { BOOL: true },
+            },
           })
           .promise();
         return true;
