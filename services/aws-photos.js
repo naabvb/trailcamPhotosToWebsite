@@ -5,12 +5,12 @@ const jatkalaRoutes = ['j1', 'j2', 'j3', 'j4'];
 const vastilaRoutes = ['v1', 'v2'];
 
 const buckets = {
-  j1: { name: 'jatkalanriistakamerat', trashBucket: 'trashjatkalanriistakamerat', url: process.env.j1 },
-  j2: { name: 'jatkalanriistakamerat2', trashBucket: 'trashjatkalanriistakamerat2', url: process.env.j2 },
-  j3: { name: 'jatkalanriistakamerat3', trashBucket: 'trashjatkalanriistakamerat3', url: process.env.j3 },
-  j4: { name: 'jatkalanriistakamerat4', trashBucket: 'trashjatkalanriistakamerat4', url: process.env.j4 },
-  v1: { name: 'vastilanriistakamerat', trashBucket: 'trashvastilanriistakamerat', url: process.env.v1 },
-  v2: { name: 'vastilanriistakamerat2', trashBucket: 'trashvastilanriistakamerat2', url: process.env.v2 },
+  j1: { name: 'riistakamera-j1', trashBucket: 'riistakamera-trash-j1', url: process.env.j1 },
+  j2: { name: 'riistakamera-j2', trashBucket: 'riistakamera-trash-j2', url: process.env.j2 },
+  j3: { name: 'riistakamera-j3', trashBucket: 'riistakamera-trash-j3', url: process.env.j3 },
+  j4: { name: 'riistakamera-j4', trashBucket: 'riistakamera-trash-j4', url: process.env.j4 },
+  v1: { name: 'riistakamera-v1', trashBucket: 'riistakamera-trash-v1', url: process.env.v1 },
+  v2: { name: 'riistakamera-v2', trashBucket: 'riistakamera-trash-v2', url: process.env.v2 },
 };
 
 async function getTimestamps(role) {
