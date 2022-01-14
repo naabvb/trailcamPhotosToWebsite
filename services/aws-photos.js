@@ -13,14 +13,15 @@ const buckets = {
   v2: { name: 'riistakamera-v2', trashBucket: 'riistakamera-trash-v2', url: process.env.v2 },
 };
 
+aws.config.setPromisesDependency();
+aws.config.update({
+  accessKeyId: process.env.accessKeyId,
+  secretAccessKey: process.env.secretAccessKey,
+  region: process.env.awsRegion,
+});
+
 async function getTimestamps(role) {
   try {
-    aws.config.setPromisesDependency();
-    aws.config.update({
-      accessKeyId: process.env.accessKeyId,
-      secretAccessKey: process.env.secretAccessKey,
-      region: process.env.awsRegion,
-    });
     const s3 = new aws.S3();
     let results = await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise();
     results = results.Contents;
@@ -38,12 +39,6 @@ async function getTimestamps(role) {
 async function getImages(id) {
   const imgList = [];
   try {
-    aws.config.setPromisesDependency();
-    aws.config.update({
-      accessKeyId: process.env.accessKeyId,
-      secretAccessKey: process.env.secretAccessKey,
-      region: process.env.awsRegion,
-    });
     const s3 = new aws.S3();
     const listAllKeys = (params, out = []) =>
       new Promise((resolve, reject) => {
@@ -125,13 +120,6 @@ function groupByDay(listOfObjects) {
 
 async function deleteImage(url) {
   try {
-    aws.config.setPromisesDependency();
-    aws.config.update({
-      accessKeyId: process.env.accessKeyId,
-      secretAccessKey: process.env.secretAccessKey,
-      region: process.env.awsRegion,
-    });
-
     const s3 = new aws.S3();
     const dynamoDb = new aws.DynamoDB();
     const fileName = url.split('/').reverse()[0];
