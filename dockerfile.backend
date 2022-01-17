@@ -13,5 +13,4 @@ COPY services services
 
 RUN npm run build
 RUN npm install --only=production
-COPY dist dist
 CMD ["node", "--icu-data-dir=node_modules/full-icu", "dist/index.js"]
