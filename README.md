@@ -18,7 +18,7 @@ npm install
 
 Run server at localhost:5000:
 ```
-npm start 
+npm run dev 
 ```
 
 ### Frontend

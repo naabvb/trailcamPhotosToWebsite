@@ -3,10 +3,15 @@ FROM node:14-alpine
 WORKDIR /usr/app
 
 COPY package*.json ./
+RUN npm install
 
-RUN apk add --no-cache --virtual .gyp python3 make g++ \
-    && npm install --only=production && apk del .gyp
-
+COPY tsconfig.json ./
+COPY index.ts ./
+COPY interfaces interfaces
+COPY constants constants
 COPY services services
-COPY index.js ./
-CMD ["node", "--icu-data-dir=node_modules/full-icu", "index.js"]
+
+RUN npm run build
+RUN npm install --only=production
+COPY dist dist
+CMD ["node", "--icu-data-dir=node_modules/full-icu", "dist/index.js"]
