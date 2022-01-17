@@ -1,21 +1,20 @@
-const cookieParser = require('cookie-parser');
+import { CookieOptions, Request, Response } from 'express';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
 if (process.env.NODE_ENV != 'production') {
-  require('dotenv').config();
+  dotenv.config();
 }
-const shrinkRay = require('shrink-ray-current');
-const express = require('express');
-const sslRedirect = require('heroku-ssl-redirect');
+import express from 'express';
+import { getImages, deleteImage, getTimestamps } from './services/aws-photos';
+import { getAuthentication, getRole } from './services/auth-handler';
+import { jatkalaRoutes } from './constants/constants';
+import { vastilaRoutes } from './constants/constants';
+
 const app = express();
-app.use(shrinkRay());
-
-const { getImages, deleteImage, jatkalaRoutes, vastilaRoutes, getTimestamps } = require('./services/aws-photos');
-const { getAuthentication, getRole } = require('./services/auth-handler');
-
-app.use(sslRedirect());
 app.use(cookieParser(process.env.signedKey));
 app.disable('x-powered-by');
 
-app.get('/api/images/:imagesId', async (request, response) => {
+app.get('/api/images/:imagesId', async (request: Request, response: Response) => {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
@@ -38,11 +37,11 @@ app.get('/api/images/:imagesId', async (request, response) => {
   }
 });
 
-app.get('/api/authenticate', async (request, response) => {
+app.get('/api/authenticate', async (request: Request, response: Response) => {
   try {
     const result = await getAuthentication(request);
     let inProd = process.env.NODE_ENV === 'production';
-    const options = {
+    const options: CookieOptions = {
       httpOnly: true,
       signed: true,
       secure: inProd,
@@ -61,7 +60,7 @@ app.get('/api/authenticate', async (request, response) => {
   }
 });
 
-app.get('/api/get-role', async (request, response) => {
+app.get('/api/get-role', async (request: Request, response: Response) => {
   try {
     if (request.signedCookies.rkey) {
       const result = await getRole(request.signedCookies.rkey);
@@ -75,7 +74,7 @@ app.get('/api/get-role', async (request, response) => {
   }
 });
 
-app.get('/api/timestamps', async (request, response) => {
+app.get('/api/timestamps', async (request: Request, response: Response) => {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
@@ -92,16 +91,16 @@ app.get('/api/timestamps', async (request, response) => {
   }
 });
 
-app.get('/api/clear-role', async (request, response) => {
+app.get('/api/clear-role', async (_request: Request, response: Response) => {
   response.clearCookie('rkey').sendStatus(200);
 });
 
-app.get('/api/delete-image', async (request, response) => {
+app.get('/api/delete-image', async (request: Request, response: Response) => {
   try {
     if (request.signedCookies.rkey) {
       const role = await getRole(request.signedCookies.rkey);
-      if (role === 'vastila' && request.query.img_url && request.query.img_url.length > 0) {
-        const result = await deleteImage(request.query.img_url);
+      if (role === 'vastila' && request.query.img_url) {
+        const result = await deleteImage(request.query.img_url.toString());
         if (result) {
           response.sendStatus(204);
         } else {
@@ -118,7 +117,7 @@ app.get('/api/delete-image', async (request, response) => {
   }
 });
 
-app.get('*', (_request, response) => {
+app.get('*', (_request: Request, response: Response) => {
   response.sendStatus(404);
 });
 

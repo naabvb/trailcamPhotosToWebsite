@@ -1,78 +1,73 @@
-const aws = require('aws-sdk');
-const icu = require('full-icu');
+import aws from 'aws-sdk';
+import { ListObjectsV2Request } from 'aws-sdk/clients/s3';
+import { buckets, Cameras, jatkalaRoutes } from '../constants/constants';
+import { ImageItem } from '../interfaces/aws-photos';
 
-const jatkalaRoutes = ['j1', 'j2', 'j3', 'j4'];
-const vastilaRoutes = ['v1', 'v2'];
-
-const buckets = {
-  j1: { name: 'riistakamera-j1', trashBucket: 'riistakamera-trash-j1', url: process.env.j1 },
-  j2: { name: 'riistakamera-j2', trashBucket: 'riistakamera-trash-j2', url: process.env.j2 },
-  j3: { name: 'riistakamera-j3', trashBucket: 'riistakamera-trash-j3', url: process.env.j3 },
-  j4: { name: 'riistakamera-j4', trashBucket: 'riistakamera-trash-j4', url: process.env.j4 },
-  v1: { name: 'riistakamera-v1', trashBucket: 'riistakamera-trash-v1', url: process.env.v1 },
-  v2: { name: 'riistakamera-v2', trashBucket: 'riistakamera-trash-v2', url: process.env.v2 },
-};
-
-aws.config.setPromisesDependency();
 aws.config.update({
   accessKeyId: process.env.accessKeyId,
   secretAccessKey: process.env.secretAccessKey,
   region: process.env.awsRegion,
 });
 
-async function getTimestamps(role) {
+export async function getTimestamps(role: string) {
   try {
     const s3 = new aws.S3();
-    let results = await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise();
-    results = results.Contents;
-    if (role === 'jatkala') {
-      results = results.filter((result) => jatkalaRoutes.includes(result.Key));
+    let results = (await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise()).Contents;
+    if (results) {
+      if (role === 'jatkala') {
+        results = results.filter((result) => jatkalaRoutes.includes(result.Key!!));
+      }
+      return results.map((result) => {
+        return { key: `/${result.Key}`, timestamp: result.LastModified };
+      });
     }
-    return results.map((result) => {
-      return { key: `/${result.Key}`, timestamp: result.LastModified };
-    });
+    throw 'Could not load timestamps';
   } catch (e) {
     console.log('Error: ', e);
   }
 }
 
-async function getImages(id) {
-  const imgList = [];
-  try {
-    const s3 = new aws.S3();
-    const listAllKeys = (params, out = []) =>
-      new Promise((resolve, reject) => {
-        s3.listObjectsV2(params)
-          .promise()
-          .then(({ Contents, IsTruncated, NextContinuationToken }) => {
-            out.push(...Contents);
-            !IsTruncated
-              ? resolve(out)
-              : resolve(listAllKeys(Object.assign(params, { ContinuationToken: NextContinuationToken }), out));
-          })
-          .catch(reject);
-      });
-    const contents = await listAllKeys({ Bucket: buckets[id].name });
-    const url = buckets[id].url;
+async function getKeys(params: ListObjectsV2Request) {
+  const s3 = new aws.S3();
+  const listAllKeys = (params: ListObjectsV2Request, out: aws.S3.ObjectList = []): Promise<aws.S3.ObjectList> =>
+    new Promise((resolve, reject) => {
+      s3.listObjectsV2(params)
+        .promise()
+        .then(({ Contents, IsTruncated, NextContinuationToken }) => {
+          Contents ? out.push(...Contents) : null;
+          !IsTruncated
+            ? resolve(out)
+            : resolve(listAllKeys(Object.assign(params, { ContinuationToken: NextContinuationToken }), out));
+        })
+        .catch(reject);
+    });
+  return await listAllKeys(params);
+}
 
-    let fileName = '';
-    let timestamp;
-    let date;
-    let dateType;
-    let today = new Date();
-    let yesterday = new Date();
+export async function getImages(queryId: string) {
+  let id: Cameras;
+  if (!Object.keys(Cameras).includes(queryId)) {
+    return [];
+  }
+  id = queryId as Cameras;
+  const imgList: ImageItem[] = [];
+  try {
+    const contents = await getKeys({ Bucket: buckets[id].name });
+    const url = buckets[id].url;
+    const today = new Date();
+    const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
-    let options = { weekday: 'short', month: 'short', day: 'numeric' };
+    let options: Intl.DateTimeFormatOptions = { weekday: 'short', month: 'short', day: 'numeric' };
 
     for (let i = 0; i < contents.length; i++) {
       options = { weekday: 'short', month: 'short', day: 'numeric' };
-      fileName = contents[i].Key;
-      timestamp = fileName.split('_')[1];
-      date = new Date(parseInt(timestamp));
+      const fileName = contents[i].Key || '';
+      const timestamp = fileName.split('_')[1];
+      const date = new Date(parseInt(timestamp));
       if (date.getFullYear() != today.getFullYear()) {
         options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
       }
-      dateType = date.toLocaleDateString('fi-FI', options);
+      let dateType = date.toLocaleDateString('fi-FI', options);
 
       if (
         date.getDate() === today.getDate() &&
@@ -111,14 +106,14 @@ async function getImages(id) {
   return groupByDay(imgList.reverse());
 }
 
-function groupByDay(listOfObjects) {
+function groupByDay(listOfObjects: ImageItem[]) {
   const uniqueDates = [...new Set(listOfObjects.map((obj) => obj.model))];
-  return (groupedDates = uniqueDates.map((key) => {
+  return uniqueDates.map((key) => {
     return { key: key, values: listOfObjects.filter((obj) => obj.model === key) };
-  }));
+  });
 }
 
-async function deleteImage(url) {
+export async function deleteImage(url: string) {
   try {
     const s3 = new aws.S3();
     const dynamoDb = new aws.DynamoDB();
@@ -140,7 +135,7 @@ async function deleteImage(url) {
           .promise();
         await dynamoDb
           .updateItem({
-            TableName: process.env.awsTableName,
+            TableName: process.env.awsTableName!!,
             Key: {
               cam: { S: key },
             },
@@ -158,11 +153,3 @@ async function deleteImage(url) {
   }
   return false;
 }
-
-module.exports = {
-  vastilaRoutes,
-  jatkalaRoutes,
-  getImages,
-  deleteImage,
-  getTimestamps,
-};

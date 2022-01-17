@@ -1,8 +1,9 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
+import { Request } from 'express';
 
-async function getAuthentication(request, response) {
+export async function getAuthentication(request: Request) {
   const authHeader = request.headers.authorization;
-  if (!authHeader) return response.status(401);
+  if (!authHeader) return {};
 
   const encodedCreds = authHeader.split(' ')[1];
   const plainCreds = Buffer.from(encodedCreds, 'base64').toString().split(':');
@@ -19,17 +20,12 @@ async function getAuthentication(request, response) {
   };
 }
 
-async function getRole(rkey) {
-  if (rkey === crypto.createHash('sha256').update(process.env.jatkala).digest('hex')) {
+export async function getRole(rkey: string): Promise<string> {
+  if (rkey === crypto.createHash('sha256').update(process.env.jatkala!!).digest('hex')) {
     return 'jatkala';
   }
-  if (rkey === crypto.createHash('sha256').update(process.env.vastila).digest('hex')) {
+  if (rkey === crypto.createHash('sha256').update(process.env.vastila!!).digest('hex')) {
     return 'vastila';
   }
   return 'none';
 }
-
-module.exports = {
-  getAuthentication,
-  getRole,
-};
