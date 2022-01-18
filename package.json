@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "node --icu-data-dir=node_modules/full-icu .",
-    "build": "tsc",
+    "build": "tsc --build tsconfig.json",
     "dev": "nodemon index.ts",
     "heroku-postbuild": "cd client && npm install && npm run build",
     "docker:build:backend": "docker build . -f dockerfile.backend -t trailcam_backend",

@@ -8,6 +8,7 @@ RUN npm run build
 
 # Server
 FROM nginx:stable-alpine
+RUN rm -rf /usr/share/nginx/html/*
 COPY --from=frontend_builder /usr/app/build /usr/share/nginx/html
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 CMD ["nginx", "-g", "daemon off;"]
