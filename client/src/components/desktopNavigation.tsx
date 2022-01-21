@@ -7,10 +7,12 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Badge from '@material-ui/core/Badge';
+import { AuthenticationRoute, Role } from '../constants/constants';
+import { DesktopNavigationProps } from '../interfaces/navigation';
 
-class DesktopNavigation extends Component {
+class DesktopNavigation extends Component<DesktopNavigationProps> {
   render() {
-    const routes = this.props.role === 'vastila' ? routeService.getAllRoutes() : routeService.getJatkalaRoutes();
+    const routes = this.props.role === Role.Vastila ? routeService.getAllRoutes() : routeService.getJatkalaRoutes();
     return (
       <Tabs value={this.props.selectedValue} indicatorColor="primary" textColor="primary" variant="fullWidth">
         {routes.map((item, index) => (
@@ -35,15 +37,15 @@ class DesktopNavigation extends Component {
           />
         ))}
         <Tab
-          value={'/logout'}
-          onClick={() => this.props.onClick('/logout')}
+          value={AuthenticationRoute.Logout}
+          onClick={() => this.props.onClick(AuthenticationRoute.Logout)}
           label={
             <>
               <AccountCircle fontSize="inherit" /> Kirjaudu ulos
             </>
           }
           component={Link}
-          to="/logout"
+          to={AuthenticationRoute.Logout}
         />
       </Tabs>
     );
