@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import { BrowserRouter, Redirect } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { getRole, userService } from './services/userService';
 import NavigationDrawer from './components/navigationDrawer';
 import { routeService } from './services/routeService';
@@ -9,16 +8,18 @@ import { stylesService } from './services/stylesService';
 import DesktopNavigation from './components/desktopNavigation';
 import MobileNavigation from './components/mobileNavigation';
 import { localStorageService } from './services/localStorageService';
+import { DefaultProps, MainState } from './interfaces/main';
+import { AuthenticationRoute, Role } from './constants/constants';
 
-export default class Main extends Component {
-  constructor(props) {
+export default class Main extends Component<DefaultProps, MainState> {
+  constructor(props: DefaultProps) {
     super(props);
-    this.state = { tabValue: routeService.getDefaultRoute(), role: {}, drawerOpen: false, timestamps: [] };
+    this.state = { tabValue: routeService.getDefaultRoute(), role: Role.None, drawerOpen: false, timestamps: [] };
   }
 
-  async toggle(newValue) {
+  async toggle(newValue: string) {
     this.setState({ tabValue: newValue, drawerOpen: false });
-    if (!stylesService.isMobile() && newValue !== '/logout') {
+    if (!stylesService.isMobile() && newValue !== AuthenticationRoute.Logout) {
       await this.updateTimestamps();
     }
   }
@@ -41,8 +42,12 @@ export default class Main extends Component {
   }
 
   async updateTimestamps() {
-    const timestamps = await localStorageService.getTimestamps();
-    this.setState({ timestamps: timestamps });
+    try {
+      const timestamps = await localStorageService.getTimestamps();
+      this.setState({ timestamps: timestamps });
+    } catch {
+      window.location.pathname = AuthenticationRoute.Login;
+    }
   }
 
   async openDrawer() {
@@ -61,29 +66,22 @@ export default class Main extends Component {
     const role = this.state.role;
     const selectedValue =
       this.state.tabValue && this.state.tabValue !== '/' ? this.state.tabValue : routeService.getDefaultRoute();
-
-    const useStyles = makeStyles({
-      root: {
-        flexGrow: 1,
-      },
-    });
     return (
       <BrowserRouter>
-        <Paper className={useStyles.root}>
-          {!role ? <Redirect to={{ pathname: '/login' }} key="redirect"></Redirect> : null}
+        <Paper>
           {stylesService.isMobile() && userService.hasRole(role) ? (
             <React.Fragment>
               <MobileNavigation
                 selectedValue={selectedValue}
                 onClick={() => this.openDrawer()}
-                onToggle={(newValue) => this.toggle(newValue)}
+                onToggle={(newValue: string) => this.toggle(newValue)}
               />
               <NavigationDrawer
                 timestamps={this.state.timestamps}
                 drawerOpen={this.state.drawerOpen}
                 onClose={() => this.closeDrawer()}
                 onOpen={() => this.openDrawer()}
-                onClick={(newValue) => this.toggle(newValue)}
+                onClick={(newValue: string) => this.toggle(newValue)}
                 role={role}
               />{' '}
             </React.Fragment>
@@ -93,7 +91,7 @@ export default class Main extends Component {
               timestamps={this.state.timestamps}
               role={role}
               selectedValue={selectedValue}
-              onClick={(newValue) => this.toggle(newValue)}
+              onClick={(newValue: string) => this.toggle(newValue)}
             />
           ) : null}
         </Paper>

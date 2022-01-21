@@ -5,8 +5,10 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import { Link } from 'react-router-dom';
+import { MobileNavigationProps } from '../interfaces/navigation';
+import { AuthenticationRoute } from '../constants/constants';
 
-class MobileNavigation extends Component {
+class MobileNavigation extends Component<MobileNavigationProps> {
   render() {
     return (
       <BottomNavigation value={this.props.selectedValue} showLabels>
@@ -18,10 +20,10 @@ class MobileNavigation extends Component {
         />
         <BottomNavigationAction
           label="Kirjaudu ulos"
-          value={'/logout'}
-          onClick={() => this.props.onToggle('/logout')}
+          value={AuthenticationRoute.Logout}
+          onClick={() => this.props.onToggle(AuthenticationRoute.Logout)}
           component={Link}
-          to="/logout"
+          to={AuthenticationRoute.Logout}
           icon={<AccountCircle />}
         />
       </BottomNavigation>

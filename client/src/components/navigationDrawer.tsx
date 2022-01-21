@@ -3,8 +3,10 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Divider from '@material-ui/core/Divider';
 import { routeService } from '../services/routeService';
 import DrawerItem from './drawerItem';
+import { Role } from '../constants/constants';
+import { NavigationDrawerProps } from '../interfaces/navigation';
 
-class NavigationDrawer extends Component {
+class NavigationDrawer extends Component<NavigationDrawerProps> {
   render() {
     return (
       <SwipeableDrawer
@@ -18,15 +20,15 @@ class NavigationDrawer extends Component {
         <DrawerItem
           timestamps={this.props.timestamps}
           routeObjects={routeService.getJatkalaRoutes()}
-          onClick={() => this.props.onClick()}
+          onClick={this.props.onClick}
         />
-        {this.props.role === 'vastila' ? (
+        {this.props.role === Role.Vastila ? (
           <React.Fragment>
             <Divider />
             <DrawerItem
               timestamps={this.props.timestamps}
               routeObjects={routeService.getVastilaRoutes()}
-              onClick={() => this.props.onClick()}
+              onClick={this.props.onClick}
             />
           </React.Fragment>
         ) : null}

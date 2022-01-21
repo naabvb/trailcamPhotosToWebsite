@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
-import { getRole } from '../services/userService';
+import { userService } from '../services/userService';
+import { AuthenticationRoute } from '../constants/constants';
+import { PrivateRouteProps, PrivateRouteState } from '../interfaces/privateRoute';
 
-class PrivateRoute extends Component {
-  constructor(props) {
+class PrivateRoute extends Component<PrivateRouteProps, PrivateRouteState> {
+  constructor(props: PrivateRouteProps) {
     super(props);
     this.state = {
       loading: true,
@@ -12,13 +14,9 @@ class PrivateRoute extends Component {
     };
   }
 
-  componentDidMount() {
-    getRole(true).then((isAuthenticated) => {
-      this.setState({
-        loading: false,
-        isAuthenticated,
-      });
-    });
+  async componentDidMount() {
+    const role = await userService.getRole();
+    this.setState({ loading: false, isAuthenticated: userService.hasRole(role) });
   }
 
   render() {
@@ -32,7 +30,7 @@ class PrivateRoute extends Component {
           ) : this.state.loading ? (
             <Paper></Paper>
           ) : (
-            <Redirect to={{ pathname: '/login', state: { from: this.props.location } }} />
+            <Redirect to={{ pathname: AuthenticationRoute.Login, state: { from: this.props.location } }} />
           )
         }
       />

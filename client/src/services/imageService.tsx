@@ -1,27 +1,32 @@
-import axios from 'axios';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import DeleteIcon from '@material-ui/icons/Delete';
 import GetAppIcon from '@material-ui/icons/GetApp';
+import { Role } from '../constants/constants';
+import { Dialog } from 'muibox';
+import { deleteImage } from './apiService';
 
 export const imageService = {
   getImageUrl,
   forceDownload,
   downloadResource,
-  deleteImage,
+  sendDeleteRequest,
   getImageControls,
 };
 
-function getImageUrl() {
+function getImageUrl(): string {
   try {
     const lightbox = document.getElementById('lightboxBackdrop');
-    return lightbox.firstElementChild.firstElementChild.children[1].firstElementChild.src;
+    const imageElement = lightbox!.firstElementChild!.firstElementChild!.children[1]!
+      .firstElementChild! as HTMLImageElement;
+    return imageElement.src;
   } catch (e) {
     console.log("Couldn't locate lightbox");
+    return '';
   }
 }
 
-function forceDownload(blob, filename) {
+function forceDownload(blob: string, filename: string) {
   let a = document.createElement('a');
   a.download = filename;
   a.href = blob;
@@ -32,8 +37,8 @@ function forceDownload(blob, filename) {
 
 function downloadResource() {
   const url = getImageUrl();
-  if (url) {
-    const filename = url.split('\\').pop().split('/').pop();
+  if (url.length > 0) {
+    const filename = url.split('\\').pop()?.split('/').pop();
     fetch(`${url}?dl`, {
       headers: new Headers({
         Origin: window.location.origin,
@@ -43,21 +48,17 @@ function downloadResource() {
       .then((response) => response.blob())
       .then((blob) => {
         const blobUrl = window.URL.createObjectURL(blob);
-        forceDownload(blobUrl, filename);
+        if (filename) forceDownload(blobUrl, filename);
       })
       .catch((e) => console.log(e));
   }
 }
 
-async function deleteImage() {
+async function sendDeleteRequest() {
   const url = getImageUrl();
   if (url) {
     try {
-      await axios.get('/api/delete-image', {
-        params: {
-          img_url: url,
-        },
-      });
+      await deleteImage(url);
       document.location.reload();
     } catch (e) {
       console.log('Delete fail');
@@ -65,7 +66,7 @@ async function deleteImage() {
   }
 }
 
-function getImageControls(role, dialog) {
+function getImageControls(role: string, dialog: Dialog) {
   let controls = [
     <Button
       key="downloadButton"
@@ -78,7 +79,7 @@ function getImageControls(role, dialog) {
       Lataa kuva
     </Button>,
   ];
-  if (role === 'vastila') {
+  if (role === Role.Vastila) {
     controls.unshift(
       <Button
         key="deleteButton"
@@ -92,7 +93,7 @@ function getImageControls(role, dialog) {
               ok: { text: 'Ok', color: 'primary' },
               cancel: { text: 'Peruuta', color: 'secondary' },
             })
-            .then(() => deleteImage())
+            .then(() => sendDeleteRequest())
             .catch(() => {})
         }
         className={'deletebutton'}

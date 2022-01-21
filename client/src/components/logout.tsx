@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
-import '../App.css';
-import axios from 'axios';
+import '../app.css';
 import * as serviceWorker from '../serviceWorker';
 import { Typography } from '@material-ui/core';
+import { AuthenticationRoute } from '../constants/constants';
+import { logout } from '../services/apiService';
 
 class LogOut extends Component {
   async componentDidMount() {
-    await axios.get('/api/clear-role');
-    const useragent = window.navigator.userAgent;
-    if (useragent.indexOf('Edge') === -1) {
-      // If not MS Edge
-      window.location.reload(true);
-    }
+    await logout();
     serviceWorker.unregister();
-    window.location.pathname = '/login';
+    window.location.pathname = AuthenticationRoute.Login;
   }
 
   render() {

@@ -1,5 +1,4 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { ChangeEvent } from 'react';
 import { userService } from '../services/userService';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,11 +6,12 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import { getRole } from '../services/userService';
-import { routeService } from '../services/routeService';
 import { stylesService } from '../services/stylesService';
+import { LoginProps, LoginState } from '../interfaces/login';
+import { routeService } from '../services/routeService';
 
-class LoginPage extends React.Component {
-  constructor(props) {
+class LoginPage extends React.Component<LoginProps, LoginState> {
+  constructor(props: LoginProps) {
     super(props);
 
     this.state = {
@@ -20,16 +20,13 @@ class LoginPage extends React.Component {
       submitted: false,
       loading: false,
       error: '',
-      role: {},
+      role: '',
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
     stylesService.setFooter();
-    const response = await getRole(true);
+    const response = await getRole();
     this.setState({ role: response });
   }
 
@@ -39,15 +36,19 @@ class LoginPage extends React.Component {
     };
   }
 
-  handleChange(e) {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+  updateUsername(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+    const { value } = e.target;
+    this.setState({ username: value });
+  }
+
+  updatePassword(e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) {
+    const { value } = e.target;
+    this.setState({ password: value });
   }
 
   handleSubmit() {
     this.setState({ submitted: true });
     const { username, password } = this.state;
-    // stop here if form is invalid
     if (!(username && password)) {
       return;
     }
@@ -64,27 +65,17 @@ class LoginPage extends React.Component {
 
   render() {
     const { username, password, loading, error } = this.state;
-    let role = this.state.role;
-    if (role === true) {
+    if (userService.hasRole(this.state.role)) {
       window.location.pathname = routeService.getDefaultRoute();
     }
-
-    const useStyles = makeStyles({
-      textField: {
-        '&::placeholder': {
-          fontStyle: 'italic',
-        },
-      },
-    });
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={useStyles.paper}>
+        <div>
           <Typography component="h1" variant="h5">
             Kirjaudu sisään
           </Typography>
           <form
-            className={useStyles.form}
             onSubmit={(e) => {
               e.preventDefault();
               this.handleSubmit();
@@ -107,7 +98,7 @@ class LoginPage extends React.Component {
               required
               fullWidth
               value={username}
-              onChange={this.handleChange}
+              onChange={(e) => this.updateUsername(e)}
               id="username"
               name="username"
               label="Käyttäjänimi"
@@ -133,21 +124,14 @@ class LoginPage extends React.Component {
               }}
               name="password"
               value={password}
-              onChange={this.handleChange}
+              onChange={(e) => this.updatePassword(e)}
               label="Salasana"
               placeholder="Salasana"
               type="password"
               id="password"
               autoComplete="current-password"
             />
-            <Button
-              type="submit"
-              fullWidth
-              disabled={loading}
-              variant="contained"
-              color="primary"
-              className={useStyles.submit}
-            >
+            <Button type="submit" fullWidth disabled={loading} variant="contained" color="primary">
               Kirjaudu sisään
             </Button>
           </form>
