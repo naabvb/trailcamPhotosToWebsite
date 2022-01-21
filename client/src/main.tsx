@@ -8,17 +8,18 @@ import { stylesService } from './services/stylesService';
 import DesktopNavigation from './components/desktopNavigation';
 import MobileNavigation from './components/mobileNavigation';
 import { localStorageService } from './services/localStorageService';
-import { DefaultProps, MainState } from './interfaces/components';
+import { DefaultProps, MainState } from './interfaces/main';
+import { AuthenticationRoute, Role } from './constants/constants';
 
 export default class Main extends Component<DefaultProps, MainState> {
   constructor(props: DefaultProps) {
     super(props);
-    this.state = { tabValue: routeService.getDefaultRoute(), role: '', drawerOpen: false, timestamps: [] };
+    this.state = { tabValue: routeService.getDefaultRoute(), role: Role.None, drawerOpen: false, timestamps: [] };
   }
 
   async toggle(newValue: string) {
     this.setState({ tabValue: newValue, drawerOpen: false });
-    if (!stylesService.isMobile() && newValue !== '/logout') {
+    if (!stylesService.isMobile() && newValue !== AuthenticationRoute.Logout) {
       await this.updateTimestamps();
     }
   }
@@ -41,8 +42,12 @@ export default class Main extends Component<DefaultProps, MainState> {
   }
 
   async updateTimestamps() {
-    const timestamps = await localStorageService.getTimestamps().catch(() => (window.location.pathname = '/login'));
-    this.setState({ timestamps: timestamps });
+    try {
+      const timestamps = await localStorageService.getTimestamps();
+      this.setState({ timestamps: timestamps });
+    } catch {
+      window.location.pathname = AuthenticationRoute.Login;
+    }
   }
 
   async openDrawer() {
