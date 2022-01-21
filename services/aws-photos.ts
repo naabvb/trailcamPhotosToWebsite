@@ -1,6 +1,6 @@
 import aws from 'aws-sdk';
 import { ListObjectsV2Request } from 'aws-sdk/clients/s3';
-import { buckets, Cameras, jatkalaRoutes } from '../constants/constants';
+import { buckets, Cameras, jatkalaRoutes, Role } from '../constants/constants';
 import { ImageItem } from '../interfaces/aws-photos';
 
 aws.config.update({
@@ -9,12 +9,12 @@ aws.config.update({
   region: process.env.awsRegion,
 });
 
-export async function getTimestamps(role: string) {
+export async function getTimestamps(role: Role) {
   try {
     const s3 = new aws.S3();
     let results = (await s3.listObjectsV2({ Bucket: 'trailcamtimestamps' }).promise()).Contents;
     if (results) {
-      if (role === 'jatkala') {
+      if (role === Role.Jatkala) {
         results = results.filter((result) => jatkalaRoutes.includes(result.Key!!));
       }
       return results.map((result) => {

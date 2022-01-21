@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { Role } from '../constants/constants';
 import { Request } from 'express';
 
 export async function getAuthentication(request: Request) {
@@ -11,21 +12,25 @@ export async function getAuthentication(request: Request) {
   const password = plainCreds[1];
   const hashable = username + ':' + password + process.env.salt;
   const hash = crypto.createHash('sha256').update(hashable).digest('hex');
-  let role = 'none';
-  if (hash === process.env.jatkala) role = 'jatkala';
-  if (hash === process.env.vastila) role = 'vastila';
+  let role = Role.None;
+  if (hash === process.env.jatkala) role = Role.Jatkala;
+  if (hash === process.env.vastila) role = Role.Vastila;
   return {
     role: role,
     key: crypto.createHash('sha256').update(hash).digest('hex'),
   };
 }
 
-export async function getRole(rkey: string): Promise<string> {
+export async function getRole(rkey: string): Promise<Role> {
   if (rkey === crypto.createHash('sha256').update(process.env.jatkala!!).digest('hex')) {
-    return 'jatkala';
+    return Role.Jatkala;
   }
   if (rkey === crypto.createHash('sha256').update(process.env.vastila!!).digest('hex')) {
-    return 'vastila';
+    return Role.Vastila;
   }
-  return 'none';
+  return Role.None;
+}
+
+export function isAuthenticated(role: Role) {
+  return role === Role.Jatkala || role === Role.Vastila;
 }

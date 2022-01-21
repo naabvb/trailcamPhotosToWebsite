@@ -18,3 +18,9 @@ export enum Cameras {
   v1 = 'v1',
   v2 = 'v2',
 }
+
+export enum Role {
+  Jatkala = 'jatkala',
+  Vastila = 'vastila',
+  None = 'none',
+}
