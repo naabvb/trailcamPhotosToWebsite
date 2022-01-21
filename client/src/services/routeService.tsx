@@ -1,9 +1,10 @@
 import PrivateRoute from '../components/privateRoute';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Images from '../components/images';
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { LoginPage } from '../components/login';
 import LogOut from '../components/logout';
+import { AuthenticationRoute, jatkalaRoutes, LoadingState, Role, vastilaRoutes } from '../constants/constants';
 
 export const routeService = {
   getJatkalaRoutes,
@@ -19,19 +20,11 @@ export const routeService = {
 };
 
 function getJatkalaRoutes() {
-  return [
-    { name: 'Jätkälä 1', route: '/j1', selected: isSelectedRoute('/j1') },
-    { name: 'Jätkälä 2', route: '/j2', selected: isSelectedRoute('/j2') },
-    { name: 'Jätkälä 3', route: '/j3', selected: isSelectedRoute('/j3') },
-    { name: 'Jätkälä 4', route: '/j4', selected: isSelectedRoute('/j4') },
-  ];
+  return jatkalaRoutes;
 }
 
 function getVastilaRoutes() {
-  return [
-    { name: 'Västilä 1', route: '/v1', selected: isSelectedRoute('/v1') },
-    { name: 'Västilä 2', route: '/v2', selected: isSelectedRoute('/v2') },
-  ];
+  return vastilaRoutes;
 }
 
 function getAllRoutes() {
@@ -42,7 +35,7 @@ function getDefaultRoute() {
   return getJatkalaRoutes()[0].route;
 }
 
-function isSelectedRoute(route) {
+function isSelectedRoute(route: string) {
   return window.location.pathname === route;
 }
 
@@ -50,31 +43,37 @@ function getSelectedRoute() {
   return getAllRoutes().find((item) => isSelectedRoute(item.route))?.name;
 }
 
-function getPrivateRoutes(role) {
+function getPrivateRoutes(role: Role) {
   return getAllRoutes().map((routeObj) => {
     return (
-      <PrivateRoute path={routeObj.route} component={Images} stage={routeObj.route} role={role} status={'loading'} />
+      <PrivateRoute
+        path={routeObj.route}
+        component={Images as unknown as PureComponent}
+        stage={routeObj.route}
+        role={role}
+        status={LoadingState.Loading}
+      />
     );
   });
 }
 
-function getSwitch(role) {
+function getSwitch(role: Role) {
   return (
     <Switch>
       <PrivateRoute exact path="/">
         <Redirect to={getDefaultRoute()}></Redirect>
       </PrivateRoute>
       {getPrivateRoutes(role)}
-      <Route path="/login" component={LoginPage} />
-      <Route path="/logout" component={LogOut} />
+      <Route path={AuthenticationRoute.Login} component={LoginPage} />
+      <Route path={AuthenticationRoute.Logout} component={LogOut} />
     </Switch>
   );
 }
 
 function isLoginPage() {
-  return window.location.pathname === '/login';
+  return window.location.pathname === AuthenticationRoute.Login;
 }
 
 function isLogoutPage() {
-  return window.location.pathname === '/logout';
+  return window.location.pathname === AuthenticationRoute.Logout;
 }
