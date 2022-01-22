@@ -1,5 +1,4 @@
 import aws from 'aws-sdk';
-import { ListObjectsV2Request } from 'aws-sdk/clients/s3';
 import { buckets, Cameras, jatkalaRoutes, Role } from '../constants/constants';
 import { ImageItem } from '../interfaces/aws-photos';
 
@@ -27,21 +26,20 @@ export async function getTimestamps(role: Role) {
   }
 }
 
-async function getKeys(params: ListObjectsV2Request) {
-  const s3 = new aws.S3();
-  const listAllKeys = (params: ListObjectsV2Request, out: aws.S3.ObjectList = []): Promise<aws.S3.ObjectList> =>
-    new Promise((resolve, reject) => {
-      s3.listObjectsV2(params)
-        .promise()
-        .then(({ Contents, IsTruncated, NextContinuationToken }) => {
-          Contents ? out.push(...Contents) : null;
-          !IsTruncated
-            ? resolve(out)
-            : resolve(listAllKeys(Object.assign(params, { ContinuationToken: NextContinuationToken }), out));
-        })
-        .catch(reject);
-    });
-  return await listAllKeys(params);
+async function updateImageNames(queryId: Cameras | string, filename: string) {
+  const dynamoDb = new aws.DynamoDB.DocumentClient();
+  const currentNames = await getImageNamesFromDb(queryId);
+  const newItems = currentNames.filter((name) => name !== filename);
+  await dynamoDb
+    .put({ TableName: process.env.trailcamImagesTable!, Item: { cam: queryId, images: newItems } })
+    .promise();
+}
+
+async function getImageNamesFromDb(queryId: Cameras | string): Promise<string[]> {
+  const dynamoDb = new aws.DynamoDB.DocumentClient();
+  return await (
+    await dynamoDb.get({ TableName: process.env.trailcamImagesTable!, Key: { cam: queryId } }).promise()
+  ).Item!.images;
 }
 
 export async function getImages(queryId: string) {
@@ -52,7 +50,7 @@ export async function getImages(queryId: string) {
   id = queryId as Cameras;
   const imgList: ImageItem[] = [];
   try {
-    const contents = await getKeys({ Bucket: buckets[id].name });
+    const contents = await getImageNamesFromDb(id);
     const url = buckets[id].url;
     const today = new Date();
     const yesterday = new Date();
@@ -61,8 +59,9 @@ export async function getImages(queryId: string) {
 
     for (let i = 0; i < contents.length; i++) {
       options = { weekday: 'short', month: 'short', day: 'numeric' };
-      const fileName = contents[i].Key || '';
-      const timestamp = fileName.split('_')[1];
+      const filename = contents[i];
+      const src = `${url}${filename}`;
+      const timestamp = filename.split('_')[1];
       const date = new Date(parseInt(timestamp));
       if (date.getFullYear() != today.getFullYear()) {
         options = { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' };
@@ -85,8 +84,8 @@ export async function getImages(queryId: string) {
       }
 
       imgList.push({
-        src: url + fileName,
-        thumbnail: url + fileName,
+        src: src,
+        thumbnail: src,
         thumbnailWidth: 400,
         thumbnailHeight: 300,
         timestamp: timestamp,
@@ -99,11 +98,11 @@ export async function getImages(queryId: string) {
   imgList.sort((a, b) => {
     const keyA = new Date(parseInt(a.timestamp)),
       keyB = new Date(parseInt(b.timestamp));
-    if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
     return 0;
   });
-  return groupByDay(imgList.reverse());
+  return groupByDay(imgList);
 }
 
 function groupByDay(listOfObjects: ImageItem[]) {
@@ -117,25 +116,25 @@ export async function deleteImage(url: string) {
   try {
     const s3 = new aws.S3();
     const dynamoDb = new aws.DynamoDB();
-    const fileName = url.split('/').reverse()[0];
+    const filename = url.split('/').reverse()[0];
     for (let [key, value] of Object.entries(buckets)) {
       if (url.startsWith(value.url)) {
         await s3
           .copyObject({
             Bucket: value.trashBucket,
-            CopySource: `/${value.name}/${fileName}`,
-            Key: fileName,
+            CopySource: `/${value.name}/${filename}`,
+            Key: filename,
           })
           .promise();
         await s3
           .deleteObject({
             Bucket: value.name,
-            Key: fileName,
+            Key: filename,
           })
           .promise();
         await dynamoDb
           .updateItem({
-            TableName: process.env.awsTableName!!,
+            TableName: process.env.trailcamDeleteTable!,
             Key: {
               cam: { S: key },
             },
@@ -145,6 +144,7 @@ export async function deleteImage(url: string) {
             },
           })
           .promise();
+        await updateImageNames(key, filename);
         return true;
       }
     }
