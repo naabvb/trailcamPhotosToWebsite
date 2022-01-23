@@ -51,6 +51,13 @@ export async function getImages(queryId: string) {
   const imgList: ImageItem[] = [];
   try {
     const contents = await getImageNamesFromDb(id);
+    contents.sort((a, b) => {
+      const keyA = new Date(parseInt(a.split('_')[1]));
+      const keyB = new Date(parseInt(b.split('_')[1]));
+      if (keyA < keyB) return 1;
+      if (keyA > keyB) return -1;
+      return 0;
+    });
     const url = buckets[id].url;
     const today = new Date();
     const yesterday = new Date();
@@ -88,20 +95,12 @@ export async function getImages(queryId: string) {
         thumbnail: src,
         thumbnailWidth: 400,
         thumbnailHeight: 300,
-        timestamp: timestamp,
         model: dateType,
       });
     }
   } catch (e) {
     console.log('Error: ', e);
   }
-  imgList.sort((a, b) => {
-    const keyA = new Date(parseInt(a.timestamp)),
-      keyB = new Date(parseInt(b.timestamp));
-    if (keyA < keyB) return 1;
-    if (keyA > keyB) return -1;
-    return 0;
-  });
   return groupByDay(imgList);
 }
 

@@ -2,7 +2,7 @@
 
 Webapp for watching trailcam images with Node.js backend and react frontend.
 
-Uses background services [attachmentBatchDownloader](https://github.com/naabvb/attachmentBatchDownloader), [removeEmailsAndFiles](https://github.com/naabvb/removeEmailsAndFiles), [syncDirector](https://github.com/naabvb/syncDirector) and [updateDbItems](https://github.com/naabvb/updateDbItems)
+Uses background services [attachmentBatchDownloader](https://github.com/naabvb/attachmentBatchDownloader), [removeEmailsAndFiles](https://github.com/naabvb/removeEmailsAndFiles), [syncDirector](https://github.com/naabvb/syncDirector) and [updateDbItems](https://github.com/naabvb/updateDbItems).
 
 ## Prerequisites
 

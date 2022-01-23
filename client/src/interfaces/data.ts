@@ -14,7 +14,6 @@ export interface Image {
   thumbnail: string;
   thumbnailWidth: number;
   thumbnailHeight: number;
-  timestamp: string;
   model: string;
 }
 
