@@ -90,7 +90,7 @@ class Images extends PureComponent<ImagesProps, ImagesState> {
         : [<div />];
     }
     return (
-      <div className="image_page" id="image_page_id">
+      <div className="image_page" id="images_container">
         {items}
       </div>
     );
