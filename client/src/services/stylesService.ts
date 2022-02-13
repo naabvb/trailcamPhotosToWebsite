@@ -23,9 +23,11 @@ function setFooter() {
     footerBlock.style.marginBottom = '0';
     footerSpan.style.display = 'inline';
   }
-  document.getElementsByTagName('html')[0].style.height = 'auto';
-  document.getElementsByTagName('html')[0].style.overflowY = 'visible';
-  document.getElementsByTagName('body')[0].style.overflowY = 'visible';
+  const [html] = document.getElementsByTagName('html');
+  const [body] = document.getElementsByTagName('body');
+  html.style.height = 'auto';
+  html.style.overflowY = 'visible';
+  body.style.overflowY = 'visible';
   const root = getElementById('root');
   if (root) {
     root.style.minHeight = '0';
@@ -59,7 +61,7 @@ function isMobile() {
 }
 
 function scrollTop() {
-  let body = document.getElementsByTagName('body')[0];
+  const [body] = document.getElementsByTagName('body');
   body.scrollTop = 0;
   window.scrollTo(0, 0);
   if (isMobile() && !routeService.isLoginPage()) {

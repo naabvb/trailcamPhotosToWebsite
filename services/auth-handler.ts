@@ -6,10 +6,8 @@ export async function getAuthentication(request: Request) {
   const authHeader = request.headers.authorization;
   if (!authHeader) return {};
 
-  const encodedCreds = authHeader.split(' ')[1];
-  const plainCreds = Buffer.from(encodedCreds, 'base64').toString().split(':');
-  const username = plainCreds[0];
-  const password = plainCreds[1];
+  const [_headerName, encodedCreds] = authHeader.split(' ');
+  const [username, password] = Buffer.from(encodedCreds, 'base64').toString().split(':');
   const hashable = username + ':' + password + process.env.salt;
   const hash = crypto.createHash('sha256').update(hashable).digest('hex');
   let role = Role.None;

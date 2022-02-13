@@ -115,7 +115,7 @@ export async function deleteImage(url: string) {
   try {
     const s3 = new aws.S3();
     const dynamoDb = new aws.DynamoDB();
-    const filename = url.split('/').reverse()[0];
+    const [filename] = url.split('/').reverse();
     for (let [key, value] of Object.entries(buckets)) {
       if (url.startsWith(value.url)) {
         await s3
