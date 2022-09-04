@@ -1,4 +1,4 @@
-FROM node:14-alpine as backend_builder
+FROM node:16-alpine as backend_builder
 WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install
@@ -10,7 +10,7 @@ COPY services services
 RUN npm run build
 
 # Server
-FROM node:14-alpine
+FROM node:16-alpine
 WORKDIR /usr/app
 COPY package*.json ./
 COPY tsconfig.json ./
