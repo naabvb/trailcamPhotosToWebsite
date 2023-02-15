@@ -4,11 +4,20 @@ import Images from '../components/images';
 import React, { PureComponent } from 'react';
 import { LoginPage } from '../components/login';
 import LogOut from '../components/logout';
-import { AuthenticationRoute, jatkalaRoutes, LoadingState, Role, vastilaRoutes } from '../constants/constants';
+import {
+  AuthenticationRoute,
+  graphRoutes,
+  jatkalaRoutes,
+  LoadingState,
+  Role,
+  vastilaRoutes,
+} from '../constants/constants';
+import Graphs from '../components/graphs';
 
 export const routeService = {
   getJatkalaRoutes,
   getVastilaRoutes,
+  getGraphRoutes,
   isSelectedRoute,
   getSelectedRoute,
   getPrivateRoutes,
@@ -17,6 +26,7 @@ export const routeService = {
   getSwitch,
   isLoginPage,
   isLogoutPage,
+  isGraphsPage,
 };
 
 function getJatkalaRoutes() {
@@ -25,6 +35,10 @@ function getJatkalaRoutes() {
 
 function getVastilaRoutes() {
   return vastilaRoutes;
+}
+
+function getGraphRoutes() {
+  return graphRoutes;
 }
 
 function getAllRoutes() {
@@ -40,21 +54,31 @@ function isSelectedRoute(route: string) {
 }
 
 function getSelectedRoute() {
-  return getAllRoutes().find((item) => isSelectedRoute(item.route))?.name;
+  return [...getAllRoutes(), ...getGraphRoutes()].find((item) => isSelectedRoute(item.route))?.name;
 }
 
 function getPrivateRoutes(role: Role) {
-  return getAllRoutes().map((routeObj) => {
-    return (
-      <PrivateRoute
-        path={routeObj.route}
-        component={Images as unknown as PureComponent}
-        stage={routeObj.route}
-        role={role}
-        status={LoadingState.Loading}
-      />
-    );
-  });
+  const [graphRoute] = getGraphRoutes();
+  return [
+    ...getAllRoutes().map((routeObj) => {
+      return (
+        <PrivateRoute
+          path={routeObj.route}
+          component={Images as unknown as PureComponent}
+          stage={routeObj.route}
+          role={role}
+          status={LoadingState.Loading}
+        />
+      );
+    }),
+    <PrivateRoute
+      path={graphRoute.route}
+      component={Graphs}
+      stage={graphRoute.route}
+      role={role}
+      status={LoadingState.Loading}
+    />,
+  ];
 }
 
 function getSwitch(role: Role) {
@@ -76,4 +100,8 @@ function isLoginPage() {
 
 function isLogoutPage() {
   return window.location.pathname === AuthenticationRoute.Logout;
+}
+
+function isGraphsPage() {
+  return window.location.pathname === '/graphs';
 }

@@ -19,6 +19,10 @@ export const vastilaRoutes: Route[] = [
   { name: 'Västilä 2', route: '/v2', selected: () => routeService.isSelectedRoute('/v2') },
 ];
 
+export const graphRoutes: Route[] = [
+  { name: 'Tilastot', route: '/graphs', selected: () => routeService.isSelectedRoute('/graphs') },
+];
+
 export enum AuthenticationRoute {
   Login = '/login',
   Logout = '/logout',

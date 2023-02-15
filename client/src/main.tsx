@@ -60,7 +60,7 @@ export default class Main extends Component<DefaultProps, MainState> {
   }
 
   render() {
-    if (!routeService.isLoginPage()) {
+    if (!routeService.isLoginPage() && !routeService.isGraphsPage()) {
       stylesService.setGalleryHeight();
     }
     const role = this.state.role;
