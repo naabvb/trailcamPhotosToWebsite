@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 if (process.env.NODE_ENV != 'production') {
   dotenv.config();
 }
-import { getImages, deleteImage, getTimestamps } from './services/aws-photos';
+import { getImages, deleteImage, getTimestamps, getGraphsData } from './services/aws-photos';
 import { getAuthentication, getRole, isAuthenticated } from './services/auth-handler';
 import { jatkalaRoutes, vastilaRoutes, Role } from './constants/constants';
 
@@ -84,6 +84,21 @@ app.get('/api/timestamps', async (request: Request, response: Response) => {
     } else {
       response.sendStatus(401);
     }
+  } catch (e) {
+    response.status(500);
+  }
+});
+
+app.get('/api/graphs', async (request: Request, response: Response) => {
+  try {
+    if (request.signedCookies.rkey) {
+      const role = await getRole(request.signedCookies.rkey);
+      if (isAuthenticated(role)) {
+        const data = await getGraphsData();
+        return response.send({ graphs: data });
+      }
+    }
+    return response.sendStatus(401);
   } catch (e) {
     response.status(500);
   }
