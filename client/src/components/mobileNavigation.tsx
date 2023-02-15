@@ -7,6 +7,7 @@ import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import { Link } from 'react-router-dom';
 import { MobileNavigationProps } from '../interfaces/navigation';
 import { AuthenticationRoute } from '../constants/constants';
+import { BarChart } from '@material-ui/icons';
 
 class MobileNavigation extends Component<MobileNavigationProps> {
   render() {
@@ -16,7 +17,7 @@ class MobileNavigation extends Component<MobileNavigationProps> {
           className="Mui-selected"
           label={routeService.getSelectedRoute()}
           onClick={() => this.props.onClick()}
-          icon={<FlipCameraIosIcon />}
+          icon={routeService.isGraphsPage() ? <BarChart /> : <FlipCameraIosIcon />}
         />
         <BottomNavigationAction
           label="Kirjaudu ulos"

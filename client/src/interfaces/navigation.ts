@@ -25,6 +25,7 @@ export interface NavigationDrawerProps {
 
 export interface DrawerItemProps {
   timestamps: Timestamp[];
+  type: 'camera' | 'graphs';
   routeObjects: Route[];
   onClick: (arg0: string) => Promise<void>;
 }

@@ -7,8 +7,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import Badge from '@material-ui/core/Badge';
-import { AuthenticationRoute, Role } from '../constants/constants';
+import { AuthenticationRoute, graphRoutes, Role } from '../constants/constants';
 import { DesktopNavigationProps } from '../interfaces/navigation';
+import { BarChart } from '@material-ui/icons';
 
 class DesktopNavigation extends Component<DesktopNavigationProps> {
   render() {
@@ -34,6 +35,21 @@ class DesktopNavigation extends Component<DesktopNavigationProps> {
             component={Link}
             to={item.route}
             key={index}
+          />
+        ))}
+        {graphRoutes.map((item) => (
+          <Tab
+            value={item.route}
+            onClick={() => this.props.onClick(item.route)}
+            label={
+              <>
+                <BarChart fontSize="inherit" />
+                {item.name}
+              </>
+            }
+            component={Link}
+            to={item.route}
+            key={item.name}
           />
         ))}
         <Tab
