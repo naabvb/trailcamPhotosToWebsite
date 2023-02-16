@@ -1,6 +1,6 @@
 import { Typography } from '@material-ui/core';
 import React, { Component } from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend, ResponsiveContainer, Tooltip, LabelList } from 'recharts';
 import { BarGraphProps } from '../interfaces/graphs';
 import { stylesService } from '../services/stylesService';
 
@@ -29,7 +29,9 @@ class BarGraph extends Component<BarGraphProps> {
         j4: this.props.data?.j4.thisYear.total,
       },
     ];
-    const labelColors = stylesService.usingDarkTheme() ? '#c9c5c5' : '#3c4043';
+    const axisLabelColors = stylesService.usingDarkTheme() ? '#c9c5c5' : '#3c4043';
+    const barLabelColors = stylesService.usingDarkTheme() ? '#ffffff' : '#3c4043';
+    const labelFontSize = stylesService.isMobile() ? '12px' : 'none';
     return (
       <div style={{ width: '100%', height: 300 }}>
         <Typography className="graphTitle" align="center" variant="h6">
@@ -38,6 +40,7 @@ class BarGraph extends Component<BarGraphProps> {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
             data={data}
+            barGap={6}
             margin={{
               top: 10,
               right: 30,
@@ -45,9 +48,9 @@ class BarGraph extends Component<BarGraphProps> {
               bottom: 50,
             }}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis tick={{ fill: labelColors }} dataKey="date" />
-            <YAxis tick={{ fill: labelColors }} />
+            <CartesianGrid strokeDasharray="2 2" />
+            <XAxis tick={{ fill: axisLabelColors }} dataKey="date" />
+            <YAxis padding={{ top: 20 }} tick={{ fill: axisLabelColors }} />
             {stylesService.isMobile() ? null : <Tooltip />}
             <Legend
               payload={[
@@ -58,10 +61,18 @@ class BarGraph extends Component<BarGraphProps> {
               ]}
               wrapperStyle={{ marginLeft: '25px' }}
             />
-            <Bar dataKey="j1" fill="#4caf50" />
-            <Bar dataKey="j2" fill="#f44336" />
-            <Bar dataKey="j3" fill="#0288d1" />
-            <Bar dataKey="j4" fill="#ff8a65" />
+            <Bar dataKey="j1" fill="#4caf50">
+              <LabelList dataKey="j1" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
+            </Bar>
+            <Bar dataKey="j2" fill="#f44336">
+              <LabelList dataKey="j2" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
+            </Bar>
+            <Bar dataKey="j3" fill="#0288d1">
+              <LabelList dataKey="j3" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
+            </Bar>
+            <Bar dataKey="j4" fill="#ff8a65">
+              <LabelList dataKey="j4" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
+            </Bar>
           </BarChart>
         </ResponsiveContainer>
       </div>
