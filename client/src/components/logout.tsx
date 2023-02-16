@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../app.css';
-import * as serviceWorker from '../serviceWorker';
+import * as serviceWorkerRegistration from '../serviceWorkerRegistration';
 import { Typography } from '@material-ui/core';
 import { AuthenticationRoute } from '../constants/constants';
 import { logout } from '../services/apiService';
@@ -8,7 +8,7 @@ import { logout } from '../services/apiService';
 class LogOut extends Component {
   async componentDidMount() {
     await logout();
-    serviceWorker.unregister();
+    serviceWorkerRegistration.unregister();
     window.location.pathname = AuthenticationRoute.Login;
   }
 
