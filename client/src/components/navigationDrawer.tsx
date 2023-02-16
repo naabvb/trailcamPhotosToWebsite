@@ -5,7 +5,6 @@ import { routeService } from '../services/routeService';
 import DrawerItem from './drawerItem';
 import { Role } from '../constants/constants';
 import { NavigationDrawerProps } from '../interfaces/navigation';
-import { userService } from '../services/userService';
 
 class NavigationDrawer extends Component<NavigationDrawerProps> {
   render() {
@@ -35,7 +34,7 @@ class NavigationDrawer extends Component<NavigationDrawerProps> {
             />
           </>
         ) : null}
-        {userService.hasRole(this.props.role) ? (
+        {this.props.role === Role.Vastila || this.props.role === Role.Jatkala ? (
           <>
             <Divider />
             <DrawerItem
