@@ -4,7 +4,7 @@ import { DialogProvider } from 'muibox';
 import './index.css';
 import './app.css';
 import Main from './main';
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 ReactDOM.render(
   <DialogProvider>
@@ -17,4 +17,4 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 //serviceWorker.register({immediate: true});
-serviceWorker.register({});
+serviceWorkerRegistration.register();
