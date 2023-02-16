@@ -8,6 +8,8 @@ export const stylesService = {
   scrollTop,
   setGalleryHeight,
   setMobileFooter,
+  usingDarkTheme,
+  setGraphsStyles,
 };
 
 function getElementById(id: string) {
@@ -31,6 +33,21 @@ function setFooter() {
   const root = getElementById('root');
   if (root) {
     root.style.minHeight = '0';
+  }
+}
+
+function usingDarkTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+}
+
+function setGraphsStyles() {
+  const root = getElementById('root');
+  if (root) {
+    root.style.minHeight = '';
+  }
+  const footerBlock = getElementById('footer_block');
+  if (footerBlock) {
+    footerBlock.style.display = 'none';
   }
 }
 

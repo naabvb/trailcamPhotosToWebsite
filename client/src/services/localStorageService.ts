@@ -10,7 +10,7 @@ export const localStorageService = {
 };
 
 function updatelocalStorage() {
-  if (!routeService.isLoginPage() && !routeService.isLogoutPage()) {
+  if (!routeService.isLoginPage() && !routeService.isLogoutPage() && !routeService.isGraphsPage()) {
     localStorage.setItem(`rkj_${window.location.pathname}`, new Date().toString());
   }
 }

@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import LinkedCamera from '@material-ui/icons/LinkedCamera';
+import BarChart from '@material-ui/icons/BarChart';
 import Badge from '@material-ui/core/Badge';
 import { Link } from 'react-router-dom';
 import { localStorageService } from '../services/localStorageService';
@@ -28,7 +29,11 @@ class DrawerItem extends Component<DrawerItemProps> {
                 variant="dot"
                 invisible={!localStorageService.hasNewImages(item.route, this.props.timestamps)}
               >
-                <LinkedCamera className={item.selected() ? 'selectedIcon' : 'drawerIcon'} />
+                {this.props.type === 'graphs' ? (
+                  <BarChart className={item.selected() ? 'selectedIcon' : 'drawerIcon'} />
+                ) : (
+                  <LinkedCamera className={item.selected() ? 'selectedIcon' : 'drawerIcon'} />
+                )}
               </Badge>
             </ListItemIcon>
             <ListItemText className={item.selected() ? 'selectedDrawerText' : 'drawerText'} primary={item.name} />

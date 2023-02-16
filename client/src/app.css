@@ -113,6 +113,10 @@ body {
   padding-bottom: env(safe-area-inset-bottom);
 }
 
+.graphTitle {
+  color: #3c4043;
+}
+
 h3 {
   color: #3c4043;
   padding-left: 0.5em;
@@ -203,6 +207,10 @@ input:-webkit-autofill:active {
   .nothingHere {
     color: rgb(250, 250, 250);
   }
+  .graphTitle {
+    color: rgb(250, 250, 250);
+  }
+
   .footer_link2 {
     color: #666;
   }

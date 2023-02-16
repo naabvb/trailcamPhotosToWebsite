@@ -5,6 +5,7 @@ import { routeService } from '../services/routeService';
 import DrawerItem from './drawerItem';
 import { Role } from '../constants/constants';
 import { NavigationDrawerProps } from '../interfaces/navigation';
+import { userService } from '../services/userService';
 
 class NavigationDrawer extends Component<NavigationDrawerProps> {
   render() {
@@ -18,19 +19,32 @@ class NavigationDrawer extends Component<NavigationDrawerProps> {
         onOpen={() => this.props.onOpen()}
       >
         <DrawerItem
+          type="camera"
           timestamps={this.props.timestamps}
           routeObjects={routeService.getJatkalaRoutes()}
           onClick={this.props.onClick}
         />
         {this.props.role === Role.Vastila ? (
-          <React.Fragment>
+          <>
             <Divider />
             <DrawerItem
+              type="camera"
               timestamps={this.props.timestamps}
               routeObjects={routeService.getVastilaRoutes()}
               onClick={this.props.onClick}
             />
-          </React.Fragment>
+          </>
+        ) : null}
+        {userService.hasRole(this.props.role) ? (
+          <>
+            <Divider />
+            <DrawerItem
+              type="graphs"
+              timestamps={this.props.timestamps}
+              routeObjects={routeService.getGraphRoutes()}
+              onClick={this.props.onClick}
+            />
+          </>
         ) : null}
       </SwipeableDrawer>
     );

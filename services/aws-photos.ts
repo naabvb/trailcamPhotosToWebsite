@@ -1,4 +1,5 @@
 import aws from 'aws-sdk';
+import { ParsedYears, ValidMonths } from '../interfaces/graphs';
 import { buckets, Cameras, jatkalaRoutes, Role } from '../constants/constants';
 import { ImageItem } from '../interfaces/aws-photos';
 
@@ -24,6 +25,78 @@ export async function getTimestamps(role: Role) {
   } catch (e) {
     console.log('Error: ', e);
   }
+}
+
+export async function getGraphsData() {
+  const [j1, j2, j3, j4] = await Promise.all([
+    getImageNamesFromDb(Cameras.j1),
+    getImageNamesFromDb(Cameras.j2),
+    getImageNamesFromDb(Cameras.j3),
+    getImageNamesFromDb(Cameras.j4),
+  ]);
+  return {
+    j1: generateGraphDataForCamera(j1),
+    j2: generateGraphDataForCamera(j2),
+    j3: generateGraphDataForCamera(j3),
+    j4: generateGraphDataForCamera(j4),
+  };
+}
+
+function generateGraphDataForCamera(images: string[]) {
+  const parsedYears = parseYears(images);
+  return {
+    thisYear: parseMonths(parsedYears.imagesForThisYear),
+    lastYear: parseMonths(parsedYears.imagesForLastYear),
+    lastLastYear: parseMonths(parsedYears.imagesForLastLastYear),
+  };
+}
+
+function parseYears(images: string[]) {
+  const currentYear = new Date().getFullYear();
+  const lastYear = new Date().getFullYear() - 1;
+  const lastLastYear = new Date().getFullYear() - 2;
+  const imagesForThisYear: ParsedYears = { year: currentYear, timestamps: [] };
+  const imagesForLastYear: ParsedYears = { year: lastYear, timestamps: [] };
+  const imagesForLastLastYear: ParsedYears = { year: lastLastYear, timestamps: [] };
+  images.forEach((image) => {
+    const [, timestamp] = image.split('_');
+    const imageYear = new Date(parseInt(timestamp)).getFullYear();
+    if (imageYear === currentYear) {
+      return imagesForThisYear.timestamps.push(parseInt(timestamp));
+    }
+    if (imageYear === lastYear) {
+      return imagesForLastYear.timestamps.push(parseInt(timestamp));
+    }
+    if (imageYear === lastLastYear) {
+      return imagesForLastLastYear.timestamps.push(parseInt(timestamp));
+    }
+  });
+  return { imagesForThisYear, imagesForLastYear, imagesForLastLastYear };
+}
+
+function parseMonths(parsedYears: ParsedYears) {
+  const { year, timestamps } = parsedYears;
+  const months = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, 10: 0, 11: 0, 12: 0 };
+  timestamps.forEach((timestamp) => {
+    const month = (new Date(timestamp).getMonth() + 1) as ValidMonths;
+    months[month] = months[month] + 1;
+  });
+  const graphData = [];
+  let total = 0;
+  for (const [index, [key, value]] of Object.entries(Object.entries(months))) {
+    if (year === new Date().getFullYear()) {
+      const maxMonth = new Date().getMonth() + 1;
+      if (parseInt(index) < maxMonth) {
+        graphData.push({ amount: value, date: `${key}` });
+        total = total + value;
+        continue;
+      }
+      break;
+    }
+    graphData.push({ amount: value, date: `${key}` });
+    total = total + value;
+  }
+  return { graphData, total, year };
 }
 
 async function updateImageNames(queryId: Cameras | string, filename: string) {

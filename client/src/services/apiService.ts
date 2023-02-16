@@ -12,6 +12,10 @@ export async function getRoleFromApi() {
   return await axios.get('/api/get-role');
 }
 
+export async function getGraphsDataFromApi() {
+  return await axios.get('/api/graphs');
+}
+
 export async function authenticate(username: string, password: string) {
   return await axios.get('/api/authenticate', { auth: { username, password } });
 }
