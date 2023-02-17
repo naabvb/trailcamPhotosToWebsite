@@ -48,29 +48,29 @@ class BarGraph extends Component<BarGraphProps> {
               bottom: 50,
             }}
           >
-            <CartesianGrid strokeDasharray="2 2" />
+            <CartesianGrid vertical={false} strokeDasharray="2 2" />
             <XAxis tick={{ fill: axisLabelColors }} dataKey="date" />
             <YAxis padding={{ top: 20 }} tick={{ fill: axisLabelColors }} />
             {stylesService.isMobile() ? null : <Tooltip />}
             <Legend
               payload={[
-                { value: 'Jätkälä 1', type: 'square', color: '#4caf50' },
-                { value: 'Jätkälä 2', type: 'square', color: '#f44336' },
-                { value: 'Jätkälä 3', type: 'square', color: '#0288d1' },
-                { value: 'Jätkälä 4', type: 'square', color: '#ff8a65' },
+                { value: 'Jätkälä 1', type: 'circle', color: '#4caf50' },
+                { value: 'Jätkälä 2', type: 'circle', color: '#f44336' },
+                { value: 'Jätkälä 3', type: 'circle', color: '#0288d1' },
+                { value: 'Jätkälä 4', type: 'circle', color: '#ff8a65' },
               ]}
               wrapperStyle={{ marginLeft: '25px' }}
             />
-            <Bar dataKey="j1" fill="#4caf50">
+            <Bar radius={[8, 8, 0, 0]} dataKey="j1" fill="#4caf50">
               <LabelList dataKey="j1" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
             </Bar>
-            <Bar dataKey="j2" fill="#f44336">
+            <Bar radius={[8, 8, 0, 0]} dataKey="j2" fill="#f44336">
               <LabelList dataKey="j2" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
             </Bar>
-            <Bar dataKey="j3" fill="#0288d1">
+            <Bar radius={[8, 8, 0, 0]} dataKey="j3" fill="#0288d1">
               <LabelList dataKey="j3" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
             </Bar>
-            <Bar dataKey="j4" fill="#ff8a65">
+            <Bar radius={[8, 8, 0, 0]} dataKey="j4" fill="#ff8a65">
               <LabelList dataKey="j4" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
             </Bar>
           </BarChart>
