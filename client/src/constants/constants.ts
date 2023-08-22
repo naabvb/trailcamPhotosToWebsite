@@ -17,6 +17,8 @@ export const jatkalaRoutes: Route[] = [
 export const vastilaRoutes: Route[] = [
   { name: 'Västilä 1', route: '/v1', selected: () => routeService.isSelectedRoute('/v1') },
   { name: 'Västilä 2', route: '/v2', selected: () => routeService.isSelectedRoute('/v2') },
+  { name: 'Västilä 3', route: '/v3', selected: () => routeService.isSelectedRoute('/v3') },
+  { name: 'Västilä 4', route: '/v4', selected: () => routeService.isSelectedRoute('/v4') },
 ];
 
 export const graphRoutes: Route[] = [
