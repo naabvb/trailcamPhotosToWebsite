@@ -10,6 +10,7 @@ export interface GraphsData {
   j2: CameraGraphs;
   j3: CameraGraphs;
   j4: CameraGraphs;
+  j5: CameraGraphs;
 }
 
 export interface CameraGraphs {

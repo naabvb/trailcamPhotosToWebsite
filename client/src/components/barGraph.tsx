@@ -13,6 +13,7 @@ class BarGraph extends Component<BarGraphProps> {
         j2: this.props.data?.j2.lastLastYear.total,
         j3: this.props.data?.j3.lastLastYear.total,
         j4: this.props.data?.j4.lastLastYear.total,
+        j5: this.props.data?.j5.lastLastYear.total,
       },
       {
         date: this.props.data?.j1.lastYear.year.toString(),
@@ -20,6 +21,7 @@ class BarGraph extends Component<BarGraphProps> {
         j2: this.props.data?.j2.lastYear.total,
         j3: this.props.data?.j3.lastYear.total,
         j4: this.props.data?.j4.lastYear.total,
+        j5: this.props.data?.j5.lastYear.total,
       },
       {
         date: this.props.data?.j1.thisYear.year.toString(),
@@ -27,6 +29,7 @@ class BarGraph extends Component<BarGraphProps> {
         j2: this.props.data?.j2.thisYear.total,
         j3: this.props.data?.j3.thisYear.total,
         j4: this.props.data?.j4.thisYear.total,
+        j5: this.props.data?.j5.thisYear.total,
       },
     ];
     const axisLabelColors = stylesService.usingDarkTheme() ? '#c9c5c5' : '#3c4043';
@@ -58,6 +61,7 @@ class BarGraph extends Component<BarGraphProps> {
                 { value: 'Jätkälä 2', type: 'circle', color: '#f44336' },
                 { value: 'Jätkälä 3', type: 'circle', color: '#0288d1' },
                 { value: 'Jätkälä 4', type: 'circle', color: '#ff8a65' },
+                { value: 'Jätkälä 5', type: 'circle', color: '#9c27b0' },
               ]}
               wrapperStyle={{ marginLeft: '25px' }}
             />
@@ -72,6 +76,9 @@ class BarGraph extends Component<BarGraphProps> {
             </Bar>
             <Bar radius={[8, 8, 0, 0]} dataKey="j4" fill="#ff8a65">
               <LabelList dataKey="j4" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
+            </Bar>
+            <Bar radius={[8, 8, 0, 0]} dataKey="j5" fill="#9c27b0">
+              <LabelList dataKey="j5" position={'top'} fill={barLabelColors} style={{ fontSize: labelFontSize }} />
             </Bar>
           </BarChart>
         </ResponsiveContainer>

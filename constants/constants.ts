@@ -1,4 +1,4 @@
-export const jatkalaRoutes = ['j1', 'j2', 'j3', 'j4'];
+export const jatkalaRoutes = ['j1', 'j2', 'j3', 'j4', 'j5'];
 export const vastilaRoutes = ['v1', 'v2', 'v3', 'v4'];
 
 export const buckets = {
@@ -6,6 +6,7 @@ export const buckets = {
   j2: { name: 'riistakamera-j2', trashBucket: 'riistakamera-trash-j2', url: process.env.j2!! },
   j3: { name: 'riistakamera-j3', trashBucket: 'riistakamera-trash-j3', url: process.env.j3!! },
   j4: { name: 'riistakamera-j4', trashBucket: 'riistakamera-trash-j4', url: process.env.j4!! },
+  j5: { name: 'riistakamera-j5', trashBucket: 'riistakamera-trash-j5', url: process.env.j5!! },
   v1: { name: 'riistakamera-v1', trashBucket: 'riistakamera-trash-v1', url: process.env.v1!! },
   v2: { name: 'riistakamera-v2', trashBucket: 'riistakamera-trash-v2', url: process.env.v2!! },
   v3: { name: 'riistakamera-v3', trashBucket: 'riistakamera-trash-v3', url: process.env.v3!! },
@@ -17,6 +18,7 @@ export enum Cameras {
   j2 = 'j2',
   j3 = 'j3',
   j4 = 'j4',
+  j5 = 'j5',
   v1 = 'v1',
   v2 = 'v2',
   v3 = 'v3',

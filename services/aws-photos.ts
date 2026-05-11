@@ -28,17 +28,19 @@ export async function getTimestamps(role: Role) {
 }
 
 export async function getGraphsData() {
-  const [j1, j2, j3, j4] = await Promise.all([
+  const [j1, j2, j3, j4, j5] = await Promise.all([
     getImageNamesFromDb(Cameras.j1),
     getImageNamesFromDb(Cameras.j2),
     getImageNamesFromDb(Cameras.j3),
     getImageNamesFromDb(Cameras.j4),
+    getImageNamesFromDb(Cameras.j5),
   ]);
   return {
     j1: generateGraphDataForCamera(j1),
     j2: generateGraphDataForCamera(j2),
     j3: generateGraphDataForCamera(j3),
     j4: generateGraphDataForCamera(j4),
+    j5: generateGraphDataForCamera(j5),
   };
 }
 
